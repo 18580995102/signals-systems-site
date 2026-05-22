@@ -1,0 +1,2128 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="信号与系统现代交互学习官网，包含导学、波形演示、抽样恢复、卷积响应与课程知识图谱。" />
+    <title>信号与系统 | 现代交互学习平台</title>
+    <style>
+      :root {
+        --bg: #070914;
+        --bg2: #0c1024;
+        --panel: rgba(255, 255, 255, 0.08);
+        --panel-strong: rgba(255, 255, 255, 0.12);
+        --line: rgba(255, 255, 255, 0.14);
+        --text: #f7f7fb;
+        --muted: #a9b0c7;
+        --primary: #8b5cf6;
+        --primary2: #22d3ee;
+        --accent: #f59e0b;
+        --success: #34d399;
+        --danger: #fb7185;
+        --shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
+        --radius: 24px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 12% 10%, rgba(139, 92, 246, 0.28), transparent 30%),
+          radial-gradient(circle at 88% 12%, rgba(34, 211, 238, 0.2), transparent 28%),
+          radial-gradient(circle at 50% 80%, rgba(245, 158, 11, 0.11), transparent 32%),
+          linear-gradient(180deg, var(--bg), var(--bg2) 48%, #050611);
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+        overflow-x: hidden;
+      }
+
+      body.loading {
+        overflow: hidden;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button,
+      select,
+      input {
+        font: inherit;
+      }
+
+      .container {
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+      }
+
+      .loader {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: grid;
+        place-items: center;
+        background: #050611;
+        transition: opacity 0.55s ease, visibility 0.55s ease;
+      }
+
+      .loader.hidden {
+        opacity: 0;
+        visibility: hidden;
+        display: none;
+      }
+
+      .loader-card {
+        display: grid;
+        gap: 18px;
+        justify-items: center;
+      }
+
+      .loader-ring {
+        width: 72px;
+        height: 72px;
+        border: 4px solid rgba(255, 255, 255, 0.12);
+        border-top-color: var(--primary2);
+        border-right-color: var(--primary);
+        border-radius: 999px;
+        animation: spin 0.85s linear infinite;
+      }
+
+      .loader-text {
+        color: var(--muted);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        border-bottom: 1px solid transparent;
+        transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .navbar.scrolled {
+        background: rgba(5, 6, 17, 0.72);
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(18px);
+      }
+
+      .nav-inner {
+        min-height: 78px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 900;
+      }
+
+      .school-seal {
+        width: 58px;
+        height: 58px;
+        display: grid;
+        place-items: center;
+        flex: 0 0 auto;
+        color: #fff;
+        background:
+          radial-gradient(circle at 50% 50%, rgba(255,255,255,0.16) 0 28%, transparent 29%),
+          conic-gradient(from 30deg, #1d4ed8, #0f766e, #6d5dfc, #1d4ed8);
+        border: 3px solid rgba(255,255,255,0.9);
+        border-radius: 999px;
+        box-shadow: 0 16px 36px rgba(30, 64, 175, 0.22);
+        text-align: center;
+        line-height: 1.05;
+      }
+
+      .school-seal span {
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0;
+      }
+
+      .school-seal small {
+        display: block;
+        margin-top: 1px;
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+      }
+
+      .brand-mark {
+        width: 44px;
+        height: 44px;
+        display: grid;
+        place-items: center;
+        border-radius: 14px;
+        background: linear-gradient(135deg, var(--primary), var(--primary2));
+        box-shadow: 0 12px 30px rgba(139, 92, 246, 0.35);
+      }
+
+      .brand-text {
+        display: grid;
+        line-height: 1.1;
+      }
+
+      .brand-text small {
+        color: var(--muted);
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .nav-links a {
+        padding: 10px 13px;
+        color: rgba(255, 255, 255, 0.78);
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 800;
+        transition: color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+      }
+
+      .nav-links a:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-1px);
+      }
+
+      .menu-btn {
+        display: none;
+        width: 44px;
+        height: 44px;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+      }
+
+      .hero {
+        min-height: 100vh;
+        display: grid;
+        align-items: center;
+        padding: 130px 0 70px;
+        position: relative;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+        align-items: center;
+        gap: 52px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        margin: 0 0 18px;
+        padding: 8px 12px;
+        color: #d9ccff;
+        background: rgba(139, 92, 246, 0.14);
+        border: 1px solid rgba(139, 92, 246, 0.25);
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 900;
+        letter-spacing: 0.06em;
+      }
+
+      .hero h1 {
+        margin: 0;
+        max-width: 780px;
+        font-size: clamp(42px, 7vw, 86px);
+        line-height: 0.98;
+        letter-spacing: -0.04em;
+      }
+
+      .gradient-text {
+        background: linear-gradient(135deg, #fff, #c7d2fe 45%, #67e8f9);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .hero p {
+        max-width: 700px;
+        margin: 24px 0 0;
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.9;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 34px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-height: 52px;
+        padding: 0 20px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        font-weight: 900;
+        cursor: pointer;
+        transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+      }
+
+      .btn-primary {
+        color: #fff;
+        background: linear-gradient(135deg, var(--primary), #6d5dfc);
+        box-shadow: 0 18px 42px rgba(139, 92, 246, 0.34);
+      }
+
+      .btn-secondary {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.08);
+        border-color: var(--line);
+      }
+
+      .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 22px 60px rgba(0, 0, 0, 0.35);
+      }
+
+      .hero-visual {
+        position: relative;
+      }
+
+      .glass-panel {
+        position: relative;
+        overflow: hidden;
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: 32px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06));
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(20px);
+      }
+
+      .visual-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 18px;
+      }
+
+      .traffic {
+        display: flex;
+        gap: 8px;
+      }
+
+      .traffic span {
+        width: 11px;
+        height: 11px;
+        border-radius: 999px;
+      }
+
+      .traffic span:nth-child(1) {
+        background: #fb7185;
+      }
+
+      .traffic span:nth-child(2) {
+        background: #fbbf24;
+      }
+
+      .traffic span:nth-child(3) {
+        background: #34d399;
+      }
+
+      .visual-badge {
+        color: #b9f8ff;
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      #heroCanvas {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 22px;
+        background: rgba(3, 7, 18, 0.74);
+      }
+
+      .floating-card {
+        position: absolute;
+        right: -20px;
+        bottom: -24px;
+        width: 235px;
+        padding: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 24px;
+        background: rgba(8, 12, 30, 0.78);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(16px);
+      }
+
+      .floating-card b {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 26px;
+      }
+
+      .floating-card span {
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      section {
+        padding: 90px 0;
+      }
+
+      .section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 34px;
+      }
+
+      .section-head h2 {
+        max-width: 720px;
+        margin: 0;
+        font-size: clamp(34px, 5vw, 58px);
+        line-height: 1.05;
+        letter-spacing: -0.035em;
+      }
+
+      .section-head p {
+        max-width: 460px;
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .feature-card,
+      .stat-card,
+      .course-card,
+      .tool-card {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--panel);
+        box-shadow: 0 16px 45px rgba(0, 0, 0, 0.18);
+        backdrop-filter: blur(16px);
+      }
+
+      .feature-card {
+        min-height: 250px;
+        padding: 26px;
+        position: relative;
+        cursor: pointer;
+        transition: transform 0.28s ease, background 0.28s ease, border-color 0.28s ease;
+      }
+
+      .feature-card:hover,
+      .feature-card:focus-visible {
+        transform: translateY(-8px);
+        background: var(--panel-strong);
+        border-color: rgba(139, 92, 246, 0.45);
+        outline: none;
+      }
+
+      .feature-card::after {
+        content: "点击进入 →";
+        position: absolute;
+        right: 24px;
+        bottom: 22px;
+        color: #c4b5fd;
+        font-size: 14px;
+        font-weight: 900;
+        opacity: 0;
+        transform: translateY(6px);
+        transition: opacity 0.25s ease, transform 0.25s ease;
+      }
+
+      .feature-card:hover::after,
+      .feature-card:focus-visible::after {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .icon {
+        width: 54px;
+        height: 54px;
+        display: grid;
+        place-items: center;
+        margin-bottom: 22px;
+        color: #fff;
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.95), rgba(34, 211, 238, 0.78));
+        border-radius: 18px;
+        box-shadow: 0 14px 34px rgba(139, 92, 246, 0.25);
+        font-size: 22px;
+      }
+
+      .feature-card h3,
+      .course-card h3,
+      .tool-card h3 {
+        margin: 0 0 12px;
+        font-size: 22px;
+      }
+
+      .feature-card p,
+      .course-card p,
+      .tool-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .stat-card {
+        padding: 26px;
+      }
+
+      .stat-card b {
+        display: block;
+        margin-bottom: 8px;
+        font-size: clamp(34px, 5vw, 54px);
+        line-height: 1;
+        letter-spacing: -0.04em;
+      }
+
+      .stat-card span {
+        color: var(--muted);
+        font-weight: 800;
+      }
+
+      .guide-layout {
+        display: grid;
+        grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+        gap: 20px;
+      }
+
+      .course-card {
+        padding: 26px;
+      }
+
+      .guide-list {
+        display: grid;
+        gap: 12px;
+        margin: 22px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .guide-list li {
+        display: grid;
+        grid-template-columns: 34px 1fr;
+        gap: 12px;
+        align-items: start;
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.05);
+        cursor: pointer;
+        transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+      }
+
+      .guide-list li:hover,
+      .guide-list li.active,
+      .guide-list li:focus-visible {
+        background: rgba(139, 92, 246, 0.12);
+        border-color: rgba(109, 93, 252, 0.35);
+        box-shadow: 0 14px 34px rgba(65, 80, 130, 0.12);
+        transform: translateY(-2px);
+        outline: none;
+      }
+
+      .guide-list i {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        background: rgba(139, 92, 246, 0.28);
+        border-radius: 12px;
+      }
+
+      .guide-list b {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .guide-list span {
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .video-panel {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 30px;
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: var(--shadow);
+      }
+
+      .video-stage {
+        position: relative;
+        background: #090b1a;
+      }
+
+      #guideCanvas {
+        width: 100%;
+        display: block;
+        background: #090b1a;
+      }
+
+      .video-copy {
+        position: absolute;
+        left: 26px;
+        right: 26px;
+        bottom: 24px;
+        display: grid;
+        gap: 8px;
+      }
+
+      .video-copy span {
+        width: fit-content;
+        padding: 7px 11px;
+        color: #cffafe;
+        background: rgba(34, 211, 238, 0.12);
+        border: 1px solid rgba(34, 211, 238, 0.22);
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .video-copy strong {
+        font-size: clamp(28px, 4vw, 48px);
+        line-height: 1.05;
+      }
+
+      .video-copy p {
+        max-width: 720px;
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+
+      .lesson-tabs {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 1px;
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .lesson-tabs button {
+        min-height: 66px;
+        display: grid;
+        place-items: center;
+        gap: 3px;
+        color: rgba(255, 255, 255, 0.78);
+        background: rgba(255, 255, 255, 0.05);
+        border: 0;
+        font-weight: 900;
+        cursor: pointer;
+        transition: background 0.25s ease, color 0.25s ease;
+      }
+
+      .lesson-tabs button b {
+        font-size: 12px;
+      }
+
+      .lesson-tabs button span {
+        font-size: 14px;
+      }
+
+      .lesson-tabs button:hover,
+      .lesson-tabs button.active {
+        color: #fff;
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.9), rgba(34, 211, 238, 0.55));
+      }
+
+      .tools-layout {
+        display: grid;
+        grid-template-columns: 340px minmax(0, 1fr);
+        gap: 20px;
+      }
+
+      .tool-card {
+        padding: 24px;
+      }
+
+      .control {
+        display: grid;
+        gap: 8px;
+        margin-top: 18px;
+        color: #fff;
+        font-weight: 900;
+      }
+
+      .control select {
+        min-height: 46px;
+        padding: 0 12px;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+      }
+
+      .native-select-hidden {
+        display: none;
+      }
+
+      .custom-select {
+        position: relative;
+      }
+
+      .select-trigger {
+        width: 100%;
+        min-height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 0 14px;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        cursor: pointer;
+        font-weight: 900;
+        transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+      }
+
+      .select-trigger:hover,
+      .select-trigger[aria-expanded="true"] {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: rgba(139, 92, 246, 0.55);
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.18);
+      }
+
+      .select-arrow {
+        color: #c4b5fd;
+        transition: transform 0.22s ease;
+      }
+
+      .select-trigger[aria-expanded="true"] .select-arrow {
+        transform: rotate(180deg);
+      }
+
+      .custom-options {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: calc(100% + 8px);
+        z-index: 30;
+        display: none;
+        max-height: 292px;
+        overflow-y: auto;
+        padding: 8px;
+        background: rgba(8, 10, 24, 0.98);
+        border: 1px solid rgba(139, 92, 246, 0.34);
+        border-radius: 18px;
+        box-shadow: 0 22px 70px rgba(0, 0, 0, 0.42);
+      }
+
+      .custom-select.open .custom-options {
+        display: grid;
+        gap: 6px;
+      }
+
+      .custom-options button {
+        min-height: 42px;
+        padding: 0 12px;
+        color: rgba(255, 255, 255, 0.82);
+        text-align: left;
+        background: transparent;
+        border: 0;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: 800;
+        transition: color 0.2s ease, background 0.2s ease;
+      }
+
+      .custom-options button:hover,
+      .custom-options button.active {
+        color: #fff;
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.36), rgba(34, 211, 238, 0.18));
+      }
+
+      .control input {
+        accent-color: var(--primary);
+      }
+
+      .control output {
+        color: #c4b5fd;
+      }
+
+      .canvas-card {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 30px;
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: var(--shadow);
+      }
+
+      .canvas-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .canvas-head h3 {
+        margin: 0;
+      }
+
+      .canvas-head span {
+        color: var(--muted);
+        font-weight: 800;
+      }
+
+      #signalCanvas {
+        width: 100%;
+        display: block;
+        background: rgba(3, 7, 18, 0.72);
+      }
+
+      .formula-strip {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 16px 20px 20px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-weight: 800;
+      }
+
+      .formula-strip b {
+        color: #c4b5fd;
+      }
+
+      .footer {
+        padding: 60px 0 32px;
+        border-top: 1px solid var(--line);
+        background: rgba(0, 0, 0, 0.16);
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 1.4fr repeat(3, 1fr);
+        gap: 26px;
+      }
+
+      .footer p {
+        max-width: 520px;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .footer h4 {
+        margin: 0 0 14px;
+      }
+
+      .footer a {
+        display: block;
+        width: fit-content;
+        margin: 10px 0;
+        color: var(--muted);
+        transition: color 0.25s ease, transform 0.25s ease;
+      }
+
+      .footer a:hover {
+        color: #fff;
+        transform: translateX(3px);
+      }
+
+      .copyright {
+        margin-top: 36px;
+        padding-top: 22px;
+        color: var(--muted);
+        border-top: 1px solid var(--line);
+        font-size: 14px;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(26px);
+        transition: opacity 0.7s ease, transform 0.7s ease;
+      }
+
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .hero .reveal {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .fa,
+      .fa-solid {
+        font-style: normal;
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      .fa-wave-square::before { content: "∿"; }
+      .fa-chart-line::before { content: "⌁"; }
+      .fa-circle-nodes::before { content: "◎"; }
+      .fa-play::before { content: "▶"; }
+      .fa-arrow-right::before { content: "→"; }
+      .fa-bars::before { content: "☰"; }
+      .fa-xmark::before { content: "×"; }
+      .fa-layer-group::before { content: "▧"; }
+      .fa-bolt::before { content: "ϟ"; }
+      .fa-filter::before { content: "⌬"; }
+      .fa-graduation-cap::before { content: "◈"; }
+      .fa-code-branch::before { content: "⌘"; }
+      .fa-gauge-high::before { content: "◷"; }
+
+      /* Light campus theme override */
+      body {
+        color: #172033;
+        background:
+          linear-gradient(180deg, rgba(249, 252, 255, 0.76), rgba(246, 251, 248, 0.88) 45%, rgba(255, 255, 255, 0.94)),
+          url("assets/jishou-campus-bg.png") center top / cover fixed no-repeat;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background:
+          radial-gradient(circle at 15% 8%, rgba(105, 95, 231, 0.16), transparent 34%),
+          radial-gradient(circle at 90% 18%, rgba(29, 161, 183, 0.12), transparent 32%),
+          rgba(255, 255, 255, 0.34);
+        pointer-events: none;
+      }
+
+      :root {
+        --panel: rgba(255, 255, 255, 0.72);
+        --panel-strong: rgba(255, 255, 255, 0.88);
+        --line: rgba(74, 91, 123, 0.18);
+        --text: #172033;
+        --muted: #5e687d;
+        --shadow: 0 24px 80px rgba(33, 54, 88, 0.16);
+      }
+
+      .navbar.scrolled {
+        background: rgba(255, 255, 255, 0.68);
+        border-color: rgba(74, 91, 123, 0.14);
+      }
+
+      .nav-links a,
+      .brand,
+      .hero h1,
+      .section-head h2,
+      .feature-card h3,
+      .course-card h3,
+      .tool-card h3,
+      .canvas-head h3,
+      .footer h4 {
+        color: #172033;
+      }
+
+      .hero p,
+      .section-head p,
+      .feature-card p,
+      .course-card p,
+      .tool-card p,
+      .footer p,
+      .footer a,
+      .canvas-head span,
+      .formula-strip,
+      .guide-list span {
+        color: #5e687d;
+      }
+
+      .gradient-text {
+        background: linear-gradient(135deg, #23314d, #6d5dfc 48%, #098ea3);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .feature-card,
+      .stat-card,
+      .course-card,
+      .tool-card,
+      .canvas-card,
+      .video-panel,
+      .glass-panel,
+      .floating-card {
+        background: rgba(255, 255, 255, 0.72);
+        border-color: rgba(74, 91, 123, 0.17);
+        box-shadow: var(--shadow);
+      }
+
+      .glass-panel,
+      .video-panel,
+      .canvas-card {
+        backdrop-filter: blur(18px);
+      }
+
+      .floating-card,
+      .video-copy strong,
+      .video-copy p {
+        color: #172033;
+      }
+
+      #heroCanvas,
+      #guideCanvas,
+      #signalCanvas,
+      #samplingCanvas {
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .control {
+        color: #172033;
+      }
+
+      .control output,
+      .formula-strip b {
+        color: #6d5dfc;
+      }
+
+      .select-trigger {
+        color: #172033;
+        background: rgba(255, 255, 255, 0.76);
+        border-color: rgba(74, 91, 123, 0.2);
+      }
+
+      .select-trigger:hover,
+      .select-trigger[aria-expanded="true"] {
+        background: rgba(255, 255, 255, 0.94);
+      }
+
+      .custom-options {
+        background: rgba(255, 255, 255, 0.98);
+        border-color: rgba(109, 93, 252, 0.24);
+      }
+
+      .custom-options button {
+        color: #34405a;
+      }
+
+      .custom-options button:hover,
+      .custom-options button.active {
+        color: #172033;
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.18), rgba(34, 211, 238, 0.12));
+      }
+
+      .lab-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .lab-actions .btn {
+        min-height: 44px;
+        padding: 0 16px;
+      }
+
+      .sampling-status {
+        margin-top: 18px;
+        padding: 14px;
+        color: #17624d;
+        background: rgba(52, 211, 153, 0.16);
+        border: 1px solid rgba(52, 211, 153, 0.28);
+        border-radius: 16px;
+        font-weight: 900;
+        line-height: 1.6;
+      }
+
+      .sampling-status.warn {
+        color: #8a4d0b;
+        background: rgba(245, 158, 11, 0.17);
+        border-color: rgba(245, 158, 11, 0.32);
+      }
+
+      #sampling .lab-actions {
+        align-items: center;
+      }
+
+      #sampling .lab-actions .btn {
+        color: #172033;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(74, 91, 123, 0.18);
+        box-shadow: 0 10px 26px rgba(33, 54, 88, 0.10);
+      }
+
+      #sampling .lab-actions .btn-primary {
+        color: #fff;
+        background: linear-gradient(135deg, #7c3aed, #5b8cff);
+        border-color: transparent;
+      }
+
+      #sampling .lab-actions .btn-secondary {
+        color: #37435f;
+        background: rgba(255, 255, 255, 0.84);
+      }
+
+      #sampling .lab-actions .btn-secondary:hover {
+        color: #172033;
+        background: rgba(255, 255, 255, 0.98);
+      }
+
+      .video-copy {
+        padding: 14px 16px;
+        border-radius: 20px;
+        background: linear-gradient(90deg, rgba(255,255,255,0.88), rgba(255,255,255,0.52));
+        backdrop-filter: blur(10px);
+      }
+
+      .video-copy strong {
+        color: #172033;
+      }
+
+      .video-copy p {
+        color: #4d5870;
+      }
+
+      .lesson-tabs {
+        background: rgba(225, 232, 245, 0.88);
+      }
+
+      .lesson-tabs button {
+        color: #48546b;
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .lesson-tabs button:hover,
+      .lesson-tabs button.active {
+        color: #fff;
+        background: linear-gradient(135deg, rgba(124, 58, 237, 0.92), rgba(34, 148, 183, 0.76));
+      }
+
+      .lesson-tabs button.active b,
+      .lesson-tabs button.active span {
+        color: #fff;
+      }
+
+      .footer {
+        background: rgba(255, 255, 255, 0.62);
+      }
+
+      @media (max-width: 980px) {
+        .nav-links {
+          position: fixed;
+          top: 78px;
+          left: 20px;
+          right: 20px;
+          display: none;
+          flex-direction: column;
+          align-items: stretch;
+          padding: 14px;
+          border: 1px solid var(--line);
+          border-radius: 24px;
+          background: rgba(5, 6, 17, 0.92);
+          backdrop-filter: blur(18px);
+        }
+
+        .nav-links.open {
+          display: flex;
+        }
+
+        .menu-btn {
+          display: grid;
+          place-items: center;
+        }
+
+        .hero-grid,
+        .guide-layout,
+        .tools-layout,
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .features-grid,
+        .stats-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .section-head {
+          align-items: start;
+          flex-direction: column;
+        }
+
+        .floating-card {
+          position: static;
+          width: auto;
+          margin-top: 16px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .container {
+          width: min(100% - 28px, 1180px);
+        }
+
+        .hero {
+          padding-top: 118px;
+        }
+
+        .features-grid,
+        .stats-grid,
+        .lesson-tabs {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-actions,
+        .formula-strip,
+        .canvas-head {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .btn {
+          width: 100%;
+        }
+
+        .brand-text small {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body class="loading">
+    <div class="loader" id="loader" aria-label="页面加载中">
+      <div class="loader-card">
+        <div class="loader-ring"></div>
+        <div class="loader-text">Loading Signal Studio</div>
+      </div>
+    </div>
+
+    <header class="navbar" id="navbar">
+      <div class="container nav-inner">
+        <a class="brand" href="#home" aria-label="信号与系统首页">
+          <span class="school-seal" aria-label="吉首大学校徽风格标识">
+            <span>吉首大学</span>
+            <small>JSU</small>
+          </span>
+          <span class="brand-mark"><i class="fa-solid fa-wave-square"></i></span>
+          <span class="brand-text">
+            <strong>信号与系统</strong>
+            <small>Interactive Studio</small>
+          </span>
+        </a>
+        <nav class="nav-links" id="navLinks" aria-label="主导航">
+          <a href="#home">首页</a>
+          <a href="#features">功能</a>
+          <a href="#stats">数据</a>
+          <a href="#guide">导学</a>
+          <a href="#lab">实验台</a>
+          <a href="#sampling">抽样</a>
+          <a href="#footer">页脚</a>
+        </nav>
+        <button class="menu-btn" id="menuBtn" type="button" aria-label="打开菜单">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="container hero-grid">
+          <div class="hero-copy reveal">
+            <p class="eyebrow"><i class="fa-solid fa-graduation-cap"></i> 郑君里《信号与系统》学习方向</p>
+            <h1><span class="gradient-text">高级交互式</span><br />信号与系统学习官网</h1>
+            <p>
+              以现代单页官网的形式重构课程体验：导学视频、函数图像、抽样恢复、卷积响应与频域观察集中在一个流畅的交互平台中。
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#guide"><i class="fa-solid fa-play"></i> 开始导学</a>
+              <a class="btn btn-secondary" href="#lab">进入实验台 <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </div>
+          <div class="hero-visual reveal">
+            <div class="glass-panel">
+              <div class="visual-top">
+                <div class="traffic"><span></span><span></span><span></span></div>
+                <span class="visual-badge">Live Waveform</span>
+              </div>
+              <canvas id="heroCanvas" width="760" height="480" aria-label="动态信号波形"></canvas>
+            </div>
+            <div class="floating-card">
+              <b>∞</b>
+              <span>从时域到频域，从连续到离散，用可视化理解系统响应。</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-layer-group"></i> Core Modules</p>
+              <h2>功能完整的课程型官网模块</h2>
+            </div>
+            <p>页面不仅是展示，还能直接学习和操作。每个模块都围绕“信号如何表示、系统如何响应、抽样如何恢复”展开。</p>
+          </div>
+          <div class="features-grid">
+            <article class="feature-card reveal" role="button" tabindex="0" data-target="#guide" data-lesson="0" aria-label="进入视频导学模块">
+              <div class="icon"><i class="fa-solid fa-play"></i></div>
+              <h3>视频导学</h3>
+              <p>内置 Canvas 微课动画，切换讲解信号、变换、LTI 系统、卷积、频域与抽样恢复。</p>
+            </article>
+            <article class="feature-card reveal" role="button" tabindex="0" data-target="#lab" data-signal="sine" aria-label="进入函数图像实验台">
+              <div class="icon"><i class="fa-solid fa-chart-line"></i></div>
+              <h3>函数图像</h3>
+              <p>支持正弦、余弦、矩形、三角、阶跃、指数、sinc 与冲激序列的实时绘制。</p>
+            </article>
+            <article class="feature-card reveal" role="button" tabindex="0" data-target="#sampling" data-lesson="5" aria-label="进入抽样恢复实验">
+              <div class="icon"><i class="fa-solid fa-filter"></i></div>
+              <h3>抽样恢复</h3>
+              <p>展示奈奎斯特条件、抽样点、零阶保持和 sinc 近似恢复的核心直觉。</p>
+            </article>
+            <article class="feature-card reveal" role="button" tabindex="0" data-target="#guide" data-lesson="2" aria-label="查看 LTI 系统导学">
+              <div class="icon"><i class="fa-solid fa-circle-nodes"></i></div>
+              <h3>LTI 系统</h3>
+              <p>用输入、冲激响应和卷积输出理解线性时不变系统的分析方法。</p>
+            </article>
+            <article class="feature-card reveal" role="button" tabindex="0" data-target="#guide" data-lesson="4" aria-label="查看频域观察导学">
+              <div class="icon"><i class="fa-solid fa-bolt"></i></div>
+              <h3>频域观察</h3>
+              <p>通过频谱速览理解傅里叶分析、带宽、主瓣与频率选择性的关系。</p>
+            </article>
+            <article class="feature-card reveal" role="button" tabindex="0" data-target="#stats" aria-label="查看响应式体验和数据统计">
+              <div class="icon"><i class="fa-solid fa-gauge-high"></i></div>
+              <h3>响应式体验</h3>
+              <p>适配手机、平板与桌面端，导航、卡片、图表和按钮在不同屏幕下自动重排。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="stats">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-gauge-high"></i> Learning Metrics</p>
+              <h2>用数据感知学习覆盖度</h2>
+            </div>
+            <p>滚动到本区域时，数字会自动增长，模拟课程平台的数据看板效果。</p>
+          </div>
+          <div class="stats-grid">
+            <article class="stat-card reveal"><b data-count="8">0</b><span>基础信号类型</span></article>
+            <article class="stat-card reveal"><b data-count="6">0</b><span>导学微课片段</span></article>
+            <article class="stat-card reveal"><b data-count="4">0</b><span>核心交互实验</span></article>
+            <article class="stat-card reveal"><b data-count="100">0</b><span>响应式适配百分比</span></article>
+          </div>
+        </div>
+      </section>
+
+      <section id="guide">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-code-branch"></i> Guided Learning</p>
+              <h2>视频导学与学习路线</h2>
+            </div>
+            <p>点击下方课程按钮，动画和标题会同步切换，形成无需外部视频资源的本地导学体验。</p>
+          </div>
+          <div class="guide-layout">
+            <aside class="course-card reveal">
+              <h3>推荐学习路线</h3>
+              <p>按“对象、操作、系统、卷积、频域、抽样”的顺序建立知识主线。</p>
+              <ul class="guide-list">
+                <li role="button" tabindex="0" data-lesson-card="0"><i>1</i><div><b>认识信号</b><span>把信号看成承载信息的时间函数。</span></div></li>
+                <li role="button" tabindex="0" data-lesson-card="1"><i>2</i><div><b>观察变换</b><span>理解时移、尺度、反褶对波形的影响。</span></div></li>
+                <li role="button" tabindex="0" data-lesson-card="2"><i>3</i><div><b>进入系统</b><span>用输入输出关系描述系统行为。</span></div></li>
+                <li role="button" tabindex="0" data-lesson-card="3"><i>4</i><div><b>理解卷积</b><span>把输出看成输入与系统记忆的叠加。</span></div></li>
+                <li role="button" tabindex="0" data-lesson-card="4"><i>5</i><div><b>切到频域</b><span>用频率成分分析复杂波形。</span></div></li>
+                <li role="button" tabindex="0" data-lesson-card="5"><i>6</i><div><b>完成抽样</b><span>理解混叠和恢复条件。</span></div></li>
+              </ul>
+            </aside>
+            <div class="video-panel reveal">
+              <div class="video-stage">
+                <canvas id="guideCanvas" width="980" height="560" aria-label="导学动画播放器"></canvas>
+                <div class="video-copy">
+                  <span id="lessonTag">第 1 讲</span>
+                  <strong id="lessonTitle">什么是信号</strong>
+                  <p id="lessonCaption">信号是承载信息的函数，最常见的是随时间变化的电压、电流、声音或图像序列。</p>
+                </div>
+              </div>
+              <div class="lesson-tabs">
+                <button class="active" type="button" data-lesson="0"><b>01</b><span>认识信号</span></button>
+                <button type="button" data-lesson="1"><b>02</b><span>观察变换</span></button>
+                <button type="button" data-lesson="2"><b>03</b><span>进入系统</span></button>
+                <button type="button" data-lesson="3"><b>04</b><span>理解卷积</span></button>
+                <button type="button" data-lesson="4"><b>05</b><span>切到频域</span></button>
+                <button type="button" data-lesson="5"><b>06</b><span>完成抽样</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="lab">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-wave-square"></i> Signal Lab</p>
+              <h2>交互式函数图像实验台</h2>
+            </div>
+            <p>选择信号并拖动参数，观察幅度、频率、时移和尺度变化对时域波形的影响。</p>
+          </div>
+          <div class="tools-layout">
+            <aside class="tool-card reveal">
+              <h3>参数控制</h3>
+              <p>所有操作都使用原生 JavaScript 实时渲染，不需要任何外部依赖。</p>
+              <label class="control">
+                信号类型
+                <select id="signalType" class="native-select-hidden" aria-hidden="true" tabindex="-1">
+                  <option value="sine">正弦信号 sin(ωt)</option>
+                  <option value="cosine">余弦信号 cos(ωt)</option>
+                  <option value="square">矩形脉冲 rect(t)</option>
+                  <option value="tri">三角脉冲 tri(t)</option>
+                  <option value="step">单位阶跃 u(t)</option>
+                  <option value="exp">指数衰减 e^(-at)u(t)</option>
+                  <option value="sinc">抽样函数 sinc(t)</option>
+                  <option value="impulse">冲激序列 δ(t-nT)</option>
+                </select>
+                <div class="custom-select" id="signalDropdown">
+                  <button class="select-trigger" id="signalSelectButton" type="button" aria-haspopup="listbox" aria-expanded="false">
+                    <span id="selectedSignalText">正弦信号 sin(ωt)</span>
+                    <span class="select-arrow">⌄</span>
+                  </button>
+                  <div class="custom-options" role="listbox" aria-label="信号类型选项">
+                    <button class="active" type="button" role="option" data-value="sine" aria-selected="true">正弦信号 sin(ωt)</button>
+                    <button type="button" role="option" data-value="cosine">余弦信号 cos(ωt)</button>
+                    <button type="button" role="option" data-value="square">矩形脉冲 rect(t)</button>
+                    <button type="button" role="option" data-value="tri">三角脉冲 tri(t)</button>
+                    <button type="button" role="option" data-value="step">单位阶跃 u(t)</button>
+                    <button type="button" role="option" data-value="exp">指数衰减 e^(-at)u(t)</button>
+                    <button type="button" role="option" data-value="sinc">抽样函数 sinc(t)</button>
+                    <button type="button" role="option" data-value="impulse">冲激序列 δ(t-nT)</button>
+                  </div>
+                </div>
+              </label>
+              <label class="control">幅度 A <input id="amp" type="range" min="0.2" max="3" step="0.1" value="1.2" /><output id="ampValue">1.2</output></label>
+              <label class="control">频率/宽度 <input id="freq" type="range" min="0.2" max="4" step="0.1" value="1" /><output id="freqValue">1.0</output></label>
+              <label class="control">时移 t0 <input id="shift" type="range" min="-4" max="4" step="0.1" value="0" /><output id="shiftValue">0.0</output></label>
+              <label class="control">时间尺度 a <input id="scale" type="range" min="0.4" max="2.5" step="0.1" value="1" /><output id="scaleValue">1.0</output></label>
+              <div class="lab-actions">
+                <button class="btn btn-primary" id="resetSignalBtn" type="button">复位参数</button>
+              </div>
+            </aside>
+            <div class="canvas-card reveal">
+              <div class="canvas-head">
+                <h3>实时波形</h3>
+                <span id="signalHint">观察：时移改变位置，尺度改变压缩/展宽。</span>
+              </div>
+              <canvas id="signalCanvas" width="980" height="520" aria-label="信号函数图像"></canvas>
+              <div class="formula-strip">
+                <b id="formula">x(t)=A sin[ωa(t-t0)]</b>
+                <span>紫线为当前信号，坐标轴为归一化时间。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="sampling">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-filter"></i> Sampling Lab</p>
+              <h2>抽样与恢复实验</h2>
+            </div>
+            <p>拖动抽样频率，观察样点、零阶保持、sinc 近似恢复和混叠风险。</p>
+          </div>
+          <div class="tools-layout">
+            <aside class="tool-card reveal">
+              <h3>抽样控制</h3>
+              <p>当抽样频率低于最高频率两倍时，离散样点无法唯一表示原连续信号。</p>
+              <label class="control">抽样频率 fs <input id="sampleRate" type="range" min="2" max="24" step="1" value="10" /><output id="sampleRateValue">10 Hz</output></label>
+              <div class="lab-actions">
+                <button class="btn btn-primary" id="sampleGoodBtn" type="button">满足奈奎斯特</button>
+                <button class="btn btn-secondary" id="sampleAliasBtn" type="button">制造混叠</button>
+                <button class="btn btn-secondary" id="sampleResetBtn" type="button">复位抽样</button>
+              </div>
+              <div class="sampling-status" id="samplingStatus">当前抽样率满足恢复条件。</div>
+            </aside>
+            <div class="canvas-card reveal">
+              <div class="canvas-head">
+                <h3>抽样恢复波形</h3>
+                <span>青线为原信号，橙色为样点，紫线为恢复近似。</span>
+              </div>
+              <canvas id="samplingCanvas" width="980" height="520" aria-label="抽样与恢复图像"></canvas>
+              <div class="formula-strip">
+                <b>x[n]=x(nT), fs=1/T</b>
+                <span>满足 fs &gt; 2fmax 时，理论上可由样值恢复原信号。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer" id="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <a class="brand" href="#home">
+              <span class="brand-mark"><i class="fa-solid fa-wave-square"></i></span>
+              <span class="brand-text"><strong>信号与系统</strong><small>Interactive Studio</small></span>
+            </a>
+            <p>一个面向课程复习和展示的现代单页官网。内容为原创导学与交互演示，可配合郑君里《信号与系统》教材学习使用。</p>
+          </div>
+          <div>
+            <h4>页面</h4>
+            <a href="#features">功能模块</a>
+            <a href="#stats">数据统计</a>
+            <a href="#guide">视频导学</a>
+          </div>
+          <div>
+            <h4>实验</h4>
+            <a href="#lab">函数图像</a>
+            <a href="#guide">卷积直觉</a>
+            <a href="#guide">抽样恢复</a>
+          </div>
+          <div>
+            <h4>链接</h4>
+            <a href="#home">返回顶部</a>
+            <a href="#footer">版权信息</a>
+            <a href="javascript:void(0)">本地部署版</a>
+          </div>
+        </div>
+        <div class="copyright">© 2026 Signal & Systems Interactive Studio. Built with HTML5, Tailwind-style utilities, Font Awesome-style icons and vanilla JavaScript.</div>
+      </div>
+    </footer>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+
+      const state = {
+        lesson: 0,
+        signalType: "sine",
+        amp: 1.2,
+        freq: 1,
+        shift: 0,
+        scale: 1,
+        sampleRate: 10
+      };
+
+      const lessons = [
+        ["第 1 讲", "什么是信号", "信号是承载信息的函数，最常见的是随时间变化的电压、电流、声音或图像序列。", "signal"],
+        ["第 2 讲", "基本变换", "时移、尺度变换和反褶可以把一个简单波形扩展成丰富的输入形式。", "transform"],
+        ["第 3 讲", "LTI 系统", "线性时不变系统可由冲激响应描述，是信号与系统课程的核心对象。", "system"],
+        ["第 4 讲", "卷积直觉", "卷积可以理解为一个波形滑过另一个波形，重叠面积决定当前输出。", "convolution"],
+        ["第 5 讲", "频域思想", "傅里叶分析把复杂信号拆成不同频率，滤波和带宽因此更容易理解。", "frequency"],
+        ["第 6 讲", "抽样恢复", "抽样率不足会产生混叠；满足奈奎斯特条件时才有恢复的理论基础。", "sampling"]
+      ];
+
+      const signalInfo = {
+        sine: ["x(t)=A sin[ωa(t-t0)]", "正弦信号适合观察频率、相位和尺度变化。"],
+        cosine: ["x(t)=A cos[ωa(t-t0)]", "余弦与正弦只差相位，频谱结构相同。"],
+        square: ["x(t)=A rect[a(t-t0)/T]", "矩形脉冲越窄，频域主瓣越宽。"],
+        tri: ["x(t)=A tri[a(t-t0)/T]", "三角脉冲可看成两个矩形脉冲卷积。"],
+        step: ["x(t)=A u[a(t-t0)]", "阶跃信号常用于分析系统阶跃响应。"],
+        exp: ["x(t)=A e^(-αa(t-t0))u(t-t0)", "指数衰减常见于一阶系统自然响应。"],
+        sinc: ["x(t)=A sinc[a(t-t0)]", "sinc 函数是理想低通恢复的关键插值核。"],
+        impulse: ["x(t)=AΣδ[a(t-t0)-n]", "冲激序列适合理解抽样和冲激响应。"]
+      };
+
+      document.addEventListener("DOMContentLoaded", () => {
+        setTimeout(() => {
+          $("loader").classList.add("hidden");
+          document.body.classList.remove("loading");
+          if (window.location.hash) {
+            const target = document.querySelector(window.location.hash);
+            if (target) target.scrollIntoView({ behavior: "auto", block: "start" });
+          }
+        }, 420);
+      });
+
+      window.addEventListener("scroll", () => {
+        $("navbar").classList.toggle("scrolled", window.scrollY > 20);
+      });
+
+      $("menuBtn").addEventListener("click", () => {
+        $("navLinks").classList.toggle("open");
+        const icon = $("menuBtn").querySelector("i");
+        icon.className = $("navLinks").classList.contains("open") ? "fa-solid fa-xmark" : "fa-solid fa-bars";
+      });
+
+      document.querySelectorAll(".nav-links a").forEach((link) => {
+        link.addEventListener("click", () => $("navLinks").classList.remove("open"));
+      });
+
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.16 });
+
+      document.querySelectorAll(".reveal").forEach((item) => revealObserver.observe(item));
+
+      const statObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            animateNumber(entry.target);
+            statObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.6 });
+
+      document.querySelectorAll("[data-count]").forEach((item) => statObserver.observe(item));
+
+      function animateNumber(el) {
+        const target = Number(el.dataset.count);
+        const duration = 1200;
+        const start = performance.now();
+        function tick(now) {
+          const progress = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = Math.round(target * eased) + (target === 100 ? "%" : "");
+          if (progress < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      }
+
+      document.querySelectorAll(".lesson-tabs button").forEach((button) => {
+        button.addEventListener("click", () => {
+          activateLesson(Number(button.dataset.lesson));
+        });
+      });
+
+      document.querySelectorAll("[data-lesson-card]").forEach((card) => {
+        const openLesson = () => {
+          activateLesson(Number(card.dataset.lessonCard));
+          document.querySelector("#guideCanvas").scrollIntoView({ behavior: "smooth", block: "center" });
+        };
+        card.addEventListener("click", openLesson);
+        card.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openLesson();
+          }
+        });
+      });
+
+      document.querySelectorAll(".feature-card").forEach((card) => {
+        const openCard = () => {
+          const target = document.querySelector(card.dataset.target);
+          if (card.dataset.lesson) activateLesson(Number(card.dataset.lesson));
+          if (card.dataset.signal) setSignalType(card.dataset.signal);
+          if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+        };
+        card.addEventListener("click", openCard);
+        card.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openCard();
+          }
+        });
+      });
+
+      function activateLesson(index) {
+        state.lesson = index;
+        document.querySelectorAll(".lesson-tabs button").forEach((item) => {
+          item.classList.toggle("active", Number(item.dataset.lesson) === index);
+        });
+        document.querySelectorAll("[data-lesson-card]").forEach((item) => {
+          item.classList.toggle("active", Number(item.dataset.lessonCard) === index);
+        });
+        updateLessonText();
+      }
+
+      function updateLessonText() {
+        const lesson = lessons[state.lesson];
+        $("lessonTag").textContent = lesson[0];
+        $("lessonTitle").textContent = lesson[1];
+        $("lessonCaption").textContent = lesson[2];
+      }
+
+      function sinc(x) {
+        if (Math.abs(x) < 1e-8) return 1;
+        return Math.sin(Math.PI * x) / (Math.PI * x);
+      }
+
+      function signalValue(t) {
+        const u = state.scale * (t - state.shift);
+        const A = state.amp;
+        const w = state.freq;
+        if (state.signalType === "sine") return A * Math.sin((2 * Math.PI * w * u) / 4);
+        if (state.signalType === "cosine") return A * Math.cos((2 * Math.PI * w * u) / 4);
+        if (state.signalType === "square") return Math.abs(u) <= w ? A : 0;
+        if (state.signalType === "tri") return Math.max(0, A * (1 - Math.abs(u) / Math.max(0.2, w)));
+        if (state.signalType === "step") return u >= 0 ? A : 0;
+        if (state.signalType === "exp") return u >= 0 ? A * Math.exp((-w * u) / 2) : 0;
+        if (state.signalType === "sinc") return A * sinc(w * u);
+        if (state.signalType === "impulse") return Math.abs(u - Math.round(u)) < 0.035 ? A : 0;
+        return 0;
+      }
+
+      ["amp", "freq", "shift", "scale"].forEach((id) => {
+        $(id).addEventListener("input", (e) => {
+          state[id] = Number(e.target.value);
+          $(id + "Value").textContent = state[id].toFixed(1);
+          updateSignalText();
+          drawSignal();
+        });
+      });
+
+      $("resetSignalBtn").addEventListener("click", () => {
+        state.amp = 1.2;
+        state.freq = 1;
+        state.shift = 0;
+        state.scale = 1;
+        ["amp", "freq", "shift", "scale"].forEach((id) => {
+          $(id).value = state[id];
+          $(id + "Value").textContent = state[id].toFixed(1);
+        });
+        setSignalType("sine");
+      });
+
+      const signalDropdown = $("signalDropdown");
+      const signalButton = $("signalSelectButton");
+      const selectedSignalText = $("selectedSignalText");
+
+      signalButton.addEventListener("click", () => {
+        const isOpen = signalDropdown.classList.toggle("open");
+        signalButton.setAttribute("aria-expanded", String(isOpen));
+      });
+
+      document.querySelectorAll(".custom-options button").forEach((button) => {
+        button.addEventListener("click", () => {
+          setSignalType(button.dataset.value);
+          closeSignalDropdown();
+        });
+      });
+
+      document.addEventListener("click", (event) => {
+        if (!signalDropdown.contains(event.target)) closeSignalDropdown();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeSignalDropdown();
+      });
+
+      function closeSignalDropdown() {
+        signalDropdown.classList.remove("open");
+        signalButton.setAttribute("aria-expanded", "false");
+      }
+
+      function setSignalType(value) {
+        state.signalType = value;
+        $("signalType").value = value;
+        document.querySelectorAll(".custom-options button").forEach((button) => {
+          const active = button.dataset.value === value;
+          button.classList.toggle("active", active);
+          button.setAttribute("aria-selected", String(active));
+          if (active) selectedSignalText.textContent = button.textContent;
+        });
+        updateSignalText();
+        drawSignal();
+      }
+
+      $("sampleRate").addEventListener("input", (event) => {
+        state.sampleRate = Number(event.target.value);
+        $("sampleRateValue").textContent = `${state.sampleRate} Hz`;
+        drawSampling();
+      });
+
+      $("sampleGoodBtn").addEventListener("click", () => {
+        state.sampleRate = 12;
+        $("sampleRate").value = 12;
+        $("sampleRateValue").textContent = "12 Hz";
+        drawSampling();
+      });
+
+      $("sampleAliasBtn").addEventListener("click", () => {
+        state.sampleRate = 4;
+        $("sampleRate").value = 4;
+        $("sampleRateValue").textContent = "4 Hz";
+        drawSampling();
+      });
+
+      $("sampleResetBtn").addEventListener("click", () => {
+        state.sampleRate = 10;
+        $("sampleRate").value = 10;
+        $("sampleRateValue").textContent = "10 Hz";
+        drawSampling();
+      });
+
+      function updateSignalText() {
+        $("formula").textContent = signalInfo[state.signalType][0];
+        $("signalHint").textContent = signalInfo[state.signalType][1];
+      }
+
+      function drawAxes(ctx, canvas, xMin, xMax, yMin, yMax) {
+        const W = canvas.width;
+        const H = canvas.height;
+        const pad = { l: 58, r: 28, t: 30, b: 48 };
+        const sx = (x) => pad.l + ((x - xMin) / (xMax - xMin)) * (W - pad.l - pad.r);
+        const sy = (y) => pad.t + (1 - (y - yMin) / (yMax - yMin)) * (H - pad.t - pad.b);
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = "rgba(255,255,255,0.72)";
+        ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = "rgba(40,58,90,0.10)";
+        ctx.lineWidth = 1;
+        for (let x = Math.ceil(xMin); x <= Math.floor(xMax); x++) {
+          ctx.beginPath();
+          ctx.moveTo(sx(x), pad.t);
+          ctx.lineTo(sx(x), H - pad.b);
+          ctx.stroke();
+        }
+        for (let y = Math.ceil(yMin); y <= Math.floor(yMax); y++) {
+          ctx.beginPath();
+          ctx.moveTo(pad.l, sy(y));
+          ctx.lineTo(W - pad.r, sy(y));
+          ctx.stroke();
+        }
+        ctx.strokeStyle = "rgba(40,58,90,0.26)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(sx(xMin), sy(0));
+        ctx.lineTo(sx(xMax), sy(0));
+        ctx.moveTo(sx(0), sy(yMin));
+        ctx.lineTo(sx(0), sy(yMax));
+        ctx.stroke();
+        return { sx, sy };
+      }
+
+      function drawSignal() {
+        const canvas = $("signalCanvas");
+        const ctx = canvas.getContext("2d");
+        const coord = drawAxes(ctx, canvas, -8, 8, -3.2, 3.2);
+        const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        grad.addColorStop(0, "#22d3ee");
+        grad.addColorStop(0.5, "#8b5cf6");
+        grad.addColorStop(1, "#f59e0b");
+        ctx.strokeStyle = grad;
+        ctx.fillStyle = "#22d3ee";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        if (state.signalType === "impulse") {
+          for (let x = -8; x <= 8; x += 1) {
+            const y = signalValue(x);
+            ctx.moveTo(coord.sx(x), coord.sy(0));
+            ctx.lineTo(coord.sx(x), coord.sy(y));
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(coord.sx(x), coord.sy(y), 5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+          }
+          return;
+        }
+        const N = 900;
+        for (let i = 0; i <= N; i++) {
+          const x = -8 + (i / N) * 16;
+          const y = signalValue(x);
+          if (i === 0) ctx.moveTo(coord.sx(x), coord.sy(y));
+          else ctx.lineTo(coord.sx(x), coord.sy(y));
+        }
+        ctx.stroke();
+      }
+
+      function sampleSource(t) {
+        return Math.sin(2 * Math.PI * 1.2 * t) + 0.45 * Math.sin(2 * Math.PI * 2.6 * t + 0.4);
+      }
+
+      function drawSamples(ctx, samples, coord) {
+        ctx.save();
+        ctx.strokeStyle = "#f59e0b";
+        ctx.fillStyle = "#f59e0b";
+        ctx.lineWidth = 2.5;
+        samples.forEach(([t, y]) => {
+          ctx.beginPath();
+          ctx.moveTo(coord.sx(t), coord.sy(0));
+          ctx.lineTo(coord.sx(t), coord.sy(y));
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(coord.sx(t), coord.sy(y), 5, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        ctx.restore();
+      }
+
+      function sincReconstruct(t, samples, Ts) {
+        return samples.reduce((sum, sample) => sum + sample[1] * sinc((t - sample[0]) / Ts), 0);
+      }
+
+      function drawSampling() {
+        const canvas = $("samplingCanvas");
+        const ctx = canvas.getContext("2d");
+        const coord = drawAxes(ctx, canvas, -2.5, 2.5, -2.2, 2.2);
+        const fs = state.sampleRate;
+        const Ts = 1 / fs;
+        const samples = [];
+        for (let t = -2.5; t <= 2.5001; t += Ts) samples.push([t, sampleSource(t)]);
+
+        const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        grad.addColorStop(0, "#0891b2");
+        grad.addColorStop(1, "#22d3ee");
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 3.5;
+        ctx.beginPath();
+        for (let i = 0; i <= 850; i++) {
+          const x = -2.5 + (i / 850) * 5;
+          const y = sampleSource(x);
+          if (i === 0) ctx.moveTo(coord.sx(x), coord.sy(y));
+          else ctx.lineTo(coord.sx(x), coord.sy(y));
+        }
+        ctx.stroke();
+
+        ctx.strokeStyle = "#8b5cf6";
+        ctx.lineWidth = 3;
+        ctx.setLineDash([9, 7]);
+        ctx.beginPath();
+        for (let i = 0; i <= 850; i++) {
+          const x = -2.5 + (i / 850) * 5;
+          const y = sincReconstruct(x, samples, Ts);
+          if (i === 0) ctx.moveTo(coord.sx(x), coord.sy(y));
+          else ctx.lineTo(coord.sx(x), coord.sy(y));
+        }
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        drawSamples(ctx, samples, coord);
+
+        const nyquist = 5.2;
+        const status = $("samplingStatus");
+        if (fs > nyquist) {
+          status.className = "sampling-status";
+          status.textContent = `fs=${fs} Hz，高于 2fmax≈${nyquist.toFixed(1)} Hz，理论上满足恢复条件。`;
+        } else {
+          status.className = "sampling-status warn";
+          status.textContent = `fs=${fs} Hz，低于 2fmax≈${nyquist.toFixed(1)} Hz，存在混叠风险。`;
+        }
+      }
+
+      function drawHero(time = 0) {
+        const canvas = $("heroCanvas");
+        const ctx = canvas.getContext("2d");
+        const W = canvas.width;
+        const H = canvas.height;
+        const t = time / 1000;
+        ctx.clearRect(0, 0, W, H);
+        const bg = ctx.createLinearGradient(0, 0, W, H);
+        bg.addColorStop(0, "rgba(255,255,255,0.62)");
+        bg.addColorStop(1, "rgba(218,244,248,0.46)");
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = "rgba(40,58,90,0.08)";
+        ctx.lineWidth = 1;
+        for (let x = 0; x < W; x += 54) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, H);
+          ctx.stroke();
+        }
+        for (let y = 0; y < H; y += 54) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(W, y);
+          ctx.stroke();
+        }
+        drawAnimatedWave(ctx, W, H, t, 1, "#22d3ee", 4);
+        drawAnimatedWave(ctx, W, H, t + 1.2, 0.55, "#8b5cf6", 3);
+        requestAnimationFrame(drawHero);
+      }
+
+      function drawAnimatedWave(ctx, W, H, t, amp, color, width) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        ctx.beginPath();
+        for (let i = 0; i <= W - 100; i++) {
+          const x = 50 + i;
+          const y = H / 2 + Math.sin(i / 42 - t * 2) * 64 * amp + Math.sin(i / 90 + t) * 28 * amp;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+
+      function drawGuide(time = 0) {
+        const canvas = $("guideCanvas");
+        const ctx = canvas.getContext("2d");
+        const W = canvas.width;
+        const H = canvas.height;
+        const t = time / 1000;
+        const mode = lessons[state.lesson][3];
+        ctx.clearRect(0, 0, W, H);
+        const bg = ctx.createLinearGradient(0, 0, W, H);
+        bg.addColorStop(0, "#11142b");
+        bg.addColorStop(0.55, "#2b1855");
+        bg.addColorStop(1, "#08111f");
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = "rgba(255,255,255,0.08)";
+        for (let x = 60; x < W; x += 60) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, H);
+          ctx.stroke();
+        }
+        for (let y = 60; y < H; y += 60) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(W, y);
+          ctx.stroke();
+        }
+        if (mode === "signal" || mode === "transform") {
+          ctx.strokeStyle = "#67e8f9";
+          ctx.lineWidth = 6;
+          ctx.beginPath();
+          for (let i = 0; i <= 680; i++) {
+            const x = 150 + i + (mode === "transform" ? Math.sin(t) * 42 : 0);
+            const y = 235 + Math.sin(i / 42 - t * 2) * 68 * (mode === "transform" ? 1 + 0.25 * Math.sin(t) : 1);
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        }
+        if (mode === "system") {
+          block(ctx, 120, 180, 190, 110, "x(t)", "#0891b2");
+          block(ctx, 395, 160, 220, 150, "H", "#7c3aed");
+          block(ctx, 720, 180, 190, 110, "y(t)", "#db2777");
+          arrow(ctx, 318, 235, 385, 235);
+          arrow(ctx, 626, 235, 712, 235);
+        }
+        if (mode === "convolution") {
+          ctx.strokeStyle = "#67e8f9";
+          ctx.lineWidth = 5;
+          ctx.beginPath();
+          for (let i = 0; i <= 640; i++) {
+            const x = 170 + i;
+            const y = 265 - Math.max(0, 95 - Math.abs(i - 280) * 1.2);
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+          const slide = 165 + ((t * 125) % 650);
+          ctx.fillStyle = "rgba(245,158,11,0.26)";
+          ctx.fillRect(slide, 165, 150, 100);
+          ctx.strokeStyle = "#fbbf24";
+          ctx.strokeRect(slide, 165, 150, 100);
+        }
+        if (mode === "frequency") {
+          for (let i = 0; i < 15; i++) {
+            const h = 42 + 150 * Math.exp(-Math.abs(i - 7) / 3) * (0.78 + 0.22 * Math.sin(t * 2 + i));
+            ctx.fillStyle = i === 7 ? "#fbbf24" : "#67e8f9";
+            ctx.fillRect(145 + i * 50, 320 - h, 26, h);
+          }
+        }
+        if (mode === "sampling") {
+          ctx.strokeStyle = "#67e8f9";
+          ctx.lineWidth = 4;
+          ctx.beginPath();
+          for (let i = 0; i <= 680; i++) {
+            const x = 150 + i;
+            const y = 250 + Math.sin(i / 42 - t) * 62;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+          ctx.fillStyle = "#fbbf24";
+          for (let i = 0; i < 16; i++) {
+            const x = 165 + i * 43;
+            const y = 250 + Math.sin((x - 150) / 42 - t) * 62;
+            ctx.beginPath();
+            ctx.arc(x, y, 7, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+        requestAnimationFrame(drawGuide);
+      }
+
+      function block(ctx, x, y, w, h, text, color) {
+        ctx.fillStyle = color;
+        ctx.strokeStyle = "rgba(255,255,255,0.35)";
+        ctx.lineWidth = 2;
+        roundRect(ctx, x, y, w, h, 20);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = "#fff";
+        ctx.font = "700 34px Microsoft YaHei, Arial";
+        ctx.textAlign = "center";
+        ctx.fillText(text, x + w / 2, y + h / 2 + 12);
+        ctx.textAlign = "left";
+      }
+
+      function arrow(ctx, x1, y1, x2, y2) {
+        ctx.strokeStyle = "rgba(255,255,255,0.82)";
+        ctx.fillStyle = "rgba(255,255,255,0.82)";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x2, y2);
+        ctx.lineTo(x2 - 14, y2 - 9);
+        ctx.lineTo(x2 - 14, y2 + 9);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      function roundRect(ctx, x, y, w, h, r) {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.arcTo(x + w, y, x + w, y + h, r);
+        ctx.arcTo(x + w, y + h, x, y + h, r);
+        ctx.arcTo(x, y + h, x, y, r);
+        ctx.arcTo(x, y, x + w, y, r);
+        ctx.closePath();
+      }
+
+      updateLessonText();
+      updateSignalText();
+      drawSignal();
+      drawSampling();
+      requestAnimationFrame(drawHero);
+      requestAnimationFrame(drawGuide);
+    </script>
+  </body>
+</html>
