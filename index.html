@@ -142,34 +142,22 @@
       }
 
       .school-seal {
-        width: 58px;
-        height: 58px;
-        display: grid;
-        place-items: center;
-        flex: 0 0 auto;
-        color: #fff;
-        background:
-          radial-gradient(circle at 50% 50%, rgba(255,255,255,0.16) 0 28%, transparent 29%),
-          conic-gradient(from 30deg, #1d4ed8, #0f766e, #6d5dfc, #1d4ed8);
-        border: 3px solid rgba(255,255,255,0.9);
-        border-radius: 999px;
-        box-shadow: 0 16px 36px rgba(30, 64, 175, 0.22);
-        text-align: center;
-        line-height: 1.05;
-      }
-
-      .school-seal span {
-        font-size: 10px;
-        font-weight: 900;
-        letter-spacing: 0;
-      }
-
-      .school-seal small {
+        width: 62px;
+        height: 62px;
         display: block;
-        margin-top: 1px;
-        font-size: 10px;
-        font-weight: 900;
-        letter-spacing: 0.08em;
+        flex: 0 0 auto;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.92);
+        border: 2px solid rgba(7, 89, 159, 0.18);
+        border-radius: 999px;
+        box-shadow: 0 16px 36px rgba(30, 64, 175, 0.18);
+      }
+
+      .school-seal img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
 
       .brand-mark {
@@ -400,6 +388,43 @@
         line-height: 1.6;
       }
 
+      .campus-identity {
+        display: grid;
+        grid-template-columns: 86px minmax(0, 1fr);
+        gap: 16px;
+        align-items: center;
+        margin-top: 28px;
+        padding: 14px;
+        max-width: 520px;
+        border: 1px solid rgba(74, 91, 123, 0.16);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.64);
+        box-shadow: 0 18px 46px rgba(33, 54, 88, 0.12);
+        backdrop-filter: blur(16px);
+      }
+
+      .campus-identity img {
+        width: 86px;
+        height: 86px;
+        border-radius: 999px;
+        object-fit: cover;
+        background: #fff;
+        box-shadow: 0 10px 28px rgba(7, 89, 159, 0.14);
+      }
+
+      .campus-identity b {
+        display: block;
+        color: #172033;
+        font-size: 18px;
+        margin-bottom: 5px;
+      }
+
+      .campus-identity span {
+        color: #5e687d;
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
       section {
         padding: 90px 0;
       }
@@ -431,6 +456,166 @@
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 18px;
+      }
+
+      .facility-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .facility-card {
+        min-height: 230px;
+        padding: 24px;
+        position: relative;
+        border: 1px solid var(--line);
+        border-radius: 26px;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(16px);
+        cursor: pointer;
+        transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+      }
+
+      .facility-card:hover,
+      .facility-card:focus-visible {
+        transform: translateY(-6px);
+        border-color: rgba(109, 93, 252, 0.32);
+        box-shadow: 0 28px 70px rgba(33, 54, 88, 0.18);
+        outline: none;
+      }
+
+      .facility-card::after {
+        content: "点击使用 →";
+        position: absolute;
+        right: 22px;
+        bottom: 18px;
+        color: #2563eb;
+        font-size: 13px;
+        font-weight: 900;
+        opacity: 0;
+        transform: translateY(4px);
+        transition: opacity 0.24s ease, transform 0.24s ease;
+      }
+
+      .facility-card:hover::after,
+      .facility-card:focus-visible::after {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .facility-card.active {
+        border-color: rgba(37, 99, 235, 0.48);
+        box-shadow: 0 26px 70px rgba(37, 99, 235, 0.16);
+      }
+
+      .facility-toast {
+        position: fixed;
+        right: 22px;
+        bottom: 22px;
+        z-index: 1200;
+        max-width: min(380px, calc(100% - 44px));
+        padding: 14px 16px;
+        color: #fff;
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.96), rgba(8, 145, 178, 0.94));
+        border-radius: 16px;
+        box-shadow: 0 22px 55px rgba(30, 64, 175, 0.26);
+        font-weight: 900;
+        line-height: 1.55;
+        opacity: 0;
+        transform: translateY(14px);
+        pointer-events: none;
+        transition: opacity 0.22s ease, transform 0.22s ease;
+      }
+
+      .facility-toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .facility-card .icon {
+        margin-bottom: 18px;
+      }
+
+      .facility-card h3 {
+        margin: 0 0 10px;
+        color: #172033;
+        font-size: 22px;
+      }
+
+      .facility-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+
+      .facility-card.wide {
+        grid-column: span 2;
+      }
+
+      .mini-dashboard {
+        display: grid;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .progress-line {
+        display: grid;
+        grid-template-columns: 80px 1fr 44px;
+        gap: 10px;
+        align-items: center;
+        color: #34405a;
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .progress-line span:nth-child(2) {
+        height: 9px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(109, 93, 252, 0.12);
+      }
+
+      .progress-line span:nth-child(2)::before {
+        content: "";
+        display: block;
+        width: var(--value);
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #6d5dfc, #22d3ee);
+      }
+
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 16px;
+      }
+
+      .chip-row span {
+        padding: 7px 10px;
+        color: #31405d;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(74, 91, 123, 0.14);
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .formula-mini {
+        display: grid;
+        gap: 8px;
+        margin-top: 16px;
+      }
+
+      .formula-mini code {
+        padding: 10px 12px;
+        color: #5b21b6;
+        background: rgba(109, 93, 252, 0.1);
+        border: 1px solid rgba(109, 93, 252, 0.16);
+        border-radius: 14px;
+        font-family: "Consolas", "Courier New", monospace;
+        font-weight: 800;
       }
 
       .feature-card,
@@ -923,7 +1108,7 @@
       body {
         color: #172033;
         background:
-          linear-gradient(180deg, rgba(249, 252, 255, 0.76), rgba(246, 251, 248, 0.88) 45%, rgba(255, 255, 255, 0.94)),
+          linear-gradient(180deg, rgba(249, 252, 255, 0.62), rgba(246, 251, 248, 0.76) 45%, rgba(255, 255, 255, 0.9)),
           url("assets/jishou-campus-bg.png") center top / cover fixed no-repeat;
       }
 
@@ -935,7 +1120,7 @@
         background:
           radial-gradient(circle at 15% 8%, rgba(105, 95, 231, 0.16), transparent 34%),
           radial-gradient(circle at 90% 18%, rgba(29, 161, 183, 0.12), transparent 32%),
-          rgba(255, 255, 255, 0.34);
+          rgba(255, 255, 255, 0.28);
         pointer-events: none;
       }
 
@@ -1108,6 +1293,52 @@
         background: rgba(255, 255, 255, 0.98);
       }
 
+      .z-summary {
+        display: grid;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .z-summary div {
+        padding: 13px 14px;
+        color: #24314b;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(74, 91, 123, 0.16);
+        border-radius: 14px;
+        line-height: 1.55;
+      }
+
+      .z-summary b {
+        display: block;
+        margin-bottom: 2px;
+        color: #172033;
+      }
+
+      .z-preset-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .z-preset-grid button {
+        min-height: 44px;
+        padding: 0 12px;
+        color: #24314b;
+        background: rgba(255, 255, 255, 0.78);
+        border: 1px solid rgba(74, 91, 123, 0.18);
+        border-radius: 14px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .z-preset-grid button.active,
+      .z-preset-grid button:hover {
+        color: #fff;
+        background: linear-gradient(135deg, #2563eb, #0891b2);
+        border-color: transparent;
+      }
+
       .video-copy {
         padding: 14px 16px;
         border-radius: 20px;
@@ -1180,8 +1411,13 @@
         }
 
         .features-grid,
+        .facility-grid,
         .stats-grid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .facility-card.wide {
+          grid-column: span 2;
         }
 
         .section-head {
@@ -1206,9 +1442,24 @@
         }
 
         .features-grid,
+        .facility-grid,
         .stats-grid,
         .lesson-tabs {
           grid-template-columns: 1fr;
+        }
+
+        .facility-card.wide {
+          grid-column: span 1;
+        }
+
+        .campus-identity {
+          grid-template-columns: 68px minmax(0, 1fr);
+          padding: 12px;
+        }
+
+        .campus-identity img {
+          width: 68px;
+          height: 68px;
         }
 
         .hero-actions,
@@ -1239,9 +1490,8 @@
     <header class="navbar" id="navbar">
       <div class="container nav-inner">
         <a class="brand" href="#home" aria-label="信号与系统首页">
-          <span class="school-seal" aria-label="吉首大学校徽风格标识">
-            <span>吉首大学</span>
-            <small>JSU</small>
+          <span class="school-seal" aria-label="吉首大学校徽">
+            <img src="assets/jishou-university-seal.svg" alt="吉首大学校徽" />
           </span>
           <span class="brand-mark"><i class="fa-solid fa-wave-square"></i></span>
           <span class="brand-text">
@@ -1252,9 +1502,11 @@
         <nav class="nav-links" id="navLinks" aria-label="主导航">
           <a href="#home">首页</a>
           <a href="#features">功能</a>
+          <a href="#facilities">设施</a>
           <a href="#stats">数据</a>
           <a href="#guide">导学</a>
           <a href="#lab">实验台</a>
+          <a href="#ztransform">Z变换</a>
           <a href="#sampling">抽样</a>
           <a href="#footer">页脚</a>
         </nav>
@@ -1276,6 +1528,13 @@
             <div class="hero-actions">
               <a class="btn btn-primary" href="#guide"><i class="fa-solid fa-play"></i> 开始导学</a>
               <a class="btn btn-secondary" href="#lab">进入实验台 <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="campus-identity reveal">
+              <img src="assets/jishou-university-seal.svg" alt="吉首大学校徽" />
+              <div>
+                <b>吉首大学 · 信号与系统学习空间</b>
+                <span>以校园浅色背景承载课程内容，把导学、实验、公式与抽样恢复整合到同一个页面。</span>
+              </div>
             </div>
           </div>
           <div class="hero-visual reveal">
@@ -1329,10 +1588,75 @@
               <h3>频域观察</h3>
               <p>通过频谱速览理解傅里叶分析、带宽、主瓣与频率选择性的关系。</p>
             </article>
+            <article class="feature-card reveal" role="button" tabindex="0" data-target="#ztransform" aria-label="进入 Z 变换实验台">
+              <div class="icon"><i class="fa-solid fa-code-branch"></i></div>
+              <h3>Z 变换实验台</h3>
+              <p>新增离散系统工具，观察极点、零点、单位圆和差分方程稳定性的关系。</p>
+            </article>
             <article class="feature-card reveal" role="button" tabindex="0" data-target="#stats" aria-label="查看响应式体验和数据统计">
               <div class="icon"><i class="fa-solid fa-gauge-high"></i></div>
               <h3>响应式体验</h3>
               <p>适配手机、平板与桌面端，导航、卡片、图表和按钮在不同屏幕下自动重排。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="facilities">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-layer-group"></i> Smart Facilities</p>
+              <h2>更完整的学习设施与功能入口</h2>
+            </div>
+            <p>在原有导学、波形和抽样实验基础上，加入课程仪表盘、公式速查、练习检测和学习记录，让页面更像一个可使用的课程平台。</p>
+          </div>
+          <div class="facility-grid">
+            <article class="facility-card wide reveal" role="button" tabindex="0" data-action="dashboard" aria-label="打开课程学习仪表盘">
+              <div class="icon"><i class="fa-solid fa-gauge-high"></i></div>
+              <h3>课程学习仪表盘</h3>
+              <p>按“信号表示、系统响应、卷积、频域、抽样”组织进度，适合课堂展示和课后复习。</p>
+              <div class="mini-dashboard" aria-label="课程进度展示">
+                <div class="progress-line"><span>时域</span><span style="--value: 88%"></span><em>88%</em></div>
+                <div class="progress-line"><span>系统</span><span style="--value: 72%"></span><em>72%</em></div>
+                <div class="progress-line"><span>抽样</span><span style="--value: 80%"></span><em>80%</em></div>
+              </div>
+            </article>
+            <article class="facility-card reveal" role="button" tabindex="0" data-action="formulas" aria-label="打开公式速查与 Z 变换实验">
+              <div class="icon"><i class="fa-solid fa-wave-square"></i></div>
+              <h3>公式速查</h3>
+              <p>把常用表达式做成轻量速查卡，和实验台参数相互对应。</p>
+              <div class="formula-mini">
+                <code>x(t-t0)</code>
+                <code>y(t)=x(t)*h(t)</code>
+                <code>fs &gt; 2fmax</code>
+              </div>
+            </article>
+            <article class="facility-card reveal" role="button" tabindex="0" data-action="path" aria-label="打开知识路线导学">
+              <div class="icon"><i class="fa-solid fa-code-branch"></i></div>
+              <h3>知识路线</h3>
+              <p>从对象到变换，再到系统、卷积和频域，减少“只会套公式”的断点。</p>
+              <div class="chip-row"><span>信号</span><span>变换</span><span>LTI</span><span>卷积</span><span>频域</span></div>
+            </article>
+            <article class="facility-card reveal" role="button" tabindex="0" data-action="sampling-diagnose" aria-label="打开抽样诊断实验">
+              <div class="icon"><i class="fa-solid fa-filter"></i></div>
+              <h3>抽样诊断</h3>
+              <p>抽样实验保留“满足奈奎斯特、制造混叠、复位抽样”三个按钮，并实时提示风险。</p>
+            </article>
+            <article class="facility-card reveal" role="button" tabindex="0" data-action="video" aria-label="打开六段导学视频">
+              <div class="icon"><i class="fa-solid fa-play"></i></div>
+              <h3>六段导学视频</h3>
+              <p>使用本地 Canvas 动画模拟视频课程，点击课程按钮即可切换主题，不依赖外部视频网站。</p>
+            </article>
+            <article class="facility-card reveal" role="button" tabindex="0" data-action="record" aria-label="打开实验记录">
+              <div class="icon"><i class="fa-solid fa-chart-line"></i></div>
+              <h3>实验记录感</h3>
+              <p>卡片、数据和公式区域统一为浅色玻璃质感，更适合吉首大学校园背景下的展示。</p>
+            </article>
+            <article class="facility-card reveal" role="button" tabindex="0" data-action="mobile" aria-label="查看移动端适配">
+              <div class="icon"><i class="fa-solid fa-circle-nodes"></i></div>
+              <h3>移动端适配</h3>
+              <p>导航、卡片、实验面板和按钮会在手机端自动重排，方便把链接发给同学直接查看。</p>
             </article>
           </div>
         </div>
@@ -1465,6 +1789,55 @@
         </div>
       </section>
 
+      <section id="ztransform">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-code-branch"></i> Z-Transform Lab</p>
+              <h2>Z 变换与离散系统实验台</h2>
+            </div>
+            <p>选择常见离散序列或一阶差分系统，观察 Z 平面上的极点、零点和单位圆，快速判断因果系统稳定性。</p>
+          </div>
+          <div class="tools-layout">
+            <aside class="tool-card reveal">
+              <h3>离散系统参数</h3>
+              <p>Z 变换把序列 x[n] 映射到复平面 X(z)，极点位置决定系统响应是否收敛。</p>
+              <label class="control">
+                预设模型
+                <select id="zPreset">
+                  <option value="decay">指数序列 x[n]=a^n u[n]</option>
+                  <option value="delay">延时冲激 x[n]=δ[n-k]</option>
+                  <option value="fir">FIR 滑动平均 H(z)</option>
+                  <option value="iir">一阶 IIR H(z)=1/(1-az^-1)</option>
+                </select>
+              </label>
+              <label class="control">参数 a / k <input id="zParam" type="range" min="-0.95" max="0.95" step="0.05" value="0.60" /><output id="zParamValue">0.60</output></label>
+              <div class="z-preset-grid">
+                <button type="button" data-z-preset="decay" class="active">指数序列</button>
+                <button type="button" data-z-preset="delay">延时冲激</button>
+                <button type="button" data-z-preset="fir">FIR 平均</button>
+                <button type="button" data-z-preset="iir">一阶 IIR</button>
+              </div>
+              <div class="z-summary">
+                <div><b>当前表达式</b><span id="zExpression">X(z)=1/(1-a z^-1)</span></div>
+                <div><b>收敛域 / 稳定性</b><span id="zStability">|z| &gt; |a|，极点在单位圆内，因果系统稳定。</span></div>
+              </div>
+            </aside>
+            <div class="canvas-card reveal">
+              <div class="canvas-head">
+                <h3>Z 平面极零图</h3>
+                <span>蓝色圆为单位圆，红叉为极点，绿色圆为空心零点。</span>
+              </div>
+              <canvas id="zCanvas" width="980" height="520" aria-label="Z 变换极零图"></canvas>
+              <div class="formula-strip">
+                <b id="zFormula">H(z)=1/(1-a z^-1)</b>
+                <span>极点越靠近单位圆，响应衰减越慢；极点落到单位圆外时系统不稳定。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="sampling">
         <div class="container">
           <div class="section-head reveal">
@@ -1501,6 +1874,8 @@
         </div>
       </section>
     </main>
+
+    <div class="facility-toast" id="facilityToast" role="status" aria-live="polite"></div>
 
     <footer class="footer" id="footer">
       <div class="container">
@@ -1660,6 +2035,69 @@
           if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
             openCard();
+          }
+        });
+      });
+
+      let facilityToastTimer = null;
+
+      function showFacilityToast(message) {
+        const toast = $("facilityToast");
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.add("show");
+        clearTimeout(facilityToastTimer);
+        facilityToastTimer = setTimeout(() => toast.classList.remove("show"), 2400);
+      }
+
+      function openFacilityCard(card) {
+        document.querySelectorAll(".facility-card").forEach((item) => item.classList.remove("active"));
+        card.classList.add("active");
+        const action = card.dataset.action;
+        const go = (selector, block = "start") => {
+          const target = document.querySelector(selector);
+          if (target) target.scrollIntoView({ behavior: "smooth", block });
+        };
+
+        if (action === "dashboard") {
+          go("#stats");
+          showFacilityToast("已打开课程学习数据面板，进度数字会自动滚动显示。");
+        } else if (action === "formulas") {
+          const preset = $("zPreset");
+          if (preset) preset.value = "iir";
+          drawZTransform();
+          go("#ztransform");
+          showFacilityToast("已切换到 Z 变换实验台，可拖动参数观察极点稳定性。");
+        } else if (action === "path") {
+          activateLesson(1);
+          go("#guide");
+          showFacilityToast("已打开知识路线导学，并切到“基本变换”主题。");
+        } else if (action === "sampling-diagnose") {
+          state.sampleRate = 5;
+          if ($("sampleRate")) $("sampleRate").value = 5;
+          drawSampling();
+          go("#sampling");
+          showFacilityToast("已进入抽样诊断，并设置较低采样率用于观察混叠。");
+        } else if (action === "video") {
+          activateLesson(0);
+          go("#guide");
+          showFacilityToast("已打开六段导学视频区域，可继续切换 01-06 讲。");
+        } else if (action === "record") {
+          go("#lab");
+          setSignalType("sinc");
+          showFacilityToast("已进入实验台并切到 sinc 信号，便于记录实验现象。");
+        } else if (action === "mobile") {
+          go("#home");
+          showFacilityToast("移动端适配已启用：缩小浏览器宽度可查看卡片和菜单自动重排。");
+        }
+      }
+
+      document.querySelectorAll(".facility-card[data-action]").forEach((card) => {
+        card.addEventListener("click", () => openFacilityCard(card));
+        card.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openFacilityCard(card);
           }
         });
       });
@@ -2117,10 +2555,149 @@
         ctx.closePath();
       }
 
+      const zModels = {
+        decay: {
+          label: "指数序列",
+          formula: (a) => "X(z)=1/(1-" + a.toFixed(2) + "z^-1)",
+          expression: (a) => "x[n]=" + a.toFixed(2) + "^n u[n]",
+          poles: (a) => [[a, 0]],
+          zeros: () => [],
+          stability: (a) => "|z| > " + Math.abs(a).toFixed(2) + "。极点在单位圆内，右边序列收敛。"
+        },
+        delay: {
+          label: "延时冲激",
+          formula: (a) => "X(z)=z^-" + Math.max(1, Math.round(Math.abs(a) * 6 + 1)),
+          expression: (a) => "x[n]=δ[n-" + Math.max(1, Math.round(Math.abs(a) * 6 + 1)) + "]",
+          poles: () => [],
+          zeros: (a) => Array.from({ length: Math.max(1, Math.round(Math.abs(a) * 6 + 1)) }, () => [0, 0]),
+          stability: () => "有限长序列没有有限极点，天然 BIBO 稳定。"
+        },
+        fir: {
+          label: "FIR 滑动平均",
+          formula: () => "H(z)=(1+z^-1+z^-2)/3",
+          expression: () => "y[n]=(x[n]+x[n-1]+x[n-2])/3",
+          poles: () => [],
+          zeros: () => [[-0.5, 0.866], [-0.5, -0.866]],
+          stability: () => "FIR 系统有限冲激响应，稳定且适合作平滑滤波。"
+        },
+        iir: {
+          label: "一阶 IIR",
+          formula: (a) => "H(z)=1/(1-" + a.toFixed(2) + "z^-1)",
+          expression: (a) => "y[n]=" + a.toFixed(2) + "y[n-1]+x[n]",
+          poles: (a) => [[a, 0]],
+          zeros: () => [],
+          stability: (a) => Math.abs(a) < 1 ? "极点 |a|=" + Math.abs(a).toFixed(2) + " < 1，因果 IIR 稳定。" : "极点不在单位圆内，系统会发散。"
+        }
+      };
+
+      function drawZTransform() {
+        const canvas = $("zCanvas");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        const preset = $("zPreset")?.value || "decay";
+        const raw = Number($("zParam")?.value || 0.6);
+        const a = Math.round(raw * 100) / 100;
+        const model = zModels[preset];
+        const W = canvas.width;
+        const H = canvas.height;
+        const cx = W * 0.48;
+        const cy = H * 0.52;
+        const R = Math.min(W, H) * 0.32;
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = "#e8edf7";
+        ctx.lineWidth = 1;
+        for (let i = -2; i <= 2; i += 0.5) {
+          const x = cx + i * R;
+          const y = cy + i * R;
+          ctx.beginPath();
+          ctx.moveTo(x, 30);
+          ctx.lineTo(x, H - 35);
+          ctx.moveTo(45, y);
+          ctx.lineTo(W - 45, y);
+          ctx.stroke();
+        }
+        ctx.strokeStyle = "#24314b";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(45, cy);
+        ctx.lineTo(W - 45, cy);
+        ctx.moveTo(cx, 30);
+        ctx.lineTo(cx, H - 35);
+        ctx.stroke();
+        ctx.strokeStyle = "#2563eb";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.arc(cx, cy, R, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.fillStyle = "#24314b";
+        ctx.font = "700 20px Microsoft YaHei, Arial";
+        ctx.fillText("Re", W - 78, cy - 12);
+        ctx.fillText("Im", cx + 14, 52);
+        ctx.fillText("单位圆", cx + R + 16, cy - 12);
+        const map = ([re, im]) => [cx + re * R, cy - im * R];
+        model.zeros(a).forEach((point) => {
+          const [x, y] = map(point);
+          ctx.strokeStyle = "#059669";
+          ctx.lineWidth = 5;
+          ctx.beginPath();
+          ctx.arc(x, y, 12, 0, Math.PI * 2);
+          ctx.stroke();
+        });
+        model.poles(a).forEach((point) => {
+          const [x, y] = map(point);
+          ctx.strokeStyle = "#dc2626";
+          ctx.lineWidth = 5;
+          ctx.beginPath();
+          ctx.moveTo(x - 12, y - 12);
+          ctx.lineTo(x + 12, y + 12);
+          ctx.moveTo(x + 12, y - 12);
+          ctx.lineTo(x - 12, y + 12);
+          ctx.stroke();
+        });
+        ctx.fillStyle = "#172033";
+        ctx.font = "800 28px Microsoft YaHei, Arial";
+        ctx.fillText(model.label + " 极零图", 56, 52);
+        ctx.font = "18px Microsoft YaHei, Arial";
+        ctx.fillStyle = "#5e687d";
+        ctx.fillText("拖动参数可观察极点沿实轴移动，判断稳定性与响应速度。", 56, 84);
+        if ($("zFormula")) $("zFormula").textContent = model.formula(a);
+        if ($("zExpression")) $("zExpression").textContent = model.expression(a);
+        if ($("zStability")) $("zStability").textContent = model.stability(a);
+        if ($("zParamValue")) $("zParamValue").textContent = preset === "delay" ? String(Math.max(1, Math.round(Math.abs(a) * 6 + 1))) : a.toFixed(2);
+      }
+
+      function bindZTransform() {
+        const preset = $("zPreset");
+        const param = $("zParam");
+        if (!preset || !param) return;
+        const syncButtons = () => {
+          document.querySelectorAll("[data-z-preset]").forEach((button) => {
+            button.classList.toggle("active", button.dataset.zPreset === preset.value);
+          });
+        };
+        preset.addEventListener("change", () => {
+          syncButtons();
+          drawZTransform();
+        });
+        param.addEventListener("input", drawZTransform);
+        document.querySelectorAll("[data-z-preset]").forEach((button) => {
+          button.addEventListener("click", () => {
+            preset.value = button.dataset.zPreset;
+            syncButtons();
+            drawZTransform();
+          });
+        });
+        syncButtons();
+        drawZTransform();
+      }
+
       updateLessonText();
       updateSignalText();
       drawSignal();
       drawSampling();
+      bindZTransform();
       requestAnimationFrame(drawHero);
       requestAnimationFrame(drawGuide);
     </script>
