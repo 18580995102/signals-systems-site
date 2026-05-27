@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="吉首大学校徽">
+  <defs>
+    <linearGradient id="sealGold" x1="244" y1="252" x2="724" y2="436" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffd51f"/>
+      <stop offset="1" stop-color="#f5b400"/>
+    </linearGradient>
+    <linearGradient id="sealRed" x1="278" y1="468" x2="804" y2="710" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f0442f"/>
+      <stop offset="1" stop-color="#ee1f1a"/>
+    </linearGradient>
+    <path id="topArc" d="M188 512a324 324 0 0 1 648 0"/>
+    <path id="bottomArc" d="M836 512a324 324 0 0 1-648 0"/>
+  </defs>
+  <rect width="1024" height="1024" fill="#fff"/>
+  <circle cx="512" cy="512" r="462" fill="#fff" stroke="#07599f" stroke-width="34"/>
+  <circle cx="512" cy="512" r="318" fill="#fff" stroke="#07599f" stroke-width="16"/>
+  <text font-family="'Microsoft YaHei', SimHei, Arial, sans-serif" font-size="76" font-weight="900" fill="#07599f" letter-spacing="20">
+    <textPath href="#topArc" startOffset="50%" text-anchor="middle">吉首大学</textPath>
+  </text>
+  <text font-family="Georgia, 'Times New Roman', serif" font-size="78" font-weight="700" fill="#07599f" letter-spacing="8">
+    <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">JISHOU UNIVERSITY</textPath>
+  </text>
+  <text x="512" y="834" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="58" font-weight="700" letter-spacing="16" fill="#07599f">1958</text>
+  <path d="M248 511c40-151 168-242 336-233 91 5 151 42 166 102 18 72-55 131-182 128-116-3-202 28-263 93 21-64 58-117 111-157 38-29 86-53 145-72-118-8-220 39-313 139Z" fill="url(#sealGold)"/>
+  <path d="M292 449c69 16 103 79 94 172-5 51-21 97-49 137 68-44 124-98 169-163 43 61 121 98 233 111-102 78-215 103-338 73-104-25-157-91-155-183 1-65 17-114 46-147Z" fill="url(#sealRed)"/>
+  <path d="M406 706c112 26 220 1 326-75-43 91-119 145-228 160-88 12-164-16-225-82 37 7 80 6 127-3Z" fill="#ef2a20"/>
+  <path d="M374 548c34-96 101-156 206-181-67 49-111 107-132 174-13 41-20 82-22 123-29-31-47-70-52-116Z" fill="#fff" opacity="0.94"/>
+</svg>

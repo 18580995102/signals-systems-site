@@ -1,0 +1,4651 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="信号与系统现代交互学习官网，包含导学、波形演示、抽样恢复、卷积响应与课程知识图谱。" />
+    <title>信号与系统 | 现代交互学习平台</title>
+    <style>
+      :root {
+        --bg: #070914;
+        --bg2: #0c1024;
+        --panel: rgba(255, 255, 255, 0.08);
+        --panel-strong: rgba(255, 255, 255, 0.12);
+        --line: rgba(255, 255, 255, 0.14);
+        --text: #f7f7fb;
+        --muted: #a9b0c7;
+        --primary: #8b5cf6;
+        --primary2: #22d3ee;
+        --accent: #f59e0b;
+        --success: #34d399;
+        --danger: #fb7185;
+        --shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
+        --radius: 24px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 12% 10%, rgba(139, 92, 246, 0.28), transparent 30%),
+          radial-gradient(circle at 88% 12%, rgba(34, 211, 238, 0.2), transparent 28%),
+          radial-gradient(circle at 50% 80%, rgba(245, 158, 11, 0.11), transparent 32%),
+          linear-gradient(180deg, var(--bg), var(--bg2) 48%, #050611);
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+        overflow-x: hidden;
+      }
+
+      body.loading {
+        overflow: hidden;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button,
+      select,
+      input {
+        font: inherit;
+      }
+
+      .container {
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+      }
+
+      .loader {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: grid;
+        place-items: center;
+        background: #050611;
+        transition: opacity 0.55s ease, visibility 0.55s ease;
+      }
+
+      .loader.hidden {
+        opacity: 0;
+        visibility: hidden;
+        display: none;
+      }
+
+      .loader-card {
+        display: grid;
+        gap: 18px;
+        justify-items: center;
+      }
+
+      .loader-ring {
+        width: 72px;
+        height: 72px;
+        border: 4px solid rgba(255, 255, 255, 0.12);
+        border-top-color: var(--primary2);
+        border-right-color: var(--primary);
+        border-radius: 999px;
+        animation: spin 0.85s linear infinite;
+      }
+
+      .loader-text {
+        color: var(--muted);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        border-bottom: 1px solid transparent;
+        transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .navbar.scrolled {
+        background: rgba(5, 6, 17, 0.72);
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(18px);
+      }
+
+      .nav-inner {
+        min-height: 78px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 900;
+      }
+
+      .school-seal {
+        width: 62px;
+        height: 62px;
+        display: block;
+        flex: 0 0 auto;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.92);
+        border: 2px solid rgba(7, 89, 159, 0.18);
+        border-radius: 999px;
+        box-shadow: 0 16px 36px rgba(30, 64, 175, 0.18);
+      }
+
+      .school-seal img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .brand-mark {
+        width: 44px;
+        height: 44px;
+        display: grid;
+        place-items: center;
+        border-radius: 14px;
+        background: linear-gradient(135deg, var(--primary), var(--primary2));
+        box-shadow: 0 12px 30px rgba(139, 92, 246, 0.35);
+      }
+
+      .brand-text {
+        display: grid;
+        line-height: 1.1;
+      }
+
+      .brand-text small {
+        color: var(--muted);
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .nav-links a {
+        padding: 10px 13px;
+        color: rgba(255, 255, 255, 0.78);
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 800;
+        transition: color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+      }
+
+      .nav-links a:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-1px);
+      }
+
+      .menu-btn {
+        display: none;
+        width: 44px;
+        height: 44px;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+      }
+
+      .hero {
+        min-height: 100vh;
+        display: grid;
+        align-items: center;
+        padding: 130px 0 70px;
+        position: relative;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+        align-items: center;
+        gap: 52px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        margin: 0 0 18px;
+        padding: 8px 12px;
+        color: #d9ccff;
+        background: rgba(139, 92, 246, 0.14);
+        border: 1px solid rgba(139, 92, 246, 0.25);
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 900;
+        letter-spacing: 0.06em;
+      }
+
+      .hero h1 {
+        margin: 0;
+        max-width: 780px;
+        font-size: clamp(42px, 7vw, 86px);
+        line-height: 0.98;
+        letter-spacing: -0.04em;
+      }
+
+      .gradient-text {
+        background: linear-gradient(135deg, #fff, #c7d2fe 45%, #67e8f9);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .hero p {
+        max-width: 700px;
+        margin: 24px 0 0;
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.9;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 34px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-height: 52px;
+        padding: 0 20px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        font-weight: 900;
+        cursor: pointer;
+        transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+      }
+
+      .btn-primary {
+        color: #fff;
+        background: linear-gradient(135deg, var(--primary), #6d5dfc);
+        box-shadow: 0 18px 42px rgba(139, 92, 246, 0.34);
+      }
+
+      .btn-secondary {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.08);
+        border-color: var(--line);
+      }
+
+      .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 22px 60px rgba(0, 0, 0, 0.35);
+      }
+
+      .hero-visual {
+        position: relative;
+      }
+
+      .glass-panel {
+        position: relative;
+        overflow: hidden;
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: 32px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06));
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(20px);
+      }
+
+      .visual-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 18px;
+      }
+
+      .traffic {
+        display: flex;
+        gap: 8px;
+      }
+
+      .traffic span {
+        width: 11px;
+        height: 11px;
+        border-radius: 999px;
+      }
+
+      .traffic span:nth-child(1) {
+        background: #fb7185;
+      }
+
+      .traffic span:nth-child(2) {
+        background: #fbbf24;
+      }
+
+      .traffic span:nth-child(3) {
+        background: #34d399;
+      }
+
+      .visual-badge {
+        color: #b9f8ff;
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      #heroCanvas {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 22px;
+        background: rgba(3, 7, 18, 0.74);
+      }
+
+      .floating-card {
+        position: absolute;
+        right: -20px;
+        bottom: -24px;
+        width: 235px;
+        padding: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 24px;
+        background: rgba(8, 12, 30, 0.78);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(16px);
+      }
+
+      .floating-card b {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 26px;
+      }
+
+      .floating-card span {
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .campus-identity {
+        display: grid;
+        grid-template-columns: 86px minmax(0, 1fr);
+        gap: 16px;
+        align-items: center;
+        margin-top: 28px;
+        padding: 14px;
+        max-width: 520px;
+        border: 1px solid rgba(74, 91, 123, 0.16);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.64);
+        box-shadow: 0 18px 46px rgba(33, 54, 88, 0.12);
+        backdrop-filter: blur(16px);
+      }
+
+      .campus-identity img {
+        width: 86px;
+        height: 86px;
+        border-radius: 999px;
+        object-fit: cover;
+        background: #fff;
+        box-shadow: 0 10px 28px rgba(7, 89, 159, 0.14);
+      }
+
+      .campus-identity b {
+        display: block;
+        color: #172033;
+        font-size: 18px;
+        margin-bottom: 5px;
+      }
+
+      .campus-identity span {
+        color: #5e687d;
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
+      section {
+        padding: 90px 0;
+      }
+
+      .section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 34px;
+      }
+
+      .section-head h2 {
+        max-width: 720px;
+        margin: 0;
+        font-size: clamp(34px, 5vw, 58px);
+        line-height: 1.05;
+        letter-spacing: -0.035em;
+      }
+
+      .section-head p {
+        max-width: 460px;
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .facility-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .facility-card {
+        min-height: 230px;
+        padding: 24px;
+        position: relative;
+        border: 1px solid var(--line);
+        border-radius: 26px;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(16px);
+        cursor: pointer;
+        transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+      }
+
+      .facility-card:hover,
+      .facility-card:focus-visible {
+        transform: translateY(-6px);
+        border-color: rgba(109, 93, 252, 0.32);
+        box-shadow: 0 28px 70px rgba(33, 54, 88, 0.18);
+        outline: none;
+      }
+
+      .facility-card::after {
+        content: "点击使用 →";
+        position: absolute;
+        right: 22px;
+        bottom: 18px;
+        color: #2563eb;
+        font-size: 13px;
+        font-weight: 900;
+        opacity: 0;
+        transform: translateY(4px);
+        transition: opacity 0.24s ease, transform 0.24s ease;
+      }
+
+      .facility-card:hover::after,
+      .facility-card:focus-visible::after {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .facility-card.active {
+        border-color: rgba(37, 99, 235, 0.48);
+        box-shadow: 0 26px 70px rgba(37, 99, 235, 0.16);
+      }
+
+      .facility-toast {
+        position: fixed;
+        right: 22px;
+        bottom: 22px;
+        z-index: 1200;
+        max-width: min(380px, calc(100% - 44px));
+        padding: 14px 16px;
+        color: #fff;
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.96), rgba(8, 145, 178, 0.94));
+        border-radius: 16px;
+        box-shadow: 0 22px 55px rgba(30, 64, 175, 0.26);
+        font-weight: 900;
+        line-height: 1.55;
+        opacity: 0;
+        transform: translateY(14px);
+        pointer-events: none;
+        transition: opacity 0.22s ease, transform 0.22s ease;
+      }
+
+      .facility-toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .facility-card .icon {
+        margin-bottom: 18px;
+      }
+
+      .facility-card h3 {
+        margin: 0 0 10px;
+        color: #172033;
+        font-size: 22px;
+      }
+
+      .facility-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+
+      .facility-card.wide {
+        grid-column: span 2;
+      }
+
+      .mini-dashboard {
+        display: grid;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .progress-line {
+        display: grid;
+        grid-template-columns: 80px 1fr 44px;
+        gap: 10px;
+        align-items: center;
+        color: #34405a;
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .progress-line span:nth-child(2) {
+        height: 9px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(109, 93, 252, 0.12);
+      }
+
+      .progress-line span:nth-child(2)::before {
+        content: "";
+        display: block;
+        width: var(--value);
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #6d5dfc, #22d3ee);
+      }
+
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 16px;
+      }
+
+      .chip-row span {
+        padding: 7px 10px;
+        color: #31405d;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(74, 91, 123, 0.14);
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .formula-mini {
+        display: grid;
+        gap: 8px;
+        margin-top: 16px;
+      }
+
+      .formula-mini code {
+        padding: 10px 12px;
+        color: #5b21b6;
+        background: rgba(109, 93, 252, 0.1);
+        border: 1px solid rgba(109, 93, 252, 0.16);
+        border-radius: 14px;
+        font-family: "Consolas", "Courier New", monospace;
+        font-weight: 800;
+      }
+
+      .quick-entry {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 24px;
+        max-width: 760px;
+      }
+
+      .quick-entry a,
+      .tag-pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+        padding: 0 13px;
+        color: #26334d;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(74, 91, 123, 0.16);
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .platform-strip {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 28px;
+      }
+
+      .platform-strip article,
+      .syllabus-card,
+      .matrix-card,
+      .formula-card,
+      .code-card,
+      .resource-card {
+        background: rgba(255, 255, 255, 0.76);
+        border: 1px solid rgba(74, 91, 123, 0.17);
+        border-radius: 18px;
+        box-shadow: 0 16px 45px rgba(33, 54, 88, 0.1);
+        backdrop-filter: blur(14px);
+      }
+
+      .platform-strip article {
+        min-height: 128px;
+        padding: 18px;
+      }
+
+      .platform-strip b {
+        display: block;
+        margin-bottom: 8px;
+        color: #172033;
+        font-size: 22px;
+      }
+
+      .platform-strip span {
+        color: var(--muted);
+        line-height: 1.65;
+        font-weight: 800;
+      }
+
+      .syllabus-grid,
+      .matrix-grid,
+      .resource-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .syllabus-card,
+      .matrix-card,
+      .resource-card {
+        padding: 22px;
+      }
+
+      .resource-card[data-resource] {
+        cursor: pointer;
+        transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+      }
+
+      .resource-card[data-resource]:hover,
+      .resource-card[data-resource]:focus-visible {
+        transform: translateY(-5px);
+        border-color: rgba(37, 99, 235, 0.34);
+        box-shadow: 0 26px 62px rgba(37, 99, 235, 0.14);
+        outline: none;
+      }
+
+      .resource-card[data-resource]::after {
+        content: "查看资料 →";
+        display: inline-flex;
+        margin-top: 16px;
+        color: #2563eb;
+        font-weight: 900;
+      }
+
+      .syllabus-card h3,
+      .matrix-card h3,
+      .formula-card h3,
+      .code-card h3,
+      .resource-card h3 {
+        margin: 0 0 12px;
+        color: #172033;
+        font-size: 23px;
+      }
+
+      .syllabus-card ul,
+      .matrix-card ul,
+      .resource-card ul {
+        display: grid;
+        gap: 9px;
+        margin: 0;
+        padding-left: 18px;
+        color: #536078;
+        line-height: 1.65;
+        font-weight: 800;
+      }
+
+      .compare-table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.78);
+        box-shadow: 0 16px 45px rgba(33, 54, 88, 0.1);
+      }
+
+      .compare-table th,
+      .compare-table td {
+        padding: 15px 16px;
+        border: 1px solid rgba(74, 91, 123, 0.14);
+        text-align: left;
+        vertical-align: top;
+        line-height: 1.65;
+      }
+
+      .compare-table th {
+        color: #172033;
+        background: rgba(109, 93, 252, 0.11);
+        font-weight: 900;
+      }
+
+      .compare-table td {
+        color: #536078;
+        font-weight: 800;
+      }
+
+      .formula-toolbar {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .formula-toolbar input {
+        width: 100%;
+        min-height: 52px;
+        padding: 0 16px;
+        color: #172033;
+        background: rgba(255, 255, 255, 0.86);
+        border: 1px solid rgba(74, 91, 123, 0.18);
+        border-radius: 16px;
+        font-weight: 800;
+      }
+
+      .formula-grid,
+      .code-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .formula-card {
+        min-height: 190px;
+        padding: 20px;
+      }
+
+      .formula-card code,
+      .code-card pre {
+        display: block;
+        overflow-x: auto;
+        color: #4c1d95;
+        background: rgba(109, 93, 252, 0.09);
+        border: 1px solid rgba(109, 93, 252, 0.14);
+        border-radius: 14px;
+        font-family: "Consolas", "Courier New", monospace;
+        font-weight: 800;
+      }
+
+      .formula-card code {
+        margin: 12px 0;
+        padding: 13px;
+        font-size: 15px;
+        white-space: pre-wrap;
+      }
+
+      .textbook-formula {
+        display: grid;
+        gap: 10px;
+        margin: 14px 0;
+        padding: 16px 18px;
+        color: #27145c;
+        background: rgba(109, 93, 252, 0.08);
+        border: 1px solid rgba(109, 93, 252, 0.16);
+        border-radius: 16px;
+        font-family: "Times New Roman", "Cambria Math", "STIX Two Math", serif;
+        font-size: 22px;
+        line-height: 1.55;
+      }
+
+      .textbook-formula .formula-line {
+        display: block;
+        white-space: normal;
+      }
+
+      .textbook-formula sup,
+      .textbook-formula sub {
+        font-size: 68%;
+        line-height: 0;
+      }
+
+      .fraction {
+        display: inline-grid;
+        grid-template-rows: auto auto;
+        align-items: center;
+        justify-items: center;
+        vertical-align: middle;
+        margin: 0 3px;
+        line-height: 1.1;
+      }
+
+      .fraction span:first-child {
+        padding: 0 4px 2px;
+        border-bottom: 1.5px solid currentColor;
+      }
+
+      .fraction span:last-child {
+        padding-top: 2px;
+      }
+
+      .formula-card p,
+      .code-card p,
+      .resource-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+        font-weight: 800;
+      }
+
+      .code-card {
+        padding: 20px;
+      }
+
+      .code-card pre {
+        min-height: 212px;
+        margin: 14px 0 0;
+        padding: 16px;
+        white-space: pre;
+      }
+
+      .copy-code {
+        margin-top: 12px;
+        min-height: 42px;
+        padding: 0 14px;
+        color: #fff;
+        background: linear-gradient(135deg, #2563eb, #0891b2);
+        border: 0;
+        border-radius: 12px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .timeline-list {
+        display: grid;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .timeline-list div {
+        display: grid;
+        grid-template-columns: 96px 1fr;
+        gap: 14px;
+        padding: 14px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(74, 91, 123, 0.16);
+        border-radius: 16px;
+      }
+
+      .timeline-list b {
+        color: #6d5dfc;
+      }
+
+      .timeline-list span {
+        color: #536078;
+        line-height: 1.65;
+        font-weight: 800;
+      }
+
+      .resource-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 1500;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: rgba(8, 12, 24, 0.42);
+        backdrop-filter: blur(12px);
+      }
+
+      .resource-modal.show {
+        display: flex;
+      }
+
+      .resource-dialog {
+        width: min(980px, 100%);
+        max-height: min(820px, calc(100vh - 48px));
+        overflow: auto;
+        padding: 28px;
+        background: rgba(255, 255, 255, 0.96);
+        border: 1px solid rgba(74, 91, 123, 0.18);
+        border-radius: 24px;
+        box-shadow: 0 36px 90px rgba(20, 31, 54, 0.28);
+      }
+
+      .resource-dialog header {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        align-items: start;
+        margin-bottom: 18px;
+      }
+
+      .resource-dialog h3 {
+        margin: 0;
+        color: #172033;
+        font-size: clamp(28px, 4vw, 44px);
+        line-height: 1.1;
+      }
+
+      .modal-close {
+        width: 44px;
+        height: 44px;
+        flex: 0 0 auto;
+        color: #172033;
+        background: rgba(74, 91, 123, 0.08);
+        border: 1px solid rgba(74, 91, 123, 0.16);
+        border-radius: 999px;
+        font-size: 24px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .resource-body {
+        display: grid;
+        gap: 18px;
+      }
+
+      .resource-body h4 {
+        margin: 0 0 8px;
+        color: #172033;
+        font-size: 20px;
+      }
+
+      .resource-body p,
+      .resource-body li {
+        color: #536078;
+        line-height: 1.8;
+        font-weight: 800;
+      }
+
+      .resource-body ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      .resource-links {
+        display: grid;
+        gap: 10px;
+      }
+
+      .resource-links a {
+        padding: 12px 14px;
+        color: #1d4ed8;
+        background: rgba(37, 99, 235, 0.08);
+        border: 1px solid rgba(37, 99, 235, 0.14);
+        border-radius: 14px;
+        font-weight: 900;
+      }
+
+      .community-panel {
+        margin-top: 22px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .community-card {
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid rgba(74, 91, 123, 0.17);
+        border-radius: 18px;
+        box-shadow: 0 16px 45px rgba(33, 54, 88, 0.1);
+      }
+
+      .community-card h3 {
+        margin: 0 0 12px;
+        color: #172033;
+        font-size: 23px;
+      }
+
+      .community-card textarea,
+      .community-card input {
+        width: 100%;
+        min-height: 48px;
+        padding: 12px 14px;
+        color: #172033;
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(74, 91, 123, 0.18);
+        border-radius: 14px;
+        font-weight: 800;
+        resize: vertical;
+      }
+
+      .community-card textarea {
+        min-height: 130px;
+      }
+
+      .community-card button {
+        margin-top: 10px;
+        min-height: 42px;
+        padding: 0 14px;
+        color: #fff;
+        background: linear-gradient(135deg, #2563eb, #0891b2);
+        border: 0;
+        border-radius: 12px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .community-list,
+      .site-search-results {
+        display: grid;
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .community-list article,
+      .site-search-results article {
+        padding: 12px;
+        color: #536078;
+        background: rgba(109, 93, 252, 0.07);
+        border: 1px solid rgba(109, 93, 252, 0.12);
+        border-radius: 14px;
+        line-height: 1.65;
+        font-weight: 800;
+      }
+
+      .video-study-notes {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1px;
+        background: rgba(225, 232, 245, 0.88);
+        border-top: 1px solid rgba(74, 91, 123, 0.12);
+      }
+
+      .video-study-notes article {
+        min-height: 118px;
+        padding: 18px;
+        background: rgba(255, 255, 255, 0.78);
+      }
+
+      .video-study-notes b {
+        display: block;
+        margin-bottom: 8px;
+        color: #172033;
+      }
+
+      .video-study-notes span {
+        color: #536078;
+        line-height: 1.65;
+        font-weight: 800;
+      }
+
+      .feature-card,
+      .stat-card,
+      .course-card,
+      .tool-card {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--panel);
+        box-shadow: 0 16px 45px rgba(0, 0, 0, 0.18);
+        backdrop-filter: blur(16px);
+      }
+
+      .feature-card {
+        min-height: 250px;
+        padding: 26px;
+        position: relative;
+        cursor: pointer;
+        transition: transform 0.28s ease, background 0.28s ease, border-color 0.28s ease;
+      }
+
+      .feature-card:hover,
+      .feature-card:focus-visible {
+        transform: translateY(-8px);
+        background: var(--panel-strong);
+        border-color: rgba(139, 92, 246, 0.45);
+        outline: none;
+      }
+
+      .feature-card::after {
+        content: "点击进入 →";
+        position: absolute;
+        right: 24px;
+        bottom: 22px;
+        color: #c4b5fd;
+        font-size: 14px;
+        font-weight: 900;
+        opacity: 0;
+        transform: translateY(6px);
+        transition: opacity 0.25s ease, transform 0.25s ease;
+      }
+
+      .feature-card:hover::after,
+      .feature-card:focus-visible::after {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .icon {
+        width: 54px;
+        height: 54px;
+        display: grid;
+        place-items: center;
+        margin-bottom: 22px;
+        color: #fff;
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.95), rgba(34, 211, 238, 0.78));
+        border-radius: 18px;
+        box-shadow: 0 14px 34px rgba(139, 92, 246, 0.25);
+        font-size: 22px;
+      }
+
+      .feature-card h3,
+      .course-card h3,
+      .tool-card h3 {
+        margin: 0 0 12px;
+        font-size: 22px;
+      }
+
+      .feature-card p,
+      .course-card p,
+      .tool-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .stat-card {
+        padding: 26px;
+      }
+
+      .stat-card b {
+        display: block;
+        margin-bottom: 8px;
+        font-size: clamp(34px, 5vw, 54px);
+        line-height: 1;
+        letter-spacing: -0.04em;
+      }
+
+      .stat-card span {
+        color: var(--muted);
+        font-weight: 800;
+      }
+
+      .guide-layout {
+        display: grid;
+        grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+        gap: 20px;
+      }
+
+      .course-card {
+        padding: 26px;
+      }
+
+      .guide-list {
+        display: grid;
+        gap: 12px;
+        margin: 22px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .guide-list li {
+        display: grid;
+        grid-template-columns: 34px 1fr;
+        gap: 12px;
+        align-items: start;
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.05);
+        cursor: pointer;
+        transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+      }
+
+      .guide-list li:hover,
+      .guide-list li.active,
+      .guide-list li:focus-visible {
+        background: rgba(139, 92, 246, 0.12);
+        border-color: rgba(109, 93, 252, 0.35);
+        box-shadow: 0 14px 34px rgba(65, 80, 130, 0.12);
+        transform: translateY(-2px);
+        outline: none;
+      }
+
+      .guide-list i {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        background: rgba(139, 92, 246, 0.28);
+        border-radius: 12px;
+      }
+
+      .guide-list b {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .guide-list span {
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .video-panel {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 30px;
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: var(--shadow);
+      }
+
+      .video-stage {
+        position: relative;
+        background: #090b1a;
+      }
+
+      #guideCanvas {
+        width: 100%;
+        display: block;
+        background: #090b1a;
+      }
+
+      .video-copy {
+        position: absolute;
+        left: 26px;
+        right: 26px;
+        bottom: 24px;
+        display: grid;
+        gap: 8px;
+      }
+
+      .video-copy span {
+        width: fit-content;
+        padding: 7px 11px;
+        color: #cffafe;
+        background: rgba(34, 211, 238, 0.12);
+        border: 1px solid rgba(34, 211, 238, 0.22);
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .video-copy strong {
+        font-size: clamp(28px, 4vw, 48px);
+        line-height: 1.05;
+      }
+
+      .video-copy p {
+        max-width: 720px;
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+
+      .lesson-tabs {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 1px;
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .lesson-tabs button {
+        min-height: 66px;
+        display: grid;
+        place-items: center;
+        gap: 3px;
+        color: rgba(255, 255, 255, 0.78);
+        background: rgba(255, 255, 255, 0.05);
+        border: 0;
+        font-weight: 900;
+        cursor: pointer;
+        transition: background 0.25s ease, color 0.25s ease;
+      }
+
+      .lesson-tabs button b {
+        font-size: 12px;
+      }
+
+      .lesson-tabs button span {
+        font-size: 14px;
+      }
+
+      .lesson-tabs button:hover,
+      .lesson-tabs button.active {
+        color: #fff;
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.9), rgba(34, 211, 238, 0.55));
+      }
+
+      .tools-layout {
+        display: grid;
+        grid-template-columns: 340px minmax(0, 1fr);
+        gap: 20px;
+      }
+
+      .tool-card {
+        padding: 24px;
+      }
+
+      .control {
+        display: grid;
+        gap: 8px;
+        margin-top: 18px;
+        color: #fff;
+        font-weight: 900;
+      }
+
+      .control select {
+        min-height: 46px;
+        padding: 0 12px;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+      }
+
+      .native-select-hidden {
+        display: none;
+      }
+
+      .custom-select {
+        position: relative;
+      }
+
+      .select-trigger {
+        width: 100%;
+        min-height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 0 14px;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        cursor: pointer;
+        font-weight: 900;
+        transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+      }
+
+      .select-trigger:hover,
+      .select-trigger[aria-expanded="true"] {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: rgba(139, 92, 246, 0.55);
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.18);
+      }
+
+      .select-arrow {
+        color: #c4b5fd;
+        transition: transform 0.22s ease;
+      }
+
+      .select-trigger[aria-expanded="true"] .select-arrow {
+        transform: rotate(180deg);
+      }
+
+      .custom-options {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: calc(100% + 8px);
+        z-index: 30;
+        display: none;
+        max-height: 292px;
+        overflow-y: auto;
+        padding: 8px;
+        background: rgba(8, 10, 24, 0.98);
+        border: 1px solid rgba(139, 92, 246, 0.34);
+        border-radius: 18px;
+        box-shadow: 0 22px 70px rgba(0, 0, 0, 0.42);
+      }
+
+      .custom-select.open .custom-options {
+        display: grid;
+        gap: 6px;
+      }
+
+      .custom-options button {
+        min-height: 42px;
+        padding: 0 12px;
+        color: rgba(255, 255, 255, 0.82);
+        text-align: left;
+        background: transparent;
+        border: 0;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: 800;
+        transition: color 0.2s ease, background 0.2s ease;
+      }
+
+      .custom-options button:hover,
+      .custom-options button.active {
+        color: #fff;
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.36), rgba(34, 211, 238, 0.18));
+      }
+
+      .control input {
+        accent-color: var(--primary);
+      }
+
+      .control output {
+        color: #c4b5fd;
+      }
+
+      .canvas-card {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 30px;
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: var(--shadow);
+      }
+
+      .canvas-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .canvas-head h3 {
+        margin: 0;
+      }
+
+      .canvas-head span {
+        color: var(--muted);
+        font-weight: 800;
+      }
+
+      #signalCanvas {
+        width: 100%;
+        display: block;
+        background: rgba(3, 7, 18, 0.72);
+      }
+
+      #convolutionCanvas,
+      #fftCanvas,
+      #soundCanvas {
+        width: 100%;
+        display: block;
+        background: rgba(3, 7, 18, 0.72);
+      }
+
+      .formula-strip {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 16px 20px 20px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-weight: 800;
+      }
+
+      .formula-strip b {
+        color: #c4b5fd;
+      }
+
+      .mini-readout {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .mini-readout div {
+        min-height: 74px;
+        display: grid;
+        align-content: center;
+        gap: 4px;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+      }
+
+      .mini-readout b {
+        color: #c4b5fd;
+        font-size: 20px;
+      }
+
+      .mini-readout span {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .theory-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .theory-list span {
+        display: block;
+        padding: 12px 14px;
+        color: #172033;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(74, 91, 123, 0.16);
+        border-radius: 16px;
+        font-weight: 900;
+        line-height: 1.55;
+      }
+
+      .footer {
+        padding: 60px 0 32px;
+        border-top: 1px solid var(--line);
+        background: rgba(0, 0, 0, 0.16);
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 1.4fr repeat(3, 1fr);
+        gap: 26px;
+      }
+
+      .footer p {
+        max-width: 520px;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .footer h4 {
+        margin: 0 0 14px;
+      }
+
+      .footer a {
+        display: block;
+        width: fit-content;
+        margin: 10px 0;
+        color: var(--muted);
+        transition: color 0.25s ease, transform 0.25s ease;
+      }
+
+      .footer a:hover {
+        color: #fff;
+        transform: translateX(3px);
+      }
+
+      .copyright {
+        margin-top: 36px;
+        padding-top: 22px;
+        color: var(--muted);
+        border-top: 1px solid var(--line);
+        font-size: 14px;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(26px);
+        transition: opacity 0.7s ease, transform 0.7s ease;
+      }
+
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .hero .reveal {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .fa,
+      .fa-solid {
+        font-style: normal;
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      .fa-wave-square::before { content: "∿"; }
+      .fa-chart-line::before { content: "⌁"; }
+      .fa-circle-nodes::before { content: "◎"; }
+      .fa-play::before { content: "▶"; }
+      .fa-arrow-right::before { content: "→"; }
+      .fa-bars::before { content: "☰"; }
+      .fa-xmark::before { content: "×"; }
+      .fa-layer-group::before { content: "▧"; }
+      .fa-bolt::before { content: "ϟ"; }
+      .fa-filter::before { content: "⌬"; }
+      .fa-graduation-cap::before { content: "◈"; }
+      .fa-code-branch::before { content: "⌘"; }
+      .fa-gauge-high::before { content: "◷"; }
+
+      /* Light campus theme override */
+      body {
+        color: #172033;
+        background:
+          linear-gradient(180deg, rgba(249, 252, 255, 0.62), rgba(246, 251, 248, 0.76) 45%, rgba(255, 255, 255, 0.9)),
+          url("assets/jishou-campus-bg.png") center top / cover fixed no-repeat;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background:
+          radial-gradient(circle at 15% 8%, rgba(105, 95, 231, 0.16), transparent 34%),
+          radial-gradient(circle at 90% 18%, rgba(29, 161, 183, 0.12), transparent 32%),
+          rgba(255, 255, 255, 0.28);
+        pointer-events: none;
+      }
+
+      :root {
+        --panel: rgba(255, 255, 255, 0.72);
+        --panel-strong: rgba(255, 255, 255, 0.88);
+        --line: rgba(74, 91, 123, 0.18);
+        --text: #172033;
+        --muted: #5e687d;
+        --shadow: 0 24px 80px rgba(33, 54, 88, 0.16);
+      }
+
+      .navbar.scrolled {
+        background: rgba(255, 255, 255, 0.68);
+        border-color: rgba(74, 91, 123, 0.14);
+      }
+
+      .nav-links a,
+      .brand,
+      .hero h1,
+      .section-head h2,
+      .feature-card h3,
+      .course-card h3,
+      .tool-card h3,
+      .canvas-head h3,
+      .footer h4 {
+        color: #172033;
+      }
+
+      .hero p,
+      .section-head p,
+      .feature-card p,
+      .course-card p,
+      .tool-card p,
+      .footer p,
+      .footer a,
+      .canvas-head span,
+      .formula-strip,
+      .guide-list span {
+        color: #5e687d;
+      }
+
+      .gradient-text {
+        background: linear-gradient(135deg, #23314d, #6d5dfc 48%, #098ea3);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .feature-card,
+      .stat-card,
+      .course-card,
+      .tool-card,
+      .canvas-card,
+      .video-panel,
+      .glass-panel,
+      .floating-card {
+        background: rgba(255, 255, 255, 0.72);
+        border-color: rgba(74, 91, 123, 0.17);
+        box-shadow: var(--shadow);
+      }
+
+      .glass-panel,
+      .video-panel,
+      .canvas-card {
+        backdrop-filter: blur(18px);
+      }
+
+      .floating-card,
+      .video-copy strong,
+      .video-copy p {
+        color: #172033;
+      }
+
+      #heroCanvas,
+      #guideCanvas,
+      #signalCanvas,
+      #samplingCanvas,
+      #convolutionCanvas,
+      #fftCanvas,
+      #soundCanvas {
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .control {
+        color: #172033;
+      }
+
+      .control output,
+      .formula-strip b {
+        color: #6d5dfc;
+      }
+
+      .select-trigger {
+        color: #172033;
+        background: rgba(255, 255, 255, 0.76);
+        border-color: rgba(74, 91, 123, 0.2);
+      }
+
+      .control select {
+        color: #172033;
+        background: rgba(255, 255, 255, 0.76);
+        border-color: rgba(74, 91, 123, 0.2);
+      }
+
+      .mini-readout div {
+        background: rgba(255, 255, 255, 0.72);
+        border-color: rgba(74, 91, 123, 0.16);
+      }
+
+      .mini-readout b {
+        color: #6d5dfc;
+      }
+
+      .select-trigger:hover,
+      .select-trigger[aria-expanded="true"] {
+        background: rgba(255, 255, 255, 0.94);
+      }
+
+      .custom-options {
+        background: rgba(255, 255, 255, 0.98);
+        border-color: rgba(109, 93, 252, 0.24);
+      }
+
+      .custom-options button {
+        color: #34405a;
+      }
+
+      .custom-options button:hover,
+      .custom-options button.active {
+        color: #172033;
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.18), rgba(34, 211, 238, 0.12));
+      }
+
+      .lab-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .lab-actions .btn {
+        min-height: 44px;
+        padding: 0 16px;
+      }
+
+      .sampling-status {
+        margin-top: 18px;
+        padding: 14px;
+        color: #17624d;
+        background: rgba(52, 211, 153, 0.16);
+        border: 1px solid rgba(52, 211, 153, 0.28);
+        border-radius: 16px;
+        font-weight: 900;
+        line-height: 1.6;
+      }
+
+      .sampling-status.warn {
+        color: #8a4d0b;
+        background: rgba(245, 158, 11, 0.17);
+        border-color: rgba(245, 158, 11, 0.32);
+      }
+
+      #sampling .lab-actions {
+        align-items: center;
+      }
+
+      #sampling .lab-actions .btn {
+        color: #172033;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(74, 91, 123, 0.18);
+        box-shadow: 0 10px 26px rgba(33, 54, 88, 0.10);
+      }
+
+      #sampling .lab-actions .btn-primary {
+        color: #fff;
+        background: linear-gradient(135deg, #7c3aed, #5b8cff);
+        border-color: transparent;
+      }
+
+      #sampling .lab-actions .btn-secondary {
+        color: #37435f;
+        background: rgba(255, 255, 255, 0.84);
+      }
+
+      #sampling .lab-actions .btn-secondary:hover {
+        color: #172033;
+        background: rgba(255, 255, 255, 0.98);
+      }
+
+      .z-summary {
+        display: grid;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .z-summary div {
+        padding: 13px 14px;
+        color: #24314b;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(74, 91, 123, 0.16);
+        border-radius: 14px;
+        line-height: 1.55;
+      }
+
+      .z-summary b {
+        display: block;
+        margin-bottom: 2px;
+        color: #172033;
+      }
+
+      .z-preset-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .z-preset-grid button {
+        min-height: 44px;
+        padding: 0 12px;
+        color: #24314b;
+        background: rgba(255, 255, 255, 0.78);
+        border: 1px solid rgba(74, 91, 123, 0.18);
+        border-radius: 14px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .z-preset-grid button.active,
+      .z-preset-grid button:hover {
+        color: #fff;
+        background: linear-gradient(135deg, #2563eb, #0891b2);
+        border-color: transparent;
+      }
+
+      .video-copy {
+        padding: 14px 16px;
+        border-radius: 20px;
+        background: linear-gradient(90deg, rgba(255,255,255,0.88), rgba(255,255,255,0.52));
+        backdrop-filter: blur(10px);
+      }
+
+      .video-copy strong {
+        color: #172033;
+      }
+
+      .video-copy p {
+        color: #4d5870;
+      }
+
+      .lesson-tabs {
+        background: rgba(225, 232, 245, 0.88);
+      }
+
+      .lesson-tabs button {
+        color: #48546b;
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .lesson-tabs button:hover,
+      .lesson-tabs button.active {
+        color: #fff;
+        background: linear-gradient(135deg, rgba(124, 58, 237, 0.92), rgba(34, 148, 183, 0.76));
+      }
+
+      .lesson-tabs button.active b,
+      .lesson-tabs button.active span {
+        color: #fff;
+      }
+
+      .footer {
+        background: rgba(255, 255, 255, 0.62);
+      }
+
+      @media (max-width: 980px) {
+        .nav-links {
+          position: fixed;
+          top: 78px;
+          left: 20px;
+          right: 20px;
+          display: none;
+          flex-direction: column;
+          align-items: stretch;
+          padding: 14px;
+          border: 1px solid var(--line);
+          border-radius: 24px;
+          background: rgba(5, 6, 17, 0.92);
+          backdrop-filter: blur(18px);
+        }
+
+        .nav-links.open {
+          display: flex;
+        }
+
+        .menu-btn {
+          display: grid;
+          place-items: center;
+        }
+
+        .hero-grid,
+        .guide-layout,
+        .tools-layout,
+        .platform-strip,
+        .syllabus-grid,
+        .matrix-grid,
+        .resource-grid,
+        .formula-grid,
+        .code-grid,
+        .community-panel,
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .features-grid,
+        .facility-grid,
+        .stats-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .facility-card.wide {
+          grid-column: span 2;
+        }
+
+        .section-head {
+          align-items: start;
+          flex-direction: column;
+        }
+
+        .floating-card {
+          position: static;
+          width: auto;
+          margin-top: 16px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .container {
+          width: min(100% - 28px, 1180px);
+        }
+
+        .hero {
+          padding-top: 118px;
+        }
+
+        .features-grid,
+        .facility-grid,
+        .stats-grid,
+        .lesson-tabs,
+        .video-study-notes {
+          grid-template-columns: 1fr;
+        }
+
+        .facility-card.wide {
+          grid-column: span 1;
+        }
+
+        .campus-identity {
+          grid-template-columns: 68px minmax(0, 1fr);
+          padding: 12px;
+        }
+
+        .campus-identity img {
+          width: 68px;
+          height: 68px;
+        }
+
+        .hero-actions,
+        .formula-strip,
+        .canvas-head {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .btn {
+          width: 100%;
+        }
+
+        .brand-text small {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body class="loading">
+    <div class="loader" id="loader" aria-label="页面加载中">
+      <div class="loader-card">
+        <div class="loader-ring"></div>
+        <div class="loader-text">Loading Signal Studio</div>
+      </div>
+    </div>
+
+    <header class="navbar" id="navbar">
+      <div class="container nav-inner">
+        <a class="brand" href="#home" aria-label="信号与系统首页">
+          <span class="school-seal" aria-label="大学校徽">
+            <img src="assets/jishou-university-seal.svg" alt="大学校徽" />
+          </span>
+          <span class="brand-mark"><i class="fa-solid fa-wave-square"></i></span>
+          <span class="brand-text">
+            <strong>信号与系统</strong>
+            <small>Interactive Studio</small>
+          </span>
+        </a>
+        <nav class="nav-links" id="navLinks" aria-label="主导航">
+          <a href="#home">首页</a>
+          <a href="#overview">总览</a>
+          <a href="#theory">理论</a>
+          <a href="#formulas">公式</a>
+          <a href="#problems">题库</a>
+          <a href="#code">代码</a>
+          <a href="#stats">数据</a>
+          <a href="#lab">实验台</a>
+          <a href="#convolution">卷积</a>
+          <a href="#fft">FFT</a>
+          <a href="#sound">声音</a>
+        </nav>
+        <button class="menu-btn" id="menuBtn" type="button" aria-label="打开菜单">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="container hero-grid">
+          <div class="hero-copy reveal">
+            <p class="eyebrow"><i class="fa-solid fa-graduation-cap"></i> 郑君里《信号与系统》学习方向</p>
+            <h1><span class="gradient-text">高级交互式</span><br />信号与系统学习官网</h1>
+            <p>
+              面向本科课程、期末复习、工程实践和科研入门，把理论讲义、公式手册、可视化仿真、题库、代码工具与答疑资料整合到一个高级交互式学习平台中。
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#overview"><i class="fa-solid fa-play"></i> 进入总览</a>
+              <a class="btn btn-secondary" href="#formulas">公式速查 <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="quick-entry" aria-label="核心知识快速入口">
+              <a href="#fft">傅里叶 / FFT</a>
+              <a href="#theory">拉普拉斯</a>
+              <a href="#ztransform">Z 变换</a>
+              <a href="#convolution">卷积</a>
+              <a href="#theory">系统分析</a>
+              <a href="#code">MATLAB / Python</a>
+            </div>
+            <div class="campus-identity reveal">
+              <img src="assets/jishou-university-seal.svg" alt="大学校徽" />
+              <div>
+                <b>大学 · 信号与系统学习空间</b>
+                <span>适合课堂展示、个人复习、课程巩固和项目仿真，重点强化卷积、三大变换、系统特性与频域应用。</span>
+              </div>
+            </div>
+          </div>
+          <div class="hero-visual reveal">
+            <div class="glass-panel">
+              <div class="visual-top">
+                <div class="traffic"><span></span><span></span><span></span></div>
+                <span class="visual-badge">Live Waveform</span>
+              </div>
+              <canvas id="heroCanvas" width="760" height="480" aria-label="动态信号波形"></canvas>
+            </div>
+            <div class="floating-card">
+              <b>∞</b>
+              <span>从时域到频域，从连续到离散，用可视化理解系统响应。</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="overview">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-layer-group"></i> Platform Overview</p>
+              <h2>首页总览：一站式信号与系统学习平台</h2>
+            </div>
+            <p>定位为“专业讲义 + 在线实验 + 课程训练 + 工程代码”的综合平台，覆盖本科课程、期末复习、工程实践与科研入门四类学习场景。</p>
+          </div>
+          <div class="platform-strip">
+            <article class="reveal"><b>本科课程</b><span>按教材顺序组织连续时间、离散时间、三大变换与系统分析，适合期末复习。</span></article>
+            <article class="reveal"><b>课程强化</b><span>突出卷积、ROC、因果稳定、零状态响应、极零点与频率响应等核心考点。</span></article>
+            <article class="reveal"><b>工程仿真</b><span>面向通信、控制、图像、音频和生物信号中的抽样、滤波、频谱分析与噪声处理任务。</span></article>
+            <article class="reveal"><b>科研入门</b><span>扩展 STFT、小波、OFDM、二维傅里叶、音频频谱和现代信号处理入口。</span></article>
+          </div>
+          <div class="quick-entry" style="margin-top: 22px">
+            <a href="#theory">理论讲义</a>
+            <a href="#formulas">公式手册</a>
+            <a href="#lab">可视化仿真</a>
+            <a href="#problems">分层题库</a>
+            <a href="#code">代码工具</a>
+            <a href="#applications">工程应用与前沿</a>
+            <a href="#resources">资料下载 / 答疑</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="features">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-layer-group"></i> Core Modules</p>
+              <h2>功能完整的课程型官网模块</h2>
+            </div>
+            <p>页面不仅是展示，还能直接学习和操作。每个模块都围绕“信号如何表示、系统如何响应、抽样如何恢复”展开。</p>
+          </div>
+          <div class="features-grid">
+            <article class="feature-card reveal" role="button" tabindex="0" data-target="#guide" data-lesson="0" aria-label="进入视频导学模块">
+              <div class="icon"><i class="fa-solid fa-play"></i></div>
+              <h3>视频导学</h3>
+              <p>内置 Canvas 微课动画，切换讲解信号、变换、LTI 系统、卷积、频域与抽样恢复。</p>
+            </article>
+            <article class="feature-card reveal" role="button" tabindex="0" data-target="#lab" data-signal="sine" aria-label="进入函数图像实验台">
+              <div class="icon"><i class="fa-solid fa-chart-line"></i></div>
+              <h3>函数图像</h3>
+              <p>支持正弦、余弦、矩形、三角、阶跃、指数、sinc 与冲激序列的实时绘制。</p>
+            </article>
+            <article class="feature-card reveal" role="button" tabindex="0" data-target="#sampling" data-lesson="5" aria-label="进入抽样恢复实验">
+              <div class="icon"><i class="fa-solid fa-filter"></i></div>
+              <h3>抽样恢复</h3>
+              <p>展示奈奎斯特条件、抽样点、零阶保持和 sinc 近似恢复的核心直觉。</p>
+            </article>
+            <article class="feature-card reveal" role="button" tabindex="0" data-target="#convolution" aria-label="进入卷积动画实验">
+              <div class="icon"><i class="fa-solid fa-circle-nodes"></i></div>
+              <h3>卷积动画</h3>
+              <p>让 h(τ) 翻转平移，与 x(τ) 的重叠面积同步生成 y(t)。</p>
+            </article>
+            <article class="feature-card reveal" role="button" tabindex="0" data-target="#fft" aria-label="进入 FFT 频谱实验">
+              <div class="icon"><i class="fa-solid fa-bolt"></i></div>
+              <h3>FFT 频谱</h3>
+              <p>用频率柱与相量旋转展示时域信号如何变成频域能量。</p>
+            </article>
+            <article class="feature-card reveal" role="button" tabindex="0" data-target="#ztransform" aria-label="进入 Z 变换实验台">
+              <div class="icon"><i class="fa-solid fa-code-branch"></i></div>
+              <h3>Z 变换实验台</h3>
+              <p>新增离散系统工具，观察极点、零点、单位圆和差分方程稳定性的关系。</p>
+            </article>
+            <article class="feature-card reveal" role="button" tabindex="0" data-target="#stats" aria-label="查看响应式体验和数据统计">
+              <div class="icon"><i class="fa-solid fa-gauge-high"></i></div>
+              <h3>响应式体验</h3>
+              <p>适配手机、平板与桌面端，导航、卡片、图表和按钮在不同屏幕下自动重排。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="theory">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-code-branch"></i> Core Theory</p>
+              <h2>核心理论讲义：连续时间 → 离散时间 → 变换域 → 系统特性</h2>
+            </div>
+            <p>按信号与系统标准教材顺序整理，强调严谨定义、高清推导、物理意义、易错点和对比总结。</p>
+          </div>
+          <div class="syllabus-grid">
+            <article class="syllabus-card reveal">
+              <h3>连续时间信号与系统</h3>
+              <ul>
+                <li>信号分类：能量/功率、周期/非周期、确定/随机、奇异信号。</li>
+                <li>卷积积分：图解法、解析法、性质、物理意义和 LTI 输出。</li>
+                <li>傅里叶级数：三角形式、指数形式、收敛条件、帕塞瓦尔定理。</li>
+                <li>傅里叶变换：变换对、性质、频域分析、抽样定理与混叠。</li>
+                <li>拉普拉斯变换：ROC、部分分式、逆变换、系统函数 H(s)。</li>
+                <li>连续系统分析：零输入/零状态、稳态/暂态、因果稳定判断。</li>
+              </ul>
+            </article>
+            <article class="syllabus-card reveal">
+              <h3>离散时间信号与系统</h3>
+              <ul>
+                <li>离散序列、单位样值、单位阶跃、指数序列和周期序列。</li>
+                <li>差分方程：递推解、零输入响应、零状态响应和全响应。</li>
+                <li>离散卷积：翻转平移、列表法、图解法和快速计算。</li>
+                <li>Z 变换：ROC、逆 Z、极点零点、系统函数 H(z)。</li>
+                <li>DFS/DFT/FFT：频域采样、谱泄漏、快速蝶形思想。</li>
+                <li>离散系统分析：因果性、稳定性、频率响应和单位圆判据。</li>
+              </ul>
+            </article>
+            <article class="syllabus-card reveal">
+              <h3>系统特性与滤波专题</h3>
+              <ul>
+                <li>线性、时不变、因果、稳定、可逆的判定模板。</li>
+                <li>极点零点与频率响应：位置决定响应速度、振荡和稳定性。</li>
+                <li>滤波基础：低通、高通、带通、带阻、FIR/IIR 对比。</li>
+                <li>希尔伯特变换、解析信号、调制解调和包络概念。</li>
+                <li>高频易错点：ROC 与因果稳定、频移与调制、抽样与混叠。</li>
+                <li>配套推导：从微分/差分方程到系统函数和频响图。</li>
+              </ul>
+            </article>
+          </div>
+          <table class="compare-table reveal" style="margin-top: 20px" aria-label="三大变换对比表">
+            <thead>
+              <tr><th>项目</th><th>傅里叶变换</th><th>拉普拉斯变换</th><th>Z 变换</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>核心变量</td><td>jω，强调频率成分</td><td>s=σ+jω，强调收敛与系统模态</td><td>z=re^{jω}，强调离散系统极零点</td></tr>
+              <tr><td>典型用途</td><td>频谱、滤波、调制、抽样</td><td>连续 LTI 系统、微分方程、稳定性</td><td>离散 LTI 系统、差分方程、数字滤波</td></tr>
+              <tr><td>高频考点</td><td>性质、变换对、频移、卷积定理</td><td>ROC、部分分式、H(s)、因果稳定</td><td>ROC、逆 Z、H(z)、单位圆稳定</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="formulas">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-wave-square"></i> Formula Manual</p>
+              <h2>可搜索、可复制的公式手册</h2>
+            </div>
+            <p>覆盖三大变换、卷积、奇偶虚实、尺度时移频移、微分/差分方程、系统性质判据、抽样定理和课程高频公式。</p>
+          </div>
+          <div class="formula-toolbar reveal">
+            <input id="formulaSearch" type="search" placeholder="搜索公式：傅里叶、拉普拉斯、Z、卷积、抽样、ROC、稳定..." aria-label="搜索公式" />
+          </div>
+          <div class="formula-grid" id="formulaGrid">
+            <article class="formula-card reveal" data-keywords="fourier 傅里叶 频移 时移 卷积">
+              <h3>傅里叶变换核心性质</h3>
+              <div class="textbook-formula" aria-label="傅里叶变换性质">
+                <span class="formula-line">ℱ{x(t − t<sub>0</sub>)} = e<sup>−jωt<sub>0</sub></sup>X(jω)</span>
+                <span class="formula-line">ℱ{x(at)} = <span class="fraction"><span>1</span><span>|a|</span></span>X(jω/a)</span>
+                <span class="formula-line">ℱ{x(t) ∗ h(t)} = X(jω)H(jω)</span>
+              </div>
+              <p>时移只改相位，尺度压缩会拉宽频谱，卷积在频域变乘法。</p>
+            </article>
+            <article class="formula-card reveal" data-keywords="laplace 拉普拉斯 roc 系统函数">
+              <h3>拉普拉斯与系统函数</h3>
+              <div class="textbook-formula" aria-label="拉普拉斯变换与系统函数">
+                <span class="formula-line">X(s) = ∫<sub>−∞</sub><sup>∞</sup> x(t)e<sup>−st</sup>dt</span>
+                <span class="formula-line">H(s) = <span class="fraction"><span>Y(s)</span><span>X(s)</span></span></span>
+                <span class="formula-line">因果系统的 ROC 在最右极点右侧；稳定系统的 ROC 包含 jω 轴。</span>
+              </div>
+              <p>ROC 是拉普拉斯题目的灵魂，决定信号类型、因果性和稳定性。</p>
+            </article>
+            <article class="formula-card reveal" data-keywords="z transform z变换 roc 极点 零点">
+              <h3>Z 变换与单位圆判据</h3>
+              <div class="textbook-formula" aria-label="Z 变换与单位圆判据">
+                <span class="formula-line">X(z) = ∑<sub>n=−∞</sub><sup>∞</sup> x[n]z<sup>−n</sup></span>
+                <span class="formula-line">H(z) = <span class="fraction"><span>Y(z)</span><span>X(z)</span></span></span>
+                <span class="formula-line">稳定系统的 ROC 包含单位圆 |z| = 1；因果稳定 IIR 的极点在单位圆内。</span>
+              </div>
+              <p>频率响应可由 H(e^{jω}) 得到，也就是在单位圆上观察 H(z)。</p>
+            </article>
+            <article class="formula-card reveal" data-keywords="sampling 抽样 奈奎斯特 混叠">
+              <h3>抽样定理与混叠</h3>
+              <div class="textbook-formula" aria-label="抽样定理">
+                <span class="formula-line">f<sub>s</sub> ≥ 2f<sub>max</sub>, &nbsp; T = <span class="fraction"><span>1</span><span>f<sub>s</sub></span></span></span>
+                <span class="formula-line">x(t) = ∑<sub>n=−∞</sub><sup>∞</sup> x(nT)sinc(<span class="fraction"><span>t − nT</span><span>T</span></span>)</span>
+              </div>
+              <p>欠采样会使频谱副本重叠，离散样值无法唯一恢复原连续信号。</p>
+            </article>
+            <article class="formula-card reveal" data-keywords="linear 线性 齐次性 叠加性 系统性质">
+              <h3>线性判据</h3>
+              <div class="textbook-formula" aria-label="线性系统判据">
+                <span class="formula-line">T{a x<sub>1</sub>(t) + b x<sub>2</sub>(t)} = aT{x<sub>1</sub>(t)} + bT{x<sub>2</sub>(t)}</span>
+                <span class="formula-line">若 x<sub>1</sub>(t) → y<sub>1</sub>(t), x<sub>2</sub>(t) → y<sub>2</sub>(t)</span>
+                <span class="formula-line">则 ax<sub>1</sub>(t)+bx<sub>2</sub>(t) → ay<sub>1</sub>(t)+by<sub>2</sub>(t)</span>
+              </div>
+              <p>线性必须同时满足齐次性与叠加性；有常数项、平方、绝对值通常会破坏线性。</p>
+            </article>
+            <article class="formula-card reveal" data-keywords="time invariant 时不变 时变 系统性质">
+              <h3>时不变 / 时变判据</h3>
+              <div class="textbook-formula" aria-label="时不变系统判据">
+                <span class="formula-line">若 x(t) → y(t)</span>
+                <span class="formula-line">则 x(t − t<sub>0</sub>) → y(t − t<sub>0</sub>)</span>
+                <span class="formula-line">对任意 t<sub>0</sub> 成立时，系统为时不变系统。</span>
+              </div>
+              <p>判断方法：先延时输入再过系统，与先过系统再延时输出比较；显含 t 的系数常导致时变。</p>
+            </article>
+            <article class="formula-card reveal" data-keywords="causal causality 因果 非因果 记忆 系统性质">
+              <h3>因果性与记忆性</h3>
+              <div class="textbook-formula" aria-label="因果系统判据">
+                <span class="formula-line">y(t<sub>0</sub>) 只依赖 x(t), t ≤ t<sub>0</sub> ⇒ 因果</span>
+                <span class="formula-line">y[n<sub>0</sub>] 只依赖 x[n], n ≤ n<sub>0</sub> ⇒ 因果</span>
+                <span class="formula-line">LTI 因果条件：h(t)=0, t&lt;0；h[n]=0, n&lt;0</span>
+              </div>
+              <p>若输出用到未来输入，如 x(t+1) 或 x[n+2]，系统非因果。</p>
+            </article>
+            <article class="formula-card reveal" data-keywords="stable stability 稳定 BIBO 绝对可积 系统性质">
+              <h3>BIBO 稳定判据</h3>
+              <div class="textbook-formula" aria-label="稳定系统判据">
+                <span class="formula-line">|x(t)| ≤ M<sub>x</sub> ⇒ |y(t)| ≤ M<sub>y</sub></span>
+                <span class="formula-line">连续 LTI：∫<sub>−∞</sub><sup>∞</sup>|h(t)|dt &lt; ∞</span>
+                <span class="formula-line">离散 LTI：∑<sub>n=−∞</sub><sup>∞</sup>|h[n]| &lt; ∞</span>
+              </div>
+              <p>BIBO 稳定强调有界输入产生有界输出；对 LTI 系统可转化为冲激响应绝对可积/可和。</p>
+            </article>
+            <article class="formula-card reveal" data-keywords="steady transient 稳态 暂态 零输入 零状态 响应">
+              <h3>稳态、暂态与全响应</h3>
+              <div class="textbook-formula" aria-label="稳态暂态响应">
+                <span class="formula-line">y(t) = y<sub>zi</sub>(t) + y<sub>zs</sub>(t)</span>
+                <span class="formula-line">y(t) = y<sub>tr</sub>(t) + y<sub>ss</sub>(t)</span>
+                <span class="formula-line">稳定系统中：lim<sub>t→∞</sub> y<sub>tr</sub>(t) = 0</span>
+              </div>
+              <p>零输入由初始状态引起，零状态由外加输入引起；暂态随时间衰减，稳态长期保留。</p>
+            </article>
+            <article class="formula-card reveal" data-keywords="frequency response 极点 零点 频率响应 steady sinusoid">
+              <h3>正弦稳态与频率响应</h3>
+              <div class="textbook-formula" aria-label="正弦稳态频率响应">
+                <span class="formula-line">x(t)=Acos(ω<sub>0</sub>t+φ)</span>
+                <span class="formula-line">y<sub>ss</sub>(t)=A|H(jω<sub>0</sub>)|cos(ω<sub>0</sub>t+φ+∠H(jω<sub>0</sub>))</span>
+                <span class="formula-line">离散：H(e<sup>jΩ</sup>) 在单位圆上取值。</span>
+              </div>
+              <p>稳定 LTI 系统对正弦输入的稳态输出仍为同频率正弦，只改变幅度和相位。</p>
+            </article>
+            <article class="formula-card reveal" data-keywords="memoryless 记忆 无记忆 动态 即时 系统性质">
+              <h3>无记忆与动态系统</h3>
+              <div class="textbook-formula" aria-label="无记忆系统判据">
+                <span class="formula-line">连续：y(t<sub>0</sub>) 只由 x(t<sub>0</sub>) 决定 ⇒ 无记忆</span>
+                <span class="formula-line">离散：y[n<sub>0</sub>] 只由 x[n<sub>0</sub>] 决定 ⇒ 无记忆</span>
+                <span class="formula-line">若用到 x(t−1), x(t+1), x[n−2] 等，则为有记忆系统。</span>
+              </div>
+              <p>无记忆不等于因果；因果允许依赖过去输入，无记忆只允许依赖当前输入。</p>
+            </article>
+            <article class="formula-card reveal" data-keywords="invertible inverse 可逆 逆系统 系统性质">
+              <h3>可逆性与逆系统</h3>
+              <div class="textbook-formula" aria-label="可逆系统判据">
+                <span class="formula-line">若不同输入必产生不同输出，则系统可逆。</span>
+                <span class="formula-line">存在 T<sup>−1</sup>{·}，使 T<sup>−1</sup>{T{x}} = x</span>
+                <span class="formula-line">LTI 频域：若 H(jω) ≠ 0，则可构造 H<sub>inv</sub>(jω)=<span class="fraction"><span>1</span><span>H(jω)</span></span></span>
+              </div>
+              <p>平方、绝对值、限幅等操作常把多个输入映射到同一输出，因此通常不可逆。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="facilities">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-layer-group"></i> Smart Facilities</p>
+              <h2>更完整的学习设施与功能入口</h2>
+            </div>
+            <p>在原有导学、波形和抽样实验基础上，加入课程仪表盘、公式速查、练习检测和学习记录，让页面更像一个可使用的课程平台。</p>
+          </div>
+          <div class="facility-grid">
+            <article class="facility-card wide reveal" role="button" tabindex="0" data-action="dashboard" aria-label="打开课程学习仪表盘">
+              <div class="icon"><i class="fa-solid fa-gauge-high"></i></div>
+              <h3>课程学习仪表盘</h3>
+              <p>按“信号表示、系统响应、卷积、频域、抽样”组织进度，适合课堂展示和课后复习。</p>
+              <div class="mini-dashboard" aria-label="课程进度展示">
+                <div class="progress-line"><span>时域</span><span style="--value: 88%"></span><em>88%</em></div>
+                <div class="progress-line"><span>系统</span><span style="--value: 72%"></span><em>72%</em></div>
+                <div class="progress-line"><span>抽样</span><span style="--value: 80%"></span><em>80%</em></div>
+              </div>
+            </article>
+            <article class="facility-card reveal" role="button" tabindex="0" data-action="formulas" aria-label="打开公式速查与 Z 变换实验">
+              <div class="icon"><i class="fa-solid fa-wave-square"></i></div>
+              <h3>公式速查</h3>
+              <p>把常用表达式做成轻量速查卡，和实验台参数相互对应。</p>
+              <div class="formula-mini">
+                <code>x(t-t0)</code>
+                <code>y(t)=x(t)*h(t)</code>
+                <code>fs &gt; 2fmax</code>
+              </div>
+            </article>
+            <article class="facility-card reveal" role="button" tabindex="0" data-action="path" aria-label="打开知识路线导学">
+              <div class="icon"><i class="fa-solid fa-code-branch"></i></div>
+              <h3>知识路线</h3>
+              <p>从对象到变换，再到系统、卷积和频域，减少“只会套公式”的断点。</p>
+              <div class="chip-row"><span>信号</span><span>变换</span><span>LTI</span><span>卷积</span><span>频域</span></div>
+            </article>
+            <article class="facility-card reveal" role="button" tabindex="0" data-action="sampling-diagnose" aria-label="打开抽样诊断实验">
+              <div class="icon"><i class="fa-solid fa-filter"></i></div>
+              <h3>抽样诊断</h3>
+              <p>抽样实验保留“满足奈奎斯特、制造混叠、复位抽样”三个按钮，并实时提示风险。</p>
+            </article>
+            <article class="facility-card reveal" role="button" tabindex="0" data-action="video" aria-label="打开六段导学视频">
+              <div class="icon"><i class="fa-solid fa-play"></i></div>
+              <h3>六段导学视频</h3>
+              <p>使用本地 Canvas 动画模拟视频课程，点击课程按钮即可切换主题，不依赖外部视频网站。</p>
+            </article>
+            <article class="facility-card reveal" role="button" tabindex="0" data-action="record" aria-label="打开实验记录">
+              <div class="icon"><i class="fa-solid fa-chart-line"></i></div>
+              <h3>实验记录感</h3>
+              <p>卡片、数据和公式区域统一为浅色玻璃质感，更适合大学课程展示和自主学习。</p>
+            </article>
+            <article class="facility-card reveal" role="button" tabindex="0" data-action="mobile" aria-label="查看移动端适配">
+              <div class="icon"><i class="fa-solid fa-circle-nodes"></i></div>
+              <h3>移动端适配</h3>
+              <p>导航、卡片、实验面板和按钮会在手机端自动重排，方便把链接发给同学直接查看。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="problems">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-gauge-high"></i> Problem Bank</p>
+              <h2>分层题库系统：基础、进阶、课程综合、工程应用</h2>
+            </div>
+            <p>按知识点标签组织练习，前端先搭建题库矩阵；后续可接入错题本、在线判题和用户登录。</p>
+          </div>
+          <div class="matrix-grid">
+            <article class="matrix-card reveal">
+              <h3>基础题</h3>
+              <ul>
+                <li>信号分类、奇偶分解、能量功率判断。</li>
+                <li>卷积基础图解、常用变换对直接套用。</li>
+                <li>课后习题、概念辨析和简单计算。</li>
+              </ul>
+              <div class="chip-row"><span>概念题</span><span>课后题</span><span>期末</span></div>
+            </article>
+            <article class="matrix-card reveal">
+              <h3>进阶综合题</h3>
+              <ul>
+                <li>综合卷积、系统响应、零输入/零状态分解。</li>
+                <li>傅里叶、拉普拉斯、Z 变换混合应用。</li>
+                <li>极零点、ROC、稳定性和频率响应联动判断。</li>
+              </ul>
+              <div class="chip-row"><span>推导</span><span>综合</span><span>易错点</span></div>
+            </article>
+            <article class="matrix-card reveal">
+              <h3>课程综合题</h3>
+              <ul>
+                <li>期末与课程综合题按章节分类训练。</li>
+                <li>题型总结、答题模板、步骤推导和易错点。</li>
+                <li>ROC、因果稳定、系统函数等高频板块专项训练。</li>
+              </ul>
+              <div class="chip-row"><span>综合题</span><span>期末</span><span>专项</span></div>
+            </article>
+            <article class="matrix-card reveal">
+              <h3>工程应用题</h3>
+              <ul>
+                <li>音频处理：滤波、FFT、采样率、噪声抑制。</li>
+                <li>通信系统：频域建模、信号检测、系统辨识。</li>
+                <li>生物信号：时间序列、频谱特征和异常检测。</li>
+              </ul>
+              <div class="chip-row"><span>音频</span><span>通信</span><span>生物信号</span></div>
+            </article>
+            <article class="matrix-card reveal">
+              <h3>题目功能规划</h3>
+              <ul>
+                <li>在线刷题、答案详解、步骤推导。</li>
+                <li>错题本、知识点标签检索和复习计划。</li>
+                <li>公式关联、视频导学关联和实验一键打开。</li>
+              </ul>
+              <div class="chip-row"><span>错题本</span><span>标签检索</span><span>解析</span></div>
+            </article>
+            <article class="matrix-card reveal">
+              <h3>易错点专题</h3>
+              <ul>
+                <li>频移和时移相位符号混淆。</li>
+                <li>ROC 与极点位置、因果性和稳定性关系。</li>
+                <li>DFT 频率索引、谱泄漏和采样混叠区别。</li>
+              </ul>
+              <div class="chip-row"><span>对比表</span><span>陷阱题</span><span>速记</span></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="code">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-code-branch"></i> Code Tools</p>
+              <h2>MATLAB / Python 代码工具板块</h2>
+            </div>
+            <p>提供可直接运行的工程代码模板，覆盖卷积、FFT、零极点图、系统响应、滤波、抽样与频谱分析。</p>
+          </div>
+          <div class="code-grid">
+            <article class="code-card reveal">
+              <h3>Python：FFT 频谱分析</h3>
+              <p>NumPy/Matplotlib 版本，适合科研入门和工程仿真快速验证。</p>
+              <pre><code>import numpy as np
+import matplotlib.pyplot as plt
+
+fs = 200
+t = np.arange(0, 1, 1/fs)
+x = np.sin(2*np.pi*12*t) + 0.4*np.sin(2*np.pi*36*t)
+X = np.fft.rfft(x)
+f = np.fft.rfftfreq(len(x), 1/fs)
+
+plt.subplot(2,1,1); plt.plot(t, x); plt.title("time domain")
+plt.subplot(2,1,2); plt.stem(f, np.abs(X)); plt.title("FFT spectrum")
+plt.tight_layout(); plt.show()</code></pre>
+              <button class="copy-code" type="button">复制代码</button>
+            </article>
+            <article class="code-card reveal">
+              <h3>MATLAB：卷积与系统响应</h3>
+              <p>用于验证 LTI 系统输出 y(t)=x(t)*h(t)，也可替换成离散 conv。</p>
+              <pre><code>t = -2:0.001:6;
+dt = t(2)-t(1);
+x = double(t>=0 & t<=1);
+h = exp(-t).*(t>=0);
+y = conv(x, h, 'same') * dt;
+
+plot(t,x,'b',t,h,'--',t,y,'r','LineWidth',1.5);
+legend('x(t)','h(t)','y(t)');
+grid on; title('Convolution response');</code></pre>
+              <button class="copy-code" type="button">复制代码</button>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="stats">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-gauge-high"></i> Learning Metrics</p>
+              <h2>用数据感知学习覆盖度</h2>
+            </div>
+            <p>滚动到本区域时，数字会自动增长，模拟课程平台的数据看板效果。</p>
+          </div>
+          <div class="stats-grid">
+            <article class="stat-card reveal"><b data-count="8">0</b><span>基础信号类型</span></article>
+            <article class="stat-card reveal"><b data-count="6">0</b><span>导学微课片段</span></article>
+            <article class="stat-card reveal"><b data-count="7">0</b><span>核心交互实验</span></article>
+            <article class="stat-card reveal"><b data-count="100">0</b><span>响应式适配百分比</span></article>
+          </div>
+        </div>
+      </section>
+
+      <section id="guide">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-code-branch"></i> Guided Learning</p>
+              <h2>视频导学与学习路线</h2>
+            </div>
+            <p>点击下方课程按钮，动画和标题会同步切换，形成无需外部视频资源的本地导学体验。</p>
+          </div>
+          <div class="guide-layout">
+            <aside class="course-card reveal">
+              <h3>推荐学习路线</h3>
+              <p>按“对象、操作、系统、卷积、频域、抽样”的顺序建立知识主线。</p>
+              <ul class="guide-list">
+                <li role="button" tabindex="0" data-lesson-card="0"><i>1</i><div><b>认识信号</b><span>把信号看成承载信息的时间函数。</span></div></li>
+                <li role="button" tabindex="0" data-lesson-card="1"><i>2</i><div><b>观察变换</b><span>理解时移、尺度、反褶对波形的影响。</span></div></li>
+                <li role="button" tabindex="0" data-lesson-card="2"><i>3</i><div><b>进入系统</b><span>用输入输出关系描述系统行为。</span></div></li>
+                <li role="button" tabindex="0" data-lesson-card="3"><i>4</i><div><b>理解卷积</b><span>把输出看成输入与系统记忆的叠加。</span></div></li>
+                <li role="button" tabindex="0" data-lesson-card="4"><i>5</i><div><b>切到频域</b><span>用频率成分分析复杂波形。</span></div></li>
+                <li role="button" tabindex="0" data-lesson-card="5"><i>6</i><div><b>完成抽样</b><span>理解混叠和恢复条件。</span></div></li>
+              </ul>
+            </aside>
+            <div class="video-panel reveal">
+              <div class="video-stage">
+                <canvas id="guideCanvas" width="980" height="560" aria-label="导学动画播放器"></canvas>
+                <div class="video-copy">
+                  <span id="lessonTag">第 1 讲</span>
+                  <strong id="lessonTitle">什么是信号</strong>
+                  <p id="lessonCaption">信号是承载信息的函数，最常见的是随时间变化的电压、电流、声音或图像序列。</p>
+                </div>
+              </div>
+              <div class="lesson-tabs">
+                <button class="active" type="button" data-lesson="0"><b>01</b><span>认识信号</span></button>
+                <button type="button" data-lesson="1"><b>02</b><span>观察变换</span></button>
+                <button type="button" data-lesson="2"><b>03</b><span>进入系统</span></button>
+                <button type="button" data-lesson="3"><b>04</b><span>理解卷积</span></button>
+                <button type="button" data-lesson="4"><b>05</b><span>切到频域</span></button>
+                <button type="button" data-lesson="5"><b>06</b><span>完成抽样</span></button>
+              </div>
+              <div class="video-study-notes">
+                <article><b>本讲目标</b><span id="lessonGoal">建立“信号是函数、系统是映射”的基础视角。</span></article>
+                <article><b>配套公式</b><span id="lessonFormula">x(t), x[n], δ(t), u(t)</span></article>
+                <article><b>建议实验</b><span id="lessonPractice">切到函数图像实验台，拖动幅度和频率观察波形。</span></article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="lab">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-wave-square"></i> Signal Lab</p>
+              <h2>交互式函数图像实验台</h2>
+            </div>
+            <p>选择信号并拖动参数，观察幅度、频率、时移和尺度变化对时域波形的影响。</p>
+          </div>
+          <div class="tools-layout">
+            <aside class="tool-card reveal">
+              <h3>参数控制</h3>
+              <p>所有操作都使用原生 JavaScript 实时渲染，不需要任何外部依赖。</p>
+              <label class="control">
+                信号类型
+                <select id="signalType" class="native-select-hidden" aria-hidden="true" tabindex="-1">
+                  <option value="sine">正弦信号 sin(ωt)</option>
+                  <option value="cosine">余弦信号 cos(ωt)</option>
+                  <option value="square">矩形脉冲 rect(t)</option>
+                  <option value="tri">三角脉冲 tri(t)</option>
+                  <option value="step">单位阶跃 u(t)</option>
+                  <option value="exp">指数衰减 e^(-at)u(t)</option>
+                  <option value="sinc">抽样函数 sinc(t)</option>
+                  <option value="impulse">冲激序列 δ(t-nT)</option>
+                </select>
+                <div class="custom-select" id="signalDropdown">
+                  <button class="select-trigger" id="signalSelectButton" type="button" aria-haspopup="listbox" aria-expanded="false">
+                    <span id="selectedSignalText">正弦信号 sin(ωt)</span>
+                    <span class="select-arrow">⌄</span>
+                  </button>
+                  <div class="custom-options" role="listbox" aria-label="信号类型选项">
+                    <button class="active" type="button" role="option" data-value="sine" aria-selected="true">正弦信号 sin(ωt)</button>
+                    <button type="button" role="option" data-value="cosine">余弦信号 cos(ωt)</button>
+                    <button type="button" role="option" data-value="square">矩形脉冲 rect(t)</button>
+                    <button type="button" role="option" data-value="tri">三角脉冲 tri(t)</button>
+                    <button type="button" role="option" data-value="step">单位阶跃 u(t)</button>
+                    <button type="button" role="option" data-value="exp">指数衰减 e^(-at)u(t)</button>
+                    <button type="button" role="option" data-value="sinc">抽样函数 sinc(t)</button>
+                    <button type="button" role="option" data-value="impulse">冲激序列 δ(t-nT)</button>
+                  </div>
+                </div>
+              </label>
+              <label class="control">幅度 A <input id="amp" type="range" min="0.2" max="3" step="0.1" value="1.2" /><output id="ampValue">1.2</output></label>
+              <label class="control">频率/宽度 <input id="freq" type="range" min="0.2" max="4" step="0.1" value="1" /><output id="freqValue">1.0</output></label>
+              <label class="control">时移 t0 <input id="shift" type="range" min="-4" max="4" step="0.1" value="0" /><output id="shiftValue">0.0</output></label>
+              <label class="control">时间尺度 a <input id="scale" type="range" min="0.4" max="2.5" step="0.1" value="1" /><output id="scaleValue">1.0</output></label>
+              <div class="lab-actions">
+                <button class="btn btn-primary" id="resetSignalBtn" type="button">复位参数</button>
+              </div>
+            </aside>
+            <div class="canvas-card reveal">
+              <div class="canvas-head">
+                <h3>实时波形</h3>
+                <span id="signalHint">观察：时移改变位置，尺度改变压缩/展宽。</span>
+              </div>
+              <canvas id="signalCanvas" width="980" height="520" aria-label="信号函数图像"></canvas>
+              <div class="formula-strip">
+                <b id="formula">x(t)=A sin[ωa(t-t0)]</b>
+                <span>紫线为当前信号，坐标轴为归一化时间。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="convolution">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-circle-nodes"></i> Convolution Lab</p>
+              <h2>卷积演示动画</h2>
+            </div>
+            <p>把冲激响应 h(τ) 翻转为 h(t-τ)，让它滑过输入 x(τ)，实时观察重叠面积如何形成输出 y(t)。</p>
+          </div>
+          <div class="tools-layout">
+            <aside class="tool-card reveal">
+              <h3>卷积控制</h3>
+              <p>动画展示“翻转、平移、相乘、积分”四个步骤，适合课堂讲解 LTI 系统输出。</p>
+              <label class="control">
+                输入 x(t)
+                <select id="convInput">
+                  <option value="rect">矩形脉冲</option>
+                  <option value="tri">三角脉冲</option>
+                  <option value="exp">指数衰减</option>
+                </select>
+              </label>
+              <label class="control">
+                冲激响应 h(t)
+                <select id="convKernel">
+                  <option value="exp">一阶指数响应</option>
+                  <option value="rect">滑动平均窗口</option>
+                  <option value="sinc">近似低通 sinc</option>
+                </select>
+              </label>
+              <label class="control">动画速度 <input id="convSpeed" type="range" min="0.4" max="2.4" step="0.1" value="1" /><output id="convSpeedValue">1.0x</output></label>
+              <div class="mini-readout">
+                <div><b id="convTimeValue">t=0.00</b><span>当前平移位置</span></div>
+                <div><b id="convAreaValue">0.00</b><span>重叠积分面积</span></div>
+              </div>
+              <div class="theory-list">
+                <span>y(t)=∫x(τ)h(t-τ)dτ</span>
+                <span>重叠越多，当前输出幅值越大。</span>
+              </div>
+            </aside>
+            <div class="canvas-card reveal">
+              <div class="canvas-head">
+                <h3>翻转平移与输出生成</h3>
+                <span id="convHint">蓝线是 x(τ)，橙线是 h(t-τ)，紫色阴影为相乘后的积分区域。</span>
+              </div>
+              <canvas id="convolutionCanvas" width="980" height="560" aria-label="卷积动画演示"></canvas>
+              <div class="formula-strip">
+                <b>卷积 = 系统记忆的加权叠加</b>
+                <span>下方紫线同步绘制 y(t)，帮助把滑动面积和系统输出联系起来。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="fft">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-bolt"></i> FFT Lab</p>
+              <h2>FFT 与频域分解实验</h2>
+            </div>
+            <p>组合不同谐波，观察时域波形、离散频谱柱和旋转相量；理解 FFT 如何快速计算 DFT。</p>
+          </div>
+          <div class="tools-layout">
+            <aside class="tool-card reveal">
+              <h3>频谱控制</h3>
+              <p>FFT 把 N 点序列投影到一组复指数基底上，频谱峰值表示对应频率的能量强弱。</p>
+              <label class="control">基频 f0 <input id="fftBase" type="range" min="1" max="5" step="1" value="2" /><output id="fftBaseValue">2 Hz</output></label>
+              <label class="control">三次谐波 <input id="fftHarmonic" type="range" min="0" max="1" step="0.05" value="0.45" /><output id="fftHarmonicValue">0.45</output></label>
+              <label class="control">噪声强度 <input id="fftNoise" type="range" min="0" max="0.35" step="0.01" value="0.08" /><output id="fftNoiseValue">0.08</output></label>
+              <div class="theory-list">
+                <span>DFT: X[k]=Σx[n]e^-j2πkn/N</span>
+                <span>FFT 将 O(N²) 计算降为 O(N log N)。</span>
+              </div>
+            </aside>
+            <div class="canvas-card reveal">
+              <div class="canvas-head">
+                <h3>时域波形与频谱峰值</h3>
+                <span id="fftHint">上方显示合成信号，下方显示 FFT 幅度谱；亮色柱为主频和谐波。</span>
+              </div>
+              <canvas id="fftCanvas" width="980" height="560" aria-label="FFT 频谱动画演示"></canvas>
+              <div class="formula-strip">
+                <b id="fftFormula">x(t)=sin(2πf0t)+0.45sin(2π·3f0t)</b>
+                <span>拖动谐波和噪声，可观察频谱峰值和噪声底的变化。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="sound">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-wave-square"></i> Sound Lab</p>
+              <h2>声音频率试听实验</h2>
+            </div>
+            <p>使用浏览器 Web Audio 输出不同频率的正弦声，并同步显示声波周期和频谱位置。</p>
+          </div>
+          <div class="tools-layout">
+            <aside class="tool-card reveal">
+              <h3>声音控制</h3>
+              <p>频率越高，单位时间内振动次数越多，听感音调越高。点击播放后可边拖动边听变化。</p>
+              <label class="control">输出频率 <input id="soundFreq" type="range" min="110" max="1760" step="1" value="440" /><output id="soundFreqValue">440 Hz</output></label>
+              <label class="control">音量 <input id="soundGain" type="range" min="0" max="0.18" step="0.01" value="0.06" /><output id="soundGainValue">0.06</output></label>
+              <div class="lab-actions">
+                <button class="btn btn-primary" id="soundToggleBtn" type="button">播放声音</button>
+                <button class="btn btn-secondary" type="button" data-tone="220">220 Hz</button>
+                <button class="btn btn-secondary" type="button" data-tone="440">440 Hz</button>
+                <button class="btn btn-secondary" type="button" data-tone="880">880 Hz</button>
+              </div>
+              <div class="mini-readout">
+                <div><b id="soundPeriodValue">2.27 ms</b><span>周期 T=1/f</span></div>
+                <div><b id="soundPitchValue">A4</b><span>参考音名</span></div>
+              </div>
+            </aside>
+            <div class="canvas-card reveal">
+              <div class="canvas-head">
+                <h3>声波与频率指示</h3>
+                <span id="soundHint">青色波形越密，频率越高；下方亮点显示当前频率所在位置。</span>
+              </div>
+              <canvas id="soundCanvas" width="980" height="520" aria-label="声音频率波形演示"></canvas>
+              <div class="formula-strip">
+                <b>s(t)=A sin(2πft)</b>
+                <span>浏览器需要用户点击后才允许发声，因此声音不会自动播放。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="ztransform">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-code-branch"></i> Z-Transform Lab</p>
+              <h2>Z 变换与离散系统实验台</h2>
+            </div>
+            <p>选择常见离散序列或一阶差分系统，观察 Z 平面上的极点、零点和单位圆，快速判断因果系统稳定性。</p>
+          </div>
+          <div class="tools-layout">
+            <aside class="tool-card reveal">
+              <h3>离散系统参数</h3>
+              <p>Z 变换把序列 x[n] 映射到复平面 X(z)，极点位置决定系统响应是否收敛。</p>
+              <label class="control">
+                预设模型
+                <select id="zPreset">
+                  <option value="decay">指数序列 x[n]=a^n u[n]</option>
+                  <option value="delay">延时冲激 x[n]=δ[n-k]</option>
+                  <option value="fir">FIR 滑动平均 H(z)</option>
+                  <option value="iir">一阶 IIR H(z)=1/(1-az^-1)</option>
+                </select>
+              </label>
+              <label class="control">参数 a / k <input id="zParam" type="range" min="-0.95" max="0.95" step="0.05" value="0.60" /><output id="zParamValue">0.60</output></label>
+              <div class="z-preset-grid">
+                <button type="button" data-z-preset="decay" class="active">指数序列</button>
+                <button type="button" data-z-preset="delay">延时冲激</button>
+                <button type="button" data-z-preset="fir">FIR 平均</button>
+                <button type="button" data-z-preset="iir">一阶 IIR</button>
+              </div>
+              <div class="z-summary">
+                <div><b>当前表达式</b><span id="zExpression">X(z)=1/(1-a z^-1)</span></div>
+                <div><b>收敛域 / 稳定性</b><span id="zStability">|z| &gt; |a|，极点在单位圆内，因果系统稳定。</span></div>
+              </div>
+            </aside>
+            <div class="canvas-card reveal">
+              <div class="canvas-head">
+                <h3>Z 平面极零图</h3>
+                <span>蓝色圆为单位圆，红叉为极点，绿色圆为空心零点。</span>
+              </div>
+              <canvas id="zCanvas" width="980" height="520" aria-label="Z 变换极零图"></canvas>
+              <div class="formula-strip">
+                <b id="zFormula">H(z)=1/(1-a z^-1)</b>
+                <span>极点越靠近单位圆，响应衰减越慢；极点落到单位圆外时系统不稳定。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="sampling">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-filter"></i> Sampling Lab</p>
+              <h2>抽样与恢复实验</h2>
+            </div>
+            <p>拖动抽样频率，观察样点、零阶保持、sinc 近似恢复和混叠风险。</p>
+          </div>
+          <div class="tools-layout">
+            <aside class="tool-card reveal">
+              <h3>抽样控制</h3>
+              <p>当抽样频率低于最高频率两倍时，离散样点无法唯一表示原连续信号。</p>
+              <label class="control">抽样频率 fs <input id="sampleRate" type="range" min="2" max="24" step="1" value="10" /><output id="sampleRateValue">10 Hz</output></label>
+              <div class="lab-actions">
+                <button class="btn btn-primary" id="sampleGoodBtn" type="button">满足奈奎斯特</button>
+                <button class="btn btn-secondary" id="sampleAliasBtn" type="button">制造混叠</button>
+                <button class="btn btn-secondary" id="sampleResetBtn" type="button">复位抽样</button>
+              </div>
+              <div class="sampling-status" id="samplingStatus">当前抽样率满足恢复条件。</div>
+            </aside>
+            <div class="canvas-card reveal">
+              <div class="canvas-head">
+                <h3>抽样恢复波形</h3>
+                <span>青线为原信号，橙色为样点，紫线为恢复近似。</span>
+              </div>
+              <canvas id="samplingCanvas" width="980" height="520" aria-label="抽样与恢复图像"></canvas>
+              <div class="formula-strip">
+                <b>x[n]=x(nT), fs=1/T</b>
+                <span>满足 fs &gt; 2fmax 时，理论上可由样值恢复原信号。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="applications">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-bolt"></i> Applications</p>
+              <h2>拓展应用与前沿：从课程走向工程</h2>
+            </div>
+            <p>把信号与系统连接到通信、控制、图像、雷达、音频和现代信号处理，提升网站专业度和后续扩展空间。</p>
+          </div>
+          <div class="resource-grid">
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="communication">
+              <h3>通信方向</h3>
+              <p>调制解调、AM/FM、OFDM、基带信号、信道频响和带宽效率。</p>
+              <div class="chip-row"><span>调制</span><span>OFDM</span><span>基带</span></div>
+            </article>
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="control">
+              <h3>控制方向</h3>
+              <p>传递函数、频域校正、Bode 图、稳定裕度和系统辨识。</p>
+              <div class="chip-row"><span>H(s)</span><span>Bode</span><span>稳定</span></div>
+            </article>
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="image">
+              <h3>图像处理</h3>
+              <p>二维傅里叶变换、频域滤波、边缘增强、低通去噪和高通锐化。</p>
+              <div class="chip-row"><span>2D FFT</span><span>滤波</span><span>图像</span></div>
+            </article>
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="audio">
+              <h3>雷达与音频</h3>
+              <p>频谱分析、噪声处理、匹配滤波、短时谱和声音特征提取。</p>
+              <div class="chip-row"><span>STFT</span><span>降噪</span><span>匹配滤波</span></div>
+            </article>
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="modern">
+              <h3>现代信号处理</h3>
+              <p>短时傅里叶、小波变换、时频分析、稀疏表示和特征工程。</p>
+              <div class="chip-row"><span>小波</span><span>时频</span><span>特征</span></div>
+            </article>
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="biosignal">
+              <h3>医学与生物信号</h3>
+              <p>ECG、EEG、肌电与可穿戴信号中的滤波、频谱、伪迹去除和特征提取。</p>
+              <div class="chip-row"><span>ECG</span><span>EEG</span><span>可穿戴</span></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="resources">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-layer-group"></i> Resources & Forum</p>
+              <h2>资料下载、博客笔记、答疑论坛与全站搜索规划</h2>
+            </div>
+            <p>静态页面先提供资源入口和功能框架；后续可接入数据库、评论系统、全文检索和用户体系。</p>
+          </div>
+          <div class="resource-grid">
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="downloads">
+              <h3>资料下载</h3>
+              <ul>
+                <li>PDF 讲义、公式表、代码包、真题集。</li>
+                <li>可按章节、知识点、考试类型分类下载。</li>
+              </ul>
+            </article>
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="notes">
+              <h3>博客 / 笔记区</h3>
+              <ul>
+                <li>个人推导笔记、疑难总结、错题复盘。</li>
+                <li>支持按“卷积、ROC、FFT、滤波”归档。</li>
+              </ul>
+            </article>
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="forum">
+              <h3>答疑论坛</h3>
+              <ul>
+                <li>题目讨论、代码调试、课程学习互助。</li>
+                <li>可扩展点赞、采纳、评论和标签系统。</li>
+              </ul>
+            </article>
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="search">
+              <h3>搜索功能</h3>
+              <ul>
+                <li>按知识点、公式、题目、代码关键词检索。</li>
+                <li>当前公式手册已实现前端关键词筛选。</li>
+              </ul>
+            </article>
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="latex">
+              <h3>Latex 渲染</h3>
+              <ul>
+                <li>公式内容按 Latex 语义组织，便于接入 MathJax/KaTeX。</li>
+                <li>保留复制友好的纯文本公式表示。</li>
+              </ul>
+            </article>
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="mobile">
+              <h3>移动端适配</h3>
+              <ul>
+                <li>导航、表格、代码块、公式卡片自适应重排。</li>
+                <li>适合手机端刷公式和查看仿真实验。</li>
+              </ul>
+            </article>
+          </div>
+          <div class="community-panel reveal">
+            <article class="community-card">
+              <h3>笔记区</h3>
+              <textarea id="noteInput" placeholder="写下你的推导笔记、易错点或学习总结..."></textarea>
+              <button id="saveNoteBtn" type="button">发布笔记</button>
+              <div class="community-list" id="noteList">
+                <article>示例：卷积分段时先画两个信号的支撑区间，再求重叠范围。</article>
+              </div>
+            </article>
+            <article class="community-card">
+              <h3>答疑论坛 · 大师解惑</h3>
+              <textarea id="questionInput" placeholder="输入你的疑惑：题目条件、已尝试步骤、卡住的位置..."></textarea>
+              <button id="askQuestionBtn" type="button">提交疑惑</button>
+              <div class="community-list" id="questionList">
+                <article>示例：为什么因果稳定离散系统要求 ROC 包含单位圆？</article>
+              </div>
+            </article>
+            <article class="community-card">
+              <h3>全站搜索</h3>
+              <input id="siteSearchInput" type="search" placeholder="搜索：线性、因果、ROC、卷积、FFT、稳态..." />
+              <button id="siteSearchBtn" type="button">搜索</button>
+              <div class="site-search-results" id="siteSearchResults">
+                <article>输入关键词后，将在理论、公式、题库、代码和资源内容中检索。</article>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="resource-modal" id="resourceModal" role="dialog" aria-modal="true" aria-labelledby="resourceTitle">
+      <div class="resource-dialog">
+        <header>
+          <div>
+            <p class="eyebrow" id="resourceKicker">Application Notes</p>
+            <h3 id="resourceTitle">应用资料</h3>
+          </div>
+          <button class="modal-close" id="resourceCloseBtn" type="button" aria-label="关闭资料弹窗">×</button>
+        </header>
+        <div class="resource-body" id="resourceBody"></div>
+      </div>
+    </div>
+
+    <div class="facility-toast" id="facilityToast" role="status" aria-live="polite"></div>
+
+    <footer class="footer" id="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <a class="brand" href="#home">
+              <span class="brand-mark"><i class="fa-solid fa-wave-square"></i></span>
+              <span class="brand-text"><strong>信号与系统</strong><small>Interactive Studio</small></span>
+            </a>
+            <p>一个面向课程复习和展示的现代单页官网。内容为原创导学与交互演示，可配合郑君里《信号与系统》教材学习使用。</p>
+          </div>
+          <div>
+            <h4>页面</h4>
+            <a href="#overview">平台总览</a>
+            <a href="#theory">理论讲义</a>
+            <a href="#formulas">公式手册</a>
+            <a href="#problems">题库系统</a>
+          </div>
+          <div>
+            <h4>实验</h4>
+            <a href="#lab">函数图像</a>
+            <a href="#convolution">卷积动画</a>
+            <a href="#fft">FFT 频谱</a>
+            <a href="#sound">声音频率</a>
+          </div>
+          <div>
+            <h4>链接</h4>
+            <a href="#code">代码工具</a>
+            <a href="#resources">学习社区</a>
+            <a href="#applications">拓展应用</a>
+            <a href="#resources">资料答疑</a>
+          </div>
+        </div>
+        <div class="copyright">© 2026 Signal & Systems Interactive Studio. Built with HTML5, Tailwind-style utilities, Font Awesome-style icons and vanilla JavaScript.</div>
+      </div>
+    </footer>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+
+      const state = {
+        lesson: 0,
+        signalType: "sine",
+        amp: 1.2,
+        freq: 1,
+        shift: 0,
+        scale: 1,
+        sampleRate: 10,
+        convInput: "rect",
+        convKernel: "exp",
+        convSpeed: 1,
+        fftBase: 2,
+        fftHarmonic: 0.45,
+        fftNoise: 0.08,
+        soundFreq: 440,
+        soundGain: 0.06,
+        soundOn: false
+      };
+
+      const audioState = {
+        ctx: null,
+        oscillator: null,
+        gain: null
+      };
+
+      const resourceData = {
+        communication: {
+          title: "通信方向：调制、OFDM 与基带信号",
+          summary: "通信系统把信号与系统中的频移、卷积、滤波、抽样和频谱搬移全部串起来。OFDM 可理解为把高速数据拆到一组相互正交的子载波上，核心工具就是 IFFT/FFT、循环前缀和频域均衡。",
+          points: [
+            "复指数 e^{jωt} 是调制与频移的自然语言，乘以载波会在频域产生平移。",
+            "信道可建模为 LTI 系统，接收信号常写成 y(t)=x(t)*h(t)+n(t)。",
+            "OFDM 发射端用 IFFT 合成多子载波，接收端用 FFT 分离子载波，循环前缀用于对抗多径卷积。"
+          ],
+          links: [
+            ["MathWorks FFT 文档：DFT/FFT、单边谱、频率轴", "https://www.mathworks.com/help/matlab/ref/fft.html"],
+            ["SciPy signal 官方文档：滤波、频谱、窗函数工具", "https://docs.scipy.org/doc/scipy/reference/signal.html"],
+            ["PySDR OFDM 教程：子载波、循环前缀、频域均衡", "https://pysdr.org/content/ofdm.html"]
+          ]
+        },
+        control: {
+          title: "控制方向：传递函数、Bode 图与稳定性",
+          summary: "控制系统中的传递函数 G(s) 与信号系统的系统函数 H(s) 是同一套语言。极点决定自然响应和稳定性，频率响应决定增益、相位、带宽和裕度。",
+          points: [
+            "连续 LTI 系统稳定常要求极点位于左半平面；频域校正常看幅频和相频曲线。",
+            "Bode 图把 H(jω) 的幅值和相位随频率变化分开展示，适合分析带宽、谐振和相位滞后。",
+            "离散系统需要注意单位圆：极点在单位圆内通常对应因果稳定 IIR。"
+          ],
+          links: [
+            ["MathWorks Bode 文档：动态系统频率响应", "https://www.mathworks.com/help/control/ref/dynamicsystem.bode.html"],
+            ["SciPy signal.butter：Butterworth 滤波器设计", "https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.butter.html"],
+            ["SciPy signal 官方文档：LTI、滤波器、频率响应工具", "https://docs.scipy.org/doc/scipy/reference/signal.html"]
+          ]
+        },
+        image: {
+          title: "图像处理：二维傅里叶与频域滤波",
+          summary: "二维图像可看成二维离散信号。二维 FFT 把空间纹理、边缘和周期噪声映射到频域，低通用于平滑去噪，高通用于边缘增强。",
+          points: [
+            "图像频谱中心附近通常表示低频亮度与平滑结构，远离中心表示边缘、纹理和噪声。",
+            "低通滤波保留平滑区域但会模糊边缘；高通滤波突出边缘但可能放大噪声。",
+            "二维频域滤波本质仍是卷积定理：空间卷积对应频域乘法。"
+          ],
+          links: [
+            ["OpenCV Fourier Transform 教程：图像 FFT 与频域滤波", "https://docs.opencv.org/4.x/de/dbc/tutorial_py_fourier_transform.html"],
+            ["SciPy signal 官方文档：二维卷积和滤波函数入口", "https://docs.scipy.org/doc/scipy/reference/signal.html"],
+            ["DSP Guide：数字信号处理基础与图像处理章节", "https://www.dspguide.com/"]
+          ]
+        },
+        audio: {
+          title: "雷达与音频：STFT、匹配滤波与谱峰检测",
+          summary: "雷达和音频都常面对非平稳信号：频率会随时间变化。短时傅里叶变换把信号分帧加窗，得到时频图；匹配滤波则用已知模板提高检测信噪比。",
+          points: [
+            "STFT 的核心是窗口 w[n]：窗口越短时间分辨率越高，频率分辨率越低。",
+            "音频谱图常用于语音、音乐、噪声检测；雷达常结合脉冲压缩和匹配滤波。",
+            "谱峰检测可用于估计主频、谐波、转速、故障频率和目标回波。"
+          ],
+          links: [
+            ["SciPy STFT 文档：短时傅里叶变换参数与重构条件", "https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.stft.html"],
+            ["SciPy find_peaks：谱峰检测工具", "https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html"],
+            ["MathWorks FFT 文档：噪声信号频谱分析示例", "https://www.mathworks.com/help/matlab/ref/fft.html"]
+          ]
+        },
+        modern: {
+          title: "现代信号处理：小波、时频分析与特征工程",
+          summary: "傅里叶变换擅长分析全局频率，小波变换更适合突变、瞬态和多尺度结构。现代信号处理常把 STFT、小波、滤波器组和统计特征结合起来。",
+          points: [
+            "STFT 使用固定窗口，小波使用可伸缩基函数，更适合多尺度分析。",
+            "特征工程常提取能量、谱质心、带宽、峰值、包络、时频纹理等指标。",
+            "工程上常先去趋势、滤波、分帧，再做 FFT/STFT/小波和分类检测。"
+          ],
+          links: [
+            ["PyWavelets DWT 文档：离散小波变换接口", "https://pywavelets.readthedocs.io/en/latest/ref/dwt-discrete-wavelet-transform.html"],
+            ["SciPy STFT 文档：非平稳信号的时频量化", "https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.stft.html"],
+            ["SciPy signal 官方文档：窗函数、谱估计、滤波工具", "https://docs.scipy.org/doc/scipy/reference/signal.html"]
+          ]
+        },
+        biosignal: {
+          title: "医学与生物信号：ECG、EEG、EMG 与可穿戴数据",
+          summary: "生物信号处理强调低幅值、强噪声和伪迹去除。ECG 常关注 R 峰、心率和 HRV；EEG 常关注频带能量、眼电/肌电伪迹和事件相关响应。",
+          points: [
+            "ECG 常用带通滤波去除基线漂移和高频噪声，再用峰值检测定位 QRS/R 峰。",
+            "EEG 常按 δ、θ、α、β、γ 频带分析能量变化，必须注意工频干扰和运动伪迹。",
+            "可穿戴信号通常需要重采样、滤波、异常值处理和滑动窗口特征提取。"
+          ],
+          links: [
+            ["SciPy find_peaks：ECG/R 峰等峰值定位基础工具", "https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html"],
+            ["SciPy signal.butter：生物信号常用带通/低通滤波器", "https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.butter.html"],
+            ["NeuroTechX EEG Notebooks：EEG 学习与实验资料", "https://neurotechx.github.io/eeg-notebooks/"]
+          ]
+        },
+        downloads: {
+          title: "资料下载：讲义、公式表、代码包与真题资料",
+          summary: "资料区适合整理成按章节下载的资源库：连续时间、离散时间、傅里叶、拉普拉斯、Z 变换、滤波和系统响应。静态站点可先提供外部权威讲义与代码文档入口，后续再接入文件下载。",
+          points: [
+            "建议目录：课程讲义 PDF、公式速查表、MATLAB/Python 代码包、章节题型总结。",
+            "讲义资料优先选大学公开课、官方软件文档和教材配套资源，避免低质量二手整理。",
+            "代码包应按“卷积、FFT、滤波、抽样、零极点、系统响应”组织，便于直接运行。"
+          ],
+          links: [
+            ["MIT OCW Signals and Systems 课程资料", "https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/"],
+            ["MathWorks Signal Processing 示例与文档", "https://www.mathworks.com/help/signal/"],
+            ["SciPy signal 官方文档", "https://docs.scipy.org/doc/scipy/reference/signal.html"]
+          ]
+        },
+        notes: {
+          title: "博客 / 笔记区：推导、错题与疑难总结",
+          summary: "笔记区应围绕“为什么这样做”展开：卷积分段边界怎么找、ROC 为什么决定因果稳定、频移为什么只改频谱位置、DFT 频率索引如何对应真实 Hz。",
+          points: [
+            "每篇笔记建议包含：知识点、常见误区、标准例题、解题模板和一段可运行代码。",
+            "高频专题：卷积图解法、傅里叶性质、拉普拉斯部分分式、Z 变换 ROC、FFT 频率轴。",
+            "错题复盘应记录错误原因，而不是只记录正确答案。"
+          ],
+          links: [
+            ["MIT OCW Signals and Systems 视频与讲义", "https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/"],
+            ["DSP Guide 在线教材", "https://www.dspguide.com/"],
+            ["OpenStax 微积分参考：积分与级数基础", "https://openstax.org/details/books/calculus-volume-2"]
+          ]
+        },
+        forum: {
+          title: "答疑论坛：题目讨论、代码调试与经验互助",
+          summary: "论坛功能可以按知识点标签组织：卷积、傅里叶、拉普拉斯、Z 变换、抽样、滤波、MATLAB、Python。每个问题应要求附上题目、已尝试步骤和卡住的位置。",
+          points: [
+            "建议功能：提问、回答、采纳、标签、搜索、代码高亮、公式渲染。",
+            "答疑模板：先判断知识点，再给思路，再给关键步骤，最后指出易错点。",
+            "代码调试要保留最小可复现示例，包括采样率、信号长度、频率轴和图像输出。"
+          ],
+          links: [
+            ["Stack Exchange Signal Processing 社区", "https://dsp.stackexchange.com/"],
+            ["SciPy signal 文档：提问时常用 API 参考", "https://docs.scipy.org/doc/scipy/reference/signal.html"],
+            ["MathWorks Answers Signal Processing 标签", "https://www.mathworks.com/matlabcentral/answers/?term=signal+processing"]
+          ]
+        },
+        search: {
+          title: "全站搜索：知识点、公式、题目与代码检索",
+          summary: "全站搜索应把理论讲义、公式卡、题库标签、代码注释和资源链接统一索引。当前静态站可先做前端关键词筛选，后续可升级为 Lunr/FlexSearch 或后端全文检索。",
+          points: [
+            "关键词同义词要合并：傅里叶/FT/FFT/频谱，拉普拉斯/Laplace/ROC，Z 变换/单位圆/极点。",
+            "搜索结果应分组显示：理论、公式、题目、代码、资料。",
+            "公式搜索需要支持符号输入，如 fs、ω、Ω、H(s)、H(z)、δ(t)。"
+          ],
+          links: [
+            ["Lunr.js：静态站全文搜索方案", "https://lunrjs.com/"],
+            ["FlexSearch：浏览器端高速全文检索", "https://github.com/nextapps-de/flexsearch"],
+            ["MathJax 文档：公式内容渲染与检索配合", "https://docs.mathjax.org/"]
+          ]
+        },
+        latex: {
+          title: "公式排版：从 LaTeX 源码到课本式公式",
+          summary: "公式区不应该直接展示源码。适合使用 MathJax/KaTeX 渲染，或者用 HTML 上下标、分式、积分符号做静态公式排版，保证移动端也清楚。",
+          points: [
+            "连续时间频率用 ω，离散时间频率用 Ω，采样频率用 fs，避免符号混用。",
+            "冲激函数写 δ(t)，单位阶跃写 u(t)，离散单位样值写 δ[n]。",
+            "ROC 解释要和极点、因果性、稳定性一起出现，不能只写一个不等式。"
+          ],
+          links: [
+            ["MathJax 官方文档", "https://docs.mathjax.org/"],
+            ["KaTeX 官方文档", "https://katex.org/docs/api"],
+            ["MIT OCW Signals and Systems 讲义公式参考", "https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/"]
+          ]
+        },
+        mobile: {
+          title: "移动端适配：公式、表格、代码和实验布局",
+          summary: "信号与系统网站移动端最容易出问题的是公式溢出、代码块过宽、表格错位、Canvas 太高。解决方式是公式换行、代码横向滚动、卡片单列、实验区固定宽高比例。",
+          points: [
+            "公式卡片用可换行文本或横向滚动区域，避免在手机端撑破页面。",
+            "实验 Canvas 使用 width:100% 和固定 aspect-ratio，减少大面积空白。",
+            "导航在小屏幕改成折叠菜单，卡片和表格改成单列阅读。"
+          ],
+          links: [
+            ["MDN Responsive Design 基础", "https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design"],
+            ["MDN Canvas API 文档", "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API"],
+            ["web.dev 响应式设计指南", "https://web.dev/learn/design/"]
+          ]
+        }
+      };
+
+      const lessons = [
+        ["第 1 讲", "什么是信号", "信号是承载信息的函数，最常见的是随时间变化的电压、电流、声音或图像序列。", "signal"],
+        ["第 2 讲", "基本变换", "时移、尺度变换和反褶可以把一个简单波形扩展成丰富的输入形式。", "transform"],
+        ["第 3 讲", "LTI 系统", "线性时不变系统可由冲激响应描述，是信号与系统课程的核心对象。", "system"],
+        ["第 4 讲", "卷积直觉", "卷积可以理解为一个波形滑过另一个波形，重叠面积决定当前输出。", "convolution"],
+        ["第 5 讲", "频域思想", "傅里叶分析把复杂信号拆成不同频率，滤波和带宽因此更容易理解。", "frequency"],
+        ["第 6 讲", "抽样恢复", "抽样率不足会产生混叠；满足奈奎斯特条件时才有恢复的理论基础。", "sampling"]
+      ];
+
+      const lessonNotes = [
+        ["建立“信号是函数、系统是映射”的基础视角。", "x(t), x[n], δ(t), u(t)", "切到函数图像实验台，拖动幅度和频率观察波形。"],
+        ["理解时移、尺度变换、反褶对自变量的作用。", "x(t-t0), x(at), x(-t)", "对比同一信号在不同 t0 与 a 下的位置和疏密。"],
+        ["把 LTI 系统看成由冲激响应完全刻画的对象。", "y(t)=x(t)*h(t), H(s)=Y(s)/X(s)", "观察系统框图和零输入/零状态响应。"],
+        ["掌握翻转、平移、相乘、积分四步图解法。", "y(t)=∫x(τ)h(t-τ)dτ", "进入卷积动画实验，观察重叠面积如何变成 y(t)。"],
+        ["理解时域复杂波形可分解成频率成分。", "X(jω)=∫x(t)e^{-jωt}dt", "进入 FFT 频谱实验，观察主频、谐波和噪声底。"],
+        ["理解 fs、fmax、混叠与 sinc 恢复之间的关系。", "fs≥2fmax, x[n]=x(nT)", "进入抽样实验，把 fs 调低制造混叠。"]
+      ];
+
+      const signalInfo = {
+        sine: ["x(t)=A sin[ωa(t-t0)]", "正弦信号适合观察频率、相位和尺度变化。"],
+        cosine: ["x(t)=A cos[ωa(t-t0)]", "余弦与正弦只差相位，频谱结构相同。"],
+        square: ["x(t)=A rect[a(t-t0)/T]", "矩形脉冲越窄，频域主瓣越宽。"],
+        tri: ["x(t)=A tri[a(t-t0)/T]", "三角脉冲可看成两个矩形脉冲卷积。"],
+        step: ["x(t)=A u[a(t-t0)]", "阶跃信号常用于分析系统阶跃响应。"],
+        exp: ["x(t)=A e^(-αa(t-t0))u(t-t0)", "指数衰减常见于一阶系统自然响应。"],
+        sinc: ["x(t)=A sinc[a(t-t0)]", "sinc 函数是理想低通恢复的关键插值核。"],
+        impulse: ["x(t)=AΣδ[a(t-t0)-n]", "冲激序列适合理解抽样和冲激响应。"]
+      };
+
+      document.addEventListener("DOMContentLoaded", () => {
+        setTimeout(() => {
+          $("loader").classList.add("hidden");
+          document.body.classList.remove("loading");
+          if (window.location.hash) {
+            const target = document.querySelector(window.location.hash);
+            if (target) target.scrollIntoView({ behavior: "auto", block: "start" });
+          }
+        }, 420);
+      });
+
+      window.addEventListener("scroll", () => {
+        $("navbar").classList.toggle("scrolled", window.scrollY > 20);
+      });
+
+      $("menuBtn").addEventListener("click", () => {
+        $("navLinks").classList.toggle("open");
+        const icon = $("menuBtn").querySelector("i");
+        icon.className = $("navLinks").classList.contains("open") ? "fa-solid fa-xmark" : "fa-solid fa-bars";
+      });
+
+      document.querySelectorAll(".nav-links a").forEach((link) => {
+        link.addEventListener("click", () => $("navLinks").classList.remove("open"));
+      });
+
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.16 });
+
+      document.querySelectorAll(".reveal").forEach((item) => revealObserver.observe(item));
+
+      const statObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            animateNumber(entry.target);
+            statObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.6 });
+
+      document.querySelectorAll("[data-count]").forEach((item) => statObserver.observe(item));
+
+      function animateNumber(el) {
+        const target = Number(el.dataset.count);
+        const duration = 1200;
+        const start = performance.now();
+        function tick(now) {
+          const progress = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = Math.round(target * eased) + (target === 100 ? "%" : "");
+          if (progress < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      }
+
+      document.querySelectorAll(".lesson-tabs button").forEach((button) => {
+        button.addEventListener("click", () => {
+          activateLesson(Number(button.dataset.lesson));
+        });
+      });
+
+      document.querySelectorAll("[data-lesson-card]").forEach((card) => {
+        const openLesson = () => {
+          activateLesson(Number(card.dataset.lessonCard));
+          document.querySelector("#guideCanvas").scrollIntoView({ behavior: "smooth", block: "center" });
+        };
+        card.addEventListener("click", openLesson);
+        card.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openLesson();
+          }
+        });
+      });
+
+      document.querySelectorAll(".feature-card").forEach((card) => {
+        const openCard = () => {
+          const target = document.querySelector(card.dataset.target);
+          if (card.dataset.lesson) activateLesson(Number(card.dataset.lesson));
+          if (card.dataset.signal) setSignalType(card.dataset.signal);
+          if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+        };
+        card.addEventListener("click", openCard);
+        card.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openCard();
+          }
+        });
+      });
+
+      let facilityToastTimer = null;
+
+      function showFacilityToast(message) {
+        const toast = $("facilityToast");
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.add("show");
+        clearTimeout(facilityToastTimer);
+        facilityToastTimer = setTimeout(() => toast.classList.remove("show"), 2400);
+      }
+
+      function openFacilityCard(card) {
+        document.querySelectorAll(".facility-card").forEach((item) => item.classList.remove("active"));
+        card.classList.add("active");
+        const action = card.dataset.action;
+        const go = (selector, block = "start") => {
+          const target = document.querySelector(selector);
+          if (target) target.scrollIntoView({ behavior: "smooth", block });
+        };
+
+        if (action === "dashboard") {
+          go("#stats");
+          showFacilityToast("已打开课程学习数据面板，进度数字会自动滚动显示。");
+        } else if (action === "formulas") {
+          go("#formulas");
+          const search = $("formulaSearch");
+          if (search) {
+            search.focus({ preventScroll: true });
+            search.value = "Z 变换 ROC";
+            filterFormulas();
+          }
+          showFacilityToast("已打开公式手册，可搜索傅里叶、拉普拉斯、Z 变换、卷积和抽样公式。");
+        } else if (action === "path") {
+          activateLesson(1);
+          go("#guide");
+          showFacilityToast("已打开知识路线导学，并切到“基本变换”主题。");
+        } else if (action === "sampling-diagnose") {
+          state.sampleRate = 5;
+          if ($("sampleRate")) $("sampleRate").value = 5;
+          drawSampling();
+          go("#sampling");
+          showFacilityToast("已进入抽样诊断，并设置较低采样率用于观察混叠。");
+        } else if (action === "video") {
+          activateLesson(0);
+          go("#guide");
+          showFacilityToast("已打开六段导学视频区域，可继续切换 01-06 讲。");
+        } else if (action === "record") {
+          go("#lab");
+          setSignalType("sinc");
+          showFacilityToast("已进入实验台并切到 sinc 信号，便于记录实验现象。");
+        } else if (action === "mobile") {
+          go("#home");
+          showFacilityToast("移动端适配已启用：缩小浏览器宽度可查看卡片和菜单自动重排。");
+        }
+      }
+
+      document.querySelectorAll(".facility-card[data-action]").forEach((card) => {
+        card.addEventListener("click", () => openFacilityCard(card));
+        card.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openFacilityCard(card);
+          }
+        });
+      });
+
+      function filterFormulas() {
+        const input = $("formulaSearch");
+        if (!input) return;
+        const keyword = input.value.trim().toLowerCase();
+        document.querySelectorAll(".formula-card").forEach((card) => {
+          const haystack = (card.textContent + " " + (card.dataset.keywords || "")).toLowerCase();
+          card.style.display = !keyword || haystack.includes(keyword) ? "" : "none";
+        });
+      }
+
+      if ($("formulaSearch")) {
+        $("formulaSearch").addEventListener("input", filterFormulas);
+      }
+
+      function openResourceModal(key) {
+        const data = resourceData[key];
+        const modal = $("resourceModal");
+        const body = $("resourceBody");
+        if (!data || !modal || !body) return;
+        $("resourceTitle").textContent = data.title;
+        body.innerHTML = `
+          <section>
+            <h4>站内整理</h4>
+            <p>${data.summary}</p>
+          </section>
+          <section>
+            <h4>关键知识点</h4>
+            <ul>${data.points.map((point) => `<li>${point}</li>`).join("")}</ul>
+          </section>
+          <section>
+            <h4>检索资料来源</h4>
+            <div class="resource-links">
+              ${data.links.map(([label, href]) => `<a href="${href}" target="_blank" rel="noopener noreferrer">${label}</a>`).join("")}
+            </div>
+          </section>
+        `;
+        modal.classList.add("show");
+        document.body.style.overflow = "hidden";
+        $("resourceCloseBtn").focus();
+      }
+
+      function closeResourceModal() {
+        const modal = $("resourceModal");
+        if (!modal) return;
+        modal.classList.remove("show");
+        document.body.style.overflow = "";
+      }
+
+      document.querySelectorAll("[data-resource]").forEach((card) => {
+        const open = () => openResourceModal(card.dataset.resource);
+        card.addEventListener("click", open);
+        card.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            open();
+          }
+        });
+      });
+
+      if ($("resourceCloseBtn")) $("resourceCloseBtn").addEventListener("click", closeResourceModal);
+      if ($("resourceModal")) {
+        $("resourceModal").addEventListener("click", (event) => {
+          if (event.target === $("resourceModal")) closeResourceModal();
+        });
+      }
+
+      function addCommunityItem(listId, text, answer = "") {
+        const list = $(listId);
+        if (!list || !text.trim()) return;
+        const item = document.createElement("article");
+        item.innerHTML = answer
+          ? `<b>提问：</b>${escapeHtml(text)}<br><b>大师解惑：</b>${escapeHtml(answer)}`
+          : escapeHtml(text);
+        list.prepend(item);
+      }
+
+      function escapeHtml(value) {
+        return value.replace(/[&<>"']/g, (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        })[char]);
+      }
+
+      function makeAnswer(question) {
+        const text = question.toLowerCase();
+        if (text.includes("线性")) return "先检验齐次性，再检验叠加性。只要出现常数项、平方、绝对值或输入相乘，通常就不是线性系统。";
+        if (text.includes("因果")) return "看当前输出是否用到未来输入。连续系统若 y(t0) 依赖 t>t0 的 x(t)，离散系统若 y[n0] 依赖 n>n0 的 x[n]，就是非因果。";
+        if (text.includes("roc") || text.includes("收敛")) return "ROC 要和极点、因果性、稳定性一起判断。连续稳定要求 ROC 包含 jω 轴；离散稳定要求 ROC 包含单位圆。";
+        if (text.includes("卷积")) return "卷积图解按四步走：翻转 h，平移到 t，相乘得到重叠区域，对重叠区域积分或求和。先画支撑区间最稳。";
+        if (text.includes("fft") || text.includes("频谱")) return "先确定采样率 fs 和点数 N，再用 f=kfs/N 建立频率轴。主峰位置对应主要频率，窗函数会影响谱泄漏。";
+        if (text.includes("稳态") || text.includes("暂态")) return "暂态由系统自然模态决定，稳定系统中会衰减；稳态是长期保留的响应，正弦稳态只改变幅度和相位。";
+        return "建议先定位知识点，再写出系统表达式或变换式，最后按性质判据逐条检查。可以补充题目条件，我再按步骤拆解。";
+      }
+
+      if ($("saveNoteBtn")) {
+        $("saveNoteBtn").addEventListener("click", () => {
+          const input = $("noteInput");
+          if (!input || !input.value.trim()) return;
+          addCommunityItem("noteList", input.value.trim());
+          input.value = "";
+          showFacilityToast("笔记已发布到页面内。");
+        });
+      }
+
+      if ($("askQuestionBtn")) {
+        $("askQuestionBtn").addEventListener("click", () => {
+          const input = $("questionInput");
+          if (!input || !input.value.trim()) return;
+          addCommunityItem("questionList", input.value.trim(), makeAnswer(input.value));
+          input.value = "";
+          showFacilityToast("疑惑已提交，大师解惑已生成。");
+        });
+      }
+
+      function runSiteSearch() {
+        const input = $("siteSearchInput");
+        const result = $("siteSearchResults");
+        if (!input || !result) return;
+        const keyword = input.value.trim().toLowerCase();
+        if (!keyword) {
+          result.innerHTML = "<article>输入关键词后，将在理论、公式、题库、代码和资源内容中检索。</article>";
+          return;
+        }
+        const sources = Array.from(document.querySelectorAll(
+          "#theory article, #formulas article, #problems article, #code article, #applications article, #resources article, #lab .canvas-card, #convolution .canvas-card, #fft .canvas-card, #sampling .canvas-card, #ztransform .canvas-card"
+        ));
+        const matches = sources
+          .map((node) => {
+            const title = node.querySelector("h3")?.textContent || node.querySelector("b")?.textContent || "相关内容";
+            const text = node.textContent.replace(/\s+/g, " ").trim();
+            return { title, text, node };
+          })
+          .filter((item) => item.text.toLowerCase().includes(keyword))
+          .slice(0, 8);
+        if (!matches.length) {
+          result.innerHTML = `<article>没有找到“${escapeHtml(input.value)}”。可以试试：线性、因果、ROC、卷积、FFT、稳态、抽样。</article>`;
+          return;
+        }
+        result.innerHTML = matches.map((item) => {
+          const index = item.text.toLowerCase().indexOf(keyword);
+          const start = Math.max(0, index - 28);
+          const snippet = item.text.slice(start, start + 96);
+          return `<article><b>${escapeHtml(item.title)}</b><br>${escapeHtml(snippet)}...</article>`;
+        }).join("");
+      }
+
+      if ($("siteSearchBtn")) $("siteSearchBtn").addEventListener("click", runSiteSearch);
+      if ($("siteSearchInput")) {
+        $("siteSearchInput").addEventListener("keydown", (event) => {
+          if (event.key === "Enter") runSiteSearch();
+        });
+        $("siteSearchInput").addEventListener("input", runSiteSearch);
+      }
+
+      document.querySelectorAll(".copy-code").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const code = button.closest(".code-card")?.querySelector("code")?.textContent || "";
+          if (!code) return;
+          try {
+            await navigator.clipboard.writeText(code);
+          } catch {
+            const area = document.createElement("textarea");
+            area.value = code;
+            document.body.appendChild(area);
+            area.select();
+            document.execCommand("copy");
+            area.remove();
+          }
+          button.textContent = "已复制";
+          setTimeout(() => {
+            button.textContent = "复制代码";
+          }, 1400);
+        });
+      });
+
+      function activateLesson(index) {
+        state.lesson = index;
+        document.querySelectorAll(".lesson-tabs button").forEach((item) => {
+          item.classList.toggle("active", Number(item.dataset.lesson) === index);
+        });
+        document.querySelectorAll("[data-lesson-card]").forEach((item) => {
+          item.classList.toggle("active", Number(item.dataset.lessonCard) === index);
+        });
+        updateLessonText();
+      }
+
+      function updateLessonText() {
+        const lesson = lessons[state.lesson];
+        $("lessonTag").textContent = lesson[0];
+        $("lessonTitle").textContent = lesson[1];
+        $("lessonCaption").textContent = lesson[2];
+        const notes = lessonNotes[state.lesson];
+        if ($("lessonGoal")) $("lessonGoal").textContent = notes[0];
+        if ($("lessonFormula")) $("lessonFormula").textContent = notes[1];
+        if ($("lessonPractice")) $("lessonPractice").textContent = notes[2];
+      }
+
+      function sinc(x) {
+        if (Math.abs(x) < 1e-8) return 1;
+        return Math.sin(Math.PI * x) / (Math.PI * x);
+      }
+
+      function signalValue(t) {
+        const u = state.scale * (t - state.shift);
+        const A = state.amp;
+        const w = state.freq;
+        if (state.signalType === "sine") return A * Math.sin((2 * Math.PI * w * u) / 4);
+        if (state.signalType === "cosine") return A * Math.cos((2 * Math.PI * w * u) / 4);
+        if (state.signalType === "square") return Math.abs(u) <= w ? A : 0;
+        if (state.signalType === "tri") return Math.max(0, A * (1 - Math.abs(u) / Math.max(0.2, w)));
+        if (state.signalType === "step") return u >= 0 ? A : 0;
+        if (state.signalType === "exp") return u >= 0 ? A * Math.exp((-w * u) / 2) : 0;
+        if (state.signalType === "sinc") return A * sinc(w * u);
+        if (state.signalType === "impulse") return Math.abs(u - Math.round(u)) < 0.035 ? A : 0;
+        return 0;
+      }
+
+      ["amp", "freq", "shift", "scale"].forEach((id) => {
+        $(id).addEventListener("input", (e) => {
+          state[id] = Number(e.target.value);
+          $(id + "Value").textContent = state[id].toFixed(1);
+          updateSignalText();
+          drawSignal();
+        });
+      });
+
+      $("resetSignalBtn").addEventListener("click", () => {
+        state.amp = 1.2;
+        state.freq = 1;
+        state.shift = 0;
+        state.scale = 1;
+        ["amp", "freq", "shift", "scale"].forEach((id) => {
+          $(id).value = state[id];
+          $(id + "Value").textContent = state[id].toFixed(1);
+        });
+        setSignalType("sine");
+      });
+
+      const signalDropdown = $("signalDropdown");
+      const signalButton = $("signalSelectButton");
+      const selectedSignalText = $("selectedSignalText");
+
+      signalButton.addEventListener("click", () => {
+        const isOpen = signalDropdown.classList.toggle("open");
+        signalButton.setAttribute("aria-expanded", String(isOpen));
+      });
+
+      document.querySelectorAll(".custom-options button").forEach((button) => {
+        button.addEventListener("click", () => {
+          setSignalType(button.dataset.value);
+          closeSignalDropdown();
+        });
+      });
+
+      document.addEventListener("click", (event) => {
+        if (!signalDropdown.contains(event.target)) closeSignalDropdown();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeSignalDropdown();
+          closeResourceModal();
+        }
+      });
+
+      function closeSignalDropdown() {
+        signalDropdown.classList.remove("open");
+        signalButton.setAttribute("aria-expanded", "false");
+      }
+
+      function setSignalType(value) {
+        state.signalType = value;
+        $("signalType").value = value;
+        document.querySelectorAll(".custom-options button").forEach((button) => {
+          const active = button.dataset.value === value;
+          button.classList.toggle("active", active);
+          button.setAttribute("aria-selected", String(active));
+          if (active) selectedSignalText.textContent = button.textContent;
+        });
+        updateSignalText();
+        drawSignal();
+      }
+
+      $("sampleRate").addEventListener("input", (event) => {
+        state.sampleRate = Number(event.target.value);
+        $("sampleRateValue").textContent = `${state.sampleRate} Hz`;
+        drawSampling();
+      });
+
+      $("sampleGoodBtn").addEventListener("click", () => {
+        state.sampleRate = 12;
+        $("sampleRate").value = 12;
+        $("sampleRateValue").textContent = "12 Hz";
+        drawSampling();
+      });
+
+      $("sampleAliasBtn").addEventListener("click", () => {
+        state.sampleRate = 4;
+        $("sampleRate").value = 4;
+        $("sampleRateValue").textContent = "4 Hz";
+        drawSampling();
+      });
+
+      $("sampleResetBtn").addEventListener("click", () => {
+        state.sampleRate = 10;
+        $("sampleRate").value = 10;
+        $("sampleRateValue").textContent = "10 Hz";
+        drawSampling();
+      });
+
+      $("convInput").addEventListener("change", (event) => {
+        state.convInput = event.target.value;
+      });
+
+      $("convKernel").addEventListener("change", (event) => {
+        state.convKernel = event.target.value;
+      });
+
+      $("convSpeed").addEventListener("input", (event) => {
+        state.convSpeed = Number(event.target.value);
+        $("convSpeedValue").textContent = state.convSpeed.toFixed(1) + "x";
+      });
+
+      ["fftBase", "fftHarmonic", "fftNoise"].forEach((id) => {
+        $(id).addEventListener("input", (event) => {
+          state[id] = Number(event.target.value);
+          const suffix = id === "fftBase" ? " Hz" : "";
+          $(id + "Value").textContent = state[id].toFixed(id === "fftBase" ? 0 : 2) + suffix;
+          $("fftFormula").textContent = `x(t)=sin(2π·${state.fftBase}t)+${state.fftHarmonic.toFixed(2)}sin(2π·${state.fftBase * 3}t)+noise`;
+        });
+      });
+
+      $("soundFreq").addEventListener("input", (event) => {
+        setSoundFrequency(Number(event.target.value));
+      });
+
+      $("soundGain").addEventListener("input", (event) => {
+        state.soundGain = Number(event.target.value);
+        $("soundGainValue").textContent = state.soundGain.toFixed(2);
+        if (audioState.gain) audioState.gain.gain.setTargetAtTime(state.soundGain, audioState.ctx.currentTime, 0.02);
+      });
+
+      $("soundToggleBtn").addEventListener("click", toggleSound);
+
+      document.querySelectorAll("[data-tone]").forEach((button) => {
+        button.addEventListener("click", () => setSoundFrequency(Number(button.dataset.tone)));
+      });
+
+      function updateSignalText() {
+        $("formula").textContent = signalInfo[state.signalType][0];
+        $("signalHint").textContent = signalInfo[state.signalType][1];
+      }
+
+      function drawAxes(ctx, canvas, xMin, xMax, yMin, yMax) {
+        const W = canvas.width;
+        const H = canvas.height;
+        const pad = { l: 58, r: 28, t: 30, b: 48 };
+        const sx = (x) => pad.l + ((x - xMin) / (xMax - xMin)) * (W - pad.l - pad.r);
+        const sy = (y) => pad.t + (1 - (y - yMin) / (yMax - yMin)) * (H - pad.t - pad.b);
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = "rgba(255,255,255,0.72)";
+        ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = "rgba(40,58,90,0.10)";
+        ctx.lineWidth = 1;
+        for (let x = Math.ceil(xMin); x <= Math.floor(xMax); x++) {
+          ctx.beginPath();
+          ctx.moveTo(sx(x), pad.t);
+          ctx.lineTo(sx(x), H - pad.b);
+          ctx.stroke();
+        }
+        for (let y = Math.ceil(yMin); y <= Math.floor(yMax); y++) {
+          ctx.beginPath();
+          ctx.moveTo(pad.l, sy(y));
+          ctx.lineTo(W - pad.r, sy(y));
+          ctx.stroke();
+        }
+        ctx.strokeStyle = "rgba(40,58,90,0.26)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(sx(xMin), sy(0));
+        ctx.lineTo(sx(xMax), sy(0));
+        ctx.moveTo(sx(0), sy(yMin));
+        ctx.lineTo(sx(0), sy(yMax));
+        ctx.stroke();
+        return { sx, sy };
+      }
+
+      function drawSignal() {
+        const canvas = $("signalCanvas");
+        const ctx = canvas.getContext("2d");
+        const coord = drawAxes(ctx, canvas, -8, 8, -3.2, 3.2);
+        const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        grad.addColorStop(0, "#22d3ee");
+        grad.addColorStop(0.5, "#8b5cf6");
+        grad.addColorStop(1, "#f59e0b");
+        ctx.strokeStyle = grad;
+        ctx.fillStyle = "#22d3ee";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        if (state.signalType === "impulse") {
+          for (let x = -8; x <= 8; x += 1) {
+            const y = signalValue(x);
+            ctx.moveTo(coord.sx(x), coord.sy(0));
+            ctx.lineTo(coord.sx(x), coord.sy(y));
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(coord.sx(x), coord.sy(y), 5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+          }
+          return;
+        }
+        const N = 900;
+        for (let i = 0; i <= N; i++) {
+          const x = -8 + (i / N) * 16;
+          const y = signalValue(x);
+          if (i === 0) ctx.moveTo(coord.sx(x), coord.sy(y));
+          else ctx.lineTo(coord.sx(x), coord.sy(y));
+        }
+        ctx.stroke();
+      }
+
+      function sampleSource(t) {
+        return Math.sin(2 * Math.PI * 1.2 * t) + 0.45 * Math.sin(2 * Math.PI * 2.6 * t + 0.4);
+      }
+
+      function drawSamples(ctx, samples, coord) {
+        ctx.save();
+        ctx.strokeStyle = "#f59e0b";
+        ctx.fillStyle = "#f59e0b";
+        ctx.lineWidth = 2.5;
+        samples.forEach(([t, y]) => {
+          ctx.beginPath();
+          ctx.moveTo(coord.sx(t), coord.sy(0));
+          ctx.lineTo(coord.sx(t), coord.sy(y));
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(coord.sx(t), coord.sy(y), 5, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        ctx.restore();
+      }
+
+      function sincReconstruct(t, samples, Ts) {
+        return samples.reduce((sum, sample) => sum + sample[1] * sinc((t - sample[0]) / Ts), 0);
+      }
+
+      function drawSampling() {
+        const canvas = $("samplingCanvas");
+        const ctx = canvas.getContext("2d");
+        const coord = drawAxes(ctx, canvas, -2.5, 2.5, -2.2, 2.2);
+        const fs = state.sampleRate;
+        const Ts = 1 / fs;
+        const samples = [];
+        for (let t = -2.5; t <= 2.5001; t += Ts) samples.push([t, sampleSource(t)]);
+
+        const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        grad.addColorStop(0, "#0891b2");
+        grad.addColorStop(1, "#22d3ee");
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 3.5;
+        ctx.beginPath();
+        for (let i = 0; i <= 850; i++) {
+          const x = -2.5 + (i / 850) * 5;
+          const y = sampleSource(x);
+          if (i === 0) ctx.moveTo(coord.sx(x), coord.sy(y));
+          else ctx.lineTo(coord.sx(x), coord.sy(y));
+        }
+        ctx.stroke();
+
+        ctx.strokeStyle = "#8b5cf6";
+        ctx.lineWidth = 3;
+        ctx.setLineDash([9, 7]);
+        ctx.beginPath();
+        for (let i = 0; i <= 850; i++) {
+          const x = -2.5 + (i / 850) * 5;
+          const y = sincReconstruct(x, samples, Ts);
+          if (i === 0) ctx.moveTo(coord.sx(x), coord.sy(y));
+          else ctx.lineTo(coord.sx(x), coord.sy(y));
+        }
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        drawSamples(ctx, samples, coord);
+
+        const nyquist = 5.2;
+        const status = $("samplingStatus");
+        if (fs > nyquist) {
+          status.className = "sampling-status";
+          status.textContent = `fs=${fs} Hz，高于 2fmax≈${nyquist.toFixed(1)} Hz，理论上满足恢复条件。`;
+        } else {
+          status.className = "sampling-status warn";
+          status.textContent = `fs=${fs} Hz，低于 2fmax≈${nyquist.toFixed(1)} Hz，存在混叠风险。`;
+        }
+      }
+
+      function convInputValue(t) {
+        if (state.convInput === "rect") return Math.abs(t) <= 1.05 ? 1 : 0;
+        if (state.convInput === "tri") return Math.max(0, 1 - Math.abs(t) / 1.45);
+        if (state.convInput === "exp") return t >= 0 ? Math.exp(-1.15 * t) : 0;
+        return 0;
+      }
+
+      function convKernelValue(t) {
+        if (state.convKernel === "exp") return t >= 0 ? Math.exp(-1.25 * t) : 0;
+        if (state.convKernel === "rect") return Math.abs(t) <= 0.9 ? 0.75 : 0;
+        if (state.convKernel === "sinc") return 0.75 * sinc(1.25 * t);
+        return 0;
+      }
+
+      function convolutionArea(t) {
+        let sum = 0;
+        const step = 0.025;
+        for (let tau = -4; tau <= 4; tau += step) {
+          sum += convInputValue(tau) * convKernelValue(t - tau) * step;
+        }
+        return sum;
+      }
+
+      function drawConvolution(time = 0) {
+        const canvas = $("convolutionCanvas");
+        if (!canvas) return requestAnimationFrame(drawConvolution);
+        const ctx = canvas.getContext("2d");
+        const W = canvas.width;
+        const H = canvas.height;
+        const top = { x: 56, y: 46, w: W - 112, h: 260 };
+        const bottom = { x: 56, y: 356, w: W - 112, h: 150 };
+        const t = -3.6 + ((time / 1000 * state.convSpeed) % 7.2);
+        const xToPx = (x, box) => box.x + ((x + 4) / 8) * box.w;
+        const yToPy = (y, box) => box.y + box.h * 0.78 - y * box.h * 0.48;
+
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = "rgba(255,255,255,0.82)";
+        ctx.fillRect(0, 0, W, H);
+        drawPanelGrid(ctx, top, -4, 4, "τ");
+        drawPanelGrid(ctx, bottom, -4, 4, "t");
+
+        ctx.fillStyle = "rgba(139,92,246,0.18)";
+        ctx.beginPath();
+        let started = false;
+        for (let i = 0; i <= 520; i++) {
+          const tau = -4 + (i / 520) * 8;
+          const product = convInputValue(tau) * convKernelValue(t - tau);
+          const px = xToPx(tau, top);
+          const py = yToPy(product, top);
+          if (!started) {
+            ctx.moveTo(px, yToPy(0, top));
+            ctx.lineTo(px, py);
+            started = true;
+          } else {
+            ctx.lineTo(px, py);
+          }
+        }
+        ctx.lineTo(xToPx(4, top), yToPy(0, top));
+        ctx.closePath();
+        ctx.fill();
+
+        drawCurve(ctx, top, (x) => convInputValue(x), "#0891b2", 4);
+        drawCurve(ctx, top, (x) => convKernelValue(t - x), "#f59e0b", 4);
+        drawCurve(ctx, top, (x) => convInputValue(x) * convKernelValue(t - x), "#8b5cf6", 3, [8, 6]);
+        drawCurve(ctx, bottom, (x) => convolutionArea(x), "#8b5cf6", 4);
+
+        const area = convolutionArea(t);
+        ctx.strokeStyle = "#f59e0b";
+        ctx.lineWidth = 2.5;
+        ctx.setLineDash([7, 7]);
+        ctx.beginPath();
+        ctx.moveTo(xToPx(t, bottom), bottom.y + 18);
+        ctx.lineTo(xToPx(t, bottom), bottom.y + bottom.h - 12);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = "#172033";
+        ctx.font = "800 20px Microsoft YaHei, Arial";
+        ctx.fillText("x(τ)", top.x + 10, top.y + 26);
+        ctx.fillStyle = "#f59e0b";
+        ctx.fillText("h(t-τ)", top.x + 86, top.y + 26);
+        ctx.fillStyle = "#8b5cf6";
+        ctx.fillText("x(τ)h(t-τ)", top.x + 190, top.y + 26);
+        ctx.fillStyle = "#172033";
+        ctx.fillText("输出 y(t)", bottom.x + 10, bottom.y + 26);
+        $("convTimeValue").textContent = "t=" + t.toFixed(2);
+        $("convAreaValue").textContent = area.toFixed(2);
+        requestAnimationFrame(drawConvolution);
+      }
+
+      function drawPanelGrid(ctx, box, xMin, xMax, label) {
+        ctx.save();
+        ctx.fillStyle = "rgba(255,255,255,0.56)";
+        ctx.fillRect(box.x, box.y, box.w, box.h);
+        ctx.strokeStyle = "rgba(40,58,90,0.12)";
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= 8; i++) {
+          const x = box.x + (i / 8) * box.w;
+          ctx.beginPath();
+          ctx.moveTo(x, box.y);
+          ctx.lineTo(x, box.y + box.h);
+          ctx.stroke();
+        }
+        for (let i = 0; i <= 4; i++) {
+          const y = box.y + (i / 4) * box.h;
+          ctx.beginPath();
+          ctx.moveTo(box.x, y);
+          ctx.lineTo(box.x + box.w, y);
+          ctx.stroke();
+        }
+        ctx.strokeStyle = "rgba(40,58,90,0.28)";
+        ctx.lineWidth = 2;
+        const zeroY = box.y + box.h * 0.78;
+        ctx.beginPath();
+        ctx.moveTo(box.x, zeroY);
+        ctx.lineTo(box.x + box.w, zeroY);
+        ctx.stroke();
+        ctx.fillStyle = "#5e687d";
+        ctx.font = "700 16px Microsoft YaHei, Arial";
+        ctx.fillText(label, box.x + box.w - 18, zeroY - 8);
+        ctx.restore();
+      }
+
+      function drawCurve(ctx, box, fn, color, width, dash = []) {
+        const xToPx = (x) => box.x + ((x + 4) / 8) * box.w;
+        const yToPy = (y) => box.y + box.h * 0.78 - y * box.h * 0.48;
+        ctx.save();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        ctx.setLineDash(dash);
+        ctx.beginPath();
+        for (let i = 0; i <= 620; i++) {
+          const x = -4 + (i / 620) * 8;
+          const y = fn(x);
+          if (i === 0) ctx.moveTo(xToPx(x), yToPy(y));
+          else ctx.lineTo(xToPx(x), yToPy(y));
+        }
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      function fftSignal(n, N) {
+        const t = n / N;
+        const f0 = state.fftBase;
+        const harmonic = state.fftHarmonic * Math.sin(2 * Math.PI * f0 * 3 * t);
+        const low = Math.sin(2 * Math.PI * f0 * t);
+        const noise = state.fftNoise * (Math.sin(2 * Math.PI * 17 * t + 1.1) + Math.sin(2 * Math.PI * 29 * t + 0.3));
+        return low + harmonic + noise;
+      }
+
+      function computeDft(values) {
+        const N = values.length;
+        const mags = [];
+        for (let k = 0; k < N / 2; k++) {
+          let re = 0;
+          let im = 0;
+          for (let n = 0; n < N; n++) {
+            const angle = (-2 * Math.PI * k * n) / N;
+            re += values[n] * Math.cos(angle);
+            im += values[n] * Math.sin(angle);
+          }
+          mags.push((2 * Math.hypot(re, im)) / N);
+        }
+        return mags;
+      }
+
+      function drawFft(time = 0) {
+        const canvas = $("fftCanvas");
+        if (!canvas) return requestAnimationFrame(drawFft);
+        const ctx = canvas.getContext("2d");
+        const W = canvas.width;
+        const H = canvas.height;
+        const N = 64;
+        const values = Array.from({ length: N }, (_, n) => fftSignal(n, N));
+        const mags = computeDft(values);
+        const waveBox = { x: 56, y: 46, w: W - 112, h: 190 };
+        const specBox = { x: 56, y: 300, w: W - 112, h: 190 };
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = "rgba(255,255,255,0.82)";
+        ctx.fillRect(0, 0, W, H);
+        drawPanelGrid(ctx, waveBox, 0, N, "n");
+        drawPanelGrid(ctx, specBox, 0, N / 2, "k");
+
+        ctx.strokeStyle = "#0891b2";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        values.forEach((v, n) => {
+          const x = waveBox.x + (n / (N - 1)) * waveBox.w;
+          const y = waveBox.y + waveBox.h / 2 - v * 48;
+          if (n === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+
+        const maxMag = Math.max(1, ...mags);
+        const barW = specBox.w / 24;
+        for (let k = 0; k < 24; k++) {
+          const h = (mags[k] / maxMag) * (specBox.h * 0.74);
+          const x = specBox.x + k * barW + 5;
+          const y = specBox.y + specBox.h * 0.85 - h;
+          const isPeak = k === state.fftBase || k === state.fftBase * 3;
+          ctx.fillStyle = isPeak ? "#f59e0b" : "rgba(139,92,246,0.72)";
+          ctx.fillRect(x, y, Math.max(6, barW - 10), h);
+        }
+
+        const centerX = W - 145;
+        const centerY = 152;
+        const spin = time / 1000 * state.fftBase * 1.7;
+        ctx.strokeStyle = "rgba(40,58,90,0.2)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 48, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.strokeStyle = "#f59e0b";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.lineTo(centerX + Math.cos(spin) * 48, centerY + Math.sin(spin) * 48);
+        ctx.stroke();
+        ctx.fillStyle = "#172033";
+        ctx.font = "800 20px Microsoft YaHei, Arial";
+        ctx.fillText("时域 x[n]", waveBox.x + 10, waveBox.y + 26);
+        ctx.fillText("FFT 幅度 |X[k]|", specBox.x + 10, specBox.y + 26);
+        requestAnimationFrame(drawFft);
+      }
+
+      function setSoundFrequency(freq) {
+        state.soundFreq = freq;
+        $("soundFreq").value = freq;
+        $("soundFreqValue").textContent = Math.round(freq) + " Hz";
+        $("soundPeriodValue").textContent = (1000 / freq).toFixed(2) + " ms";
+        $("soundPitchValue").textContent = frequencyToNote(freq);
+        if (audioState.oscillator && audioState.ctx) {
+          audioState.oscillator.frequency.setTargetAtTime(freq, audioState.ctx.currentTime, 0.02);
+        }
+      }
+
+      function frequencyToNote(freq) {
+        const names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+        const midi = Math.round(69 + 12 * Math.log2(freq / 440));
+        return names[((midi % 12) + 12) % 12] + (Math.floor(midi / 12) - 1);
+      }
+
+      function ensureAudio() {
+        if (audioState.ctx) return;
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioState.ctx = new AudioContext();
+        audioState.gain = audioState.ctx.createGain();
+        audioState.gain.gain.value = 0;
+        audioState.gain.connect(audioState.ctx.destination);
+        audioState.oscillator = audioState.ctx.createOscillator();
+        audioState.oscillator.type = "sine";
+        audioState.oscillator.frequency.value = state.soundFreq;
+        audioState.oscillator.connect(audioState.gain);
+        audioState.oscillator.start();
+      }
+
+      async function toggleSound() {
+        ensureAudio();
+        if (audioState.ctx.state === "suspended") await audioState.ctx.resume();
+        state.soundOn = !state.soundOn;
+        const target = state.soundOn ? state.soundGain : 0;
+        audioState.gain.gain.setTargetAtTime(target, audioState.ctx.currentTime, 0.025);
+        $("soundToggleBtn").textContent = state.soundOn ? "停止声音" : "播放声音";
+      }
+
+      function drawSound(time = 0) {
+        const canvas = $("soundCanvas");
+        if (!canvas) return requestAnimationFrame(drawSound);
+        const ctx = canvas.getContext("2d");
+        const W = canvas.width;
+        const H = canvas.height;
+        const t = time / 1000;
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = "rgba(255,255,255,0.82)";
+        ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = "rgba(40,58,90,0.10)";
+        for (let x = 56; x < W - 56; x += 48) {
+          ctx.beginPath();
+          ctx.moveTo(x, 46);
+          ctx.lineTo(x, H - 92);
+          ctx.stroke();
+        }
+        const cycles = state.soundFreq / 110;
+        ctx.strokeStyle = "#0891b2";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        for (let i = 0; i <= W - 112; i++) {
+          const x = 56 + i;
+          const y = 185 + Math.sin((i / (W - 112)) * Math.PI * 2 * cycles - t * 6) * 82;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        const scaleX = 56 + ((state.soundFreq - 110) / (1760 - 110)) * (W - 112);
+        ctx.strokeStyle = "rgba(40,58,90,0.2)";
+        ctx.lineWidth = 8;
+        ctx.beginPath();
+        ctx.moveTo(56, H - 88);
+        ctx.lineTo(W - 56, H - 88);
+        ctx.stroke();
+        ctx.fillStyle = "#f59e0b";
+        ctx.beginPath();
+        ctx.arc(scaleX, H - 88, state.soundOn ? 14 + Math.sin(t * 8) * 3 : 12, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#172033";
+        ctx.font = "800 22px Microsoft YaHei, Arial";
+        ctx.fillText(`${Math.round(state.soundFreq)} Hz · ${frequencyToNote(state.soundFreq)}`, 56, 48);
+        ctx.fillStyle = "#5e687d";
+        ctx.font = "700 16px Microsoft YaHei, Arial";
+        ctx.fillText("110 Hz", 56, H - 52);
+        ctx.fillText("1760 Hz", W - 132, H - 52);
+        requestAnimationFrame(drawSound);
+      }
+
+      function drawHero(time = 0) {
+        const canvas = $("heroCanvas");
+        const ctx = canvas.getContext("2d");
+        const W = canvas.width;
+        const H = canvas.height;
+        const t = time / 1000;
+        ctx.clearRect(0, 0, W, H);
+        const bg = ctx.createLinearGradient(0, 0, W, H);
+        bg.addColorStop(0, "rgba(255,255,255,0.62)");
+        bg.addColorStop(1, "rgba(218,244,248,0.46)");
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = "rgba(40,58,90,0.08)";
+        ctx.lineWidth = 1;
+        for (let x = 0; x < W; x += 54) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, H);
+          ctx.stroke();
+        }
+        for (let y = 0; y < H; y += 54) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(W, y);
+          ctx.stroke();
+        }
+        drawAnimatedWave(ctx, W, H, t, 1, "#22d3ee", 4);
+        drawAnimatedWave(ctx, W, H, t + 1.2, 0.55, "#8b5cf6", 3);
+        requestAnimationFrame(drawHero);
+      }
+
+      function drawAnimatedWave(ctx, W, H, t, amp, color, width) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        ctx.beginPath();
+        for (let i = 0; i <= W - 100; i++) {
+          const x = 50 + i;
+          const y = H / 2 + Math.sin(i / 42 - t * 2) * 64 * amp + Math.sin(i / 90 + t) * 28 * amp;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+
+      function drawGuide(time = 0) {
+        const canvas = $("guideCanvas");
+        const ctx = canvas.getContext("2d");
+        const W = canvas.width;
+        const H = canvas.height;
+        const t = time / 1000;
+        const mode = lessons[state.lesson][3];
+        ctx.clearRect(0, 0, W, H);
+        const bg = ctx.createLinearGradient(0, 0, W, H);
+        bg.addColorStop(0, "#11142b");
+        bg.addColorStop(0.55, "#2b1855");
+        bg.addColorStop(1, "#08111f");
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = "rgba(255,255,255,0.08)";
+        for (let x = 60; x < W; x += 60) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, H);
+          ctx.stroke();
+        }
+        for (let y = 60; y < H; y += 60) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(W, y);
+          ctx.stroke();
+        }
+        if (mode === "signal" || mode === "transform") {
+          ctx.strokeStyle = "#67e8f9";
+          ctx.lineWidth = 6;
+          ctx.beginPath();
+          for (let i = 0; i <= 680; i++) {
+            const x = 150 + i + (mode === "transform" ? Math.sin(t) * 42 : 0);
+            const y = 235 + Math.sin(i / 42 - t * 2) * 68 * (mode === "transform" ? 1 + 0.25 * Math.sin(t) : 1);
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        }
+        if (mode === "system") {
+          block(ctx, 120, 180, 190, 110, "x(t)", "#0891b2");
+          block(ctx, 395, 160, 220, 150, "H", "#7c3aed");
+          block(ctx, 720, 180, 190, 110, "y(t)", "#db2777");
+          arrow(ctx, 318, 235, 385, 235);
+          arrow(ctx, 626, 235, 712, 235);
+        }
+        if (mode === "convolution") {
+          const baseY = 300;
+          const slide = 150 + ((t * 120) % 660);
+          ctx.strokeStyle = "rgba(255,255,255,0.3)";
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(120, baseY);
+          ctx.lineTo(870, baseY);
+          ctx.stroke();
+          ctx.strokeStyle = "#67e8f9";
+          ctx.lineWidth = 5;
+          ctx.beginPath();
+          for (let i = 0; i <= 640; i++) {
+            const x = 170 + i;
+            const y = baseY - Math.max(0, 95 - Math.abs(i - 260) * 1.2);
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+          ctx.fillStyle = "rgba(245,158,11,0.22)";
+          ctx.fillRect(slide, baseY - 112, 155, 112);
+          ctx.strokeStyle = "#fbbf24";
+          ctx.lineWidth = 4;
+          ctx.strokeRect(slide, baseY - 112, 155, 112);
+          ctx.fillStyle = "rgba(139,92,246,0.26)";
+          ctx.beginPath();
+          ctx.moveTo(slide, baseY);
+          ctx.lineTo(slide, baseY - 54);
+          ctx.lineTo(slide + 155, baseY - 54);
+          ctx.lineTo(slide + 155, baseY);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = "#fff";
+          ctx.font = "800 24px Microsoft YaHei, Arial";
+          ctx.fillText("翻转 h(t-τ) → 平移 → 重叠面积 = y(t)", 180, 410);
+        }
+        if (mode === "frequency") {
+          ctx.strokeStyle = "#67e8f9";
+          ctx.lineWidth = 4;
+          ctx.beginPath();
+          for (let i = 0; i <= 650; i++) {
+            const x = 160 + i;
+            const y = 165 + Math.sin(i / 34 - t * 2.2) * 38 + Math.sin(i / 13 - t * 3.5) * 17;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+          ctx.strokeStyle = "rgba(255,255,255,0.36)";
+          ctx.beginPath();
+          ctx.moveTo(130, 360);
+          ctx.lineTo(850, 360);
+          ctx.stroke();
+          for (let i = 0; i < 17; i++) {
+            const h = 28 + 145 * Math.exp(-Math.abs(i - 6) / 2.6) * (0.78 + 0.22 * Math.sin(t * 2 + i));
+            ctx.fillStyle = i === 6 || i === 12 ? "#fbbf24" : "#67e8f9";
+            ctx.fillRect(145 + i * 42, 360 - h, 22, h);
+          }
+          ctx.fillStyle = "#fff";
+          ctx.font = "800 24px Microsoft YaHei, Arial";
+          ctx.fillText("时域波形  →  FFT 频谱峰值", 250, 430);
+        }
+        if (mode === "sampling") {
+          ctx.strokeStyle = "#67e8f9";
+          ctx.lineWidth = 4;
+          ctx.beginPath();
+          for (let i = 0; i <= 680; i++) {
+            const x = 150 + i;
+            const y = 250 + Math.sin(i / 42 - t) * 62;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+          ctx.fillStyle = "#fbbf24";
+          for (let i = 0; i < 16; i++) {
+            const x = 165 + i * 43;
+            const y = 250 + Math.sin((x - 150) / 42 - t) * 62;
+            ctx.beginPath();
+            ctx.arc(x, y, 7, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+        requestAnimationFrame(drawGuide);
+      }
+
+      function block(ctx, x, y, w, h, text, color) {
+        ctx.fillStyle = color;
+        ctx.strokeStyle = "rgba(255,255,255,0.35)";
+        ctx.lineWidth = 2;
+        roundRect(ctx, x, y, w, h, 20);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = "#fff";
+        ctx.font = "700 34px Microsoft YaHei, Arial";
+        ctx.textAlign = "center";
+        ctx.fillText(text, x + w / 2, y + h / 2 + 12);
+        ctx.textAlign = "left";
+      }
+
+      function arrow(ctx, x1, y1, x2, y2) {
+        ctx.strokeStyle = "rgba(255,255,255,0.82)";
+        ctx.fillStyle = "rgba(255,255,255,0.82)";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x2, y2);
+        ctx.lineTo(x2 - 14, y2 - 9);
+        ctx.lineTo(x2 - 14, y2 + 9);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      function roundRect(ctx, x, y, w, h, r) {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.arcTo(x + w, y, x + w, y + h, r);
+        ctx.arcTo(x + w, y + h, x, y + h, r);
+        ctx.arcTo(x, y + h, x, y, r);
+        ctx.arcTo(x, y, x + w, y, r);
+        ctx.closePath();
+      }
+
+      const zModels = {
+        decay: {
+          label: "指数序列",
+          formula: (a) => "X(z)=1/(1-" + a.toFixed(2) + "z^-1)",
+          expression: (a) => "x[n]=" + a.toFixed(2) + "^n u[n]",
+          poles: (a) => [[a, 0]],
+          zeros: () => [],
+          stability: (a) => "|z| > " + Math.abs(a).toFixed(2) + "。极点在单位圆内，右边序列收敛。"
+        },
+        delay: {
+          label: "延时冲激",
+          formula: (a) => "X(z)=z^-" + Math.max(1, Math.round(Math.abs(a) * 6 + 1)),
+          expression: (a) => "x[n]=δ[n-" + Math.max(1, Math.round(Math.abs(a) * 6 + 1)) + "]",
+          poles: () => [],
+          zeros: (a) => Array.from({ length: Math.max(1, Math.round(Math.abs(a) * 6 + 1)) }, () => [0, 0]),
+          stability: () => "有限长序列没有有限极点，天然 BIBO 稳定。"
+        },
+        fir: {
+          label: "FIR 滑动平均",
+          formula: () => "H(z)=(1+z^-1+z^-2)/3",
+          expression: () => "y[n]=(x[n]+x[n-1]+x[n-2])/3",
+          poles: () => [],
+          zeros: () => [[-0.5, 0.866], [-0.5, -0.866]],
+          stability: () => "FIR 系统有限冲激响应，稳定且适合作平滑滤波。"
+        },
+        iir: {
+          label: "一阶 IIR",
+          formula: (a) => "H(z)=1/(1-" + a.toFixed(2) + "z^-1)",
+          expression: (a) => "y[n]=" + a.toFixed(2) + "y[n-1]+x[n]",
+          poles: (a) => [[a, 0]],
+          zeros: () => [],
+          stability: (a) => Math.abs(a) < 1 ? "极点 |a|=" + Math.abs(a).toFixed(2) + " < 1，因果 IIR 稳定。" : "极点不在单位圆内，系统会发散。"
+        }
+      };
+
+      function drawZTransform() {
+        const canvas = $("zCanvas");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        const preset = $("zPreset")?.value || "decay";
+        const raw = Number($("zParam")?.value || 0.6);
+        const a = Math.round(raw * 100) / 100;
+        const model = zModels[preset];
+        const W = canvas.width;
+        const H = canvas.height;
+        const cx = W * 0.48;
+        const cy = H * 0.52;
+        const R = Math.min(W, H) * 0.32;
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = "#e8edf7";
+        ctx.lineWidth = 1;
+        for (let i = -2; i <= 2; i += 0.5) {
+          const x = cx + i * R;
+          const y = cy + i * R;
+          ctx.beginPath();
+          ctx.moveTo(x, 30);
+          ctx.lineTo(x, H - 35);
+          ctx.moveTo(45, y);
+          ctx.lineTo(W - 45, y);
+          ctx.stroke();
+        }
+        ctx.strokeStyle = "#24314b";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(45, cy);
+        ctx.lineTo(W - 45, cy);
+        ctx.moveTo(cx, 30);
+        ctx.lineTo(cx, H - 35);
+        ctx.stroke();
+        ctx.strokeStyle = "#2563eb";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.arc(cx, cy, R, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.fillStyle = "#24314b";
+        ctx.font = "700 20px Microsoft YaHei, Arial";
+        ctx.fillText("Re", W - 78, cy - 12);
+        ctx.fillText("Im", cx + 14, 52);
+        ctx.fillText("单位圆", cx + R + 16, cy - 12);
+        const map = ([re, im]) => [cx + re * R, cy - im * R];
+        model.zeros(a).forEach((point) => {
+          const [x, y] = map(point);
+          ctx.strokeStyle = "#059669";
+          ctx.lineWidth = 5;
+          ctx.beginPath();
+          ctx.arc(x, y, 12, 0, Math.PI * 2);
+          ctx.stroke();
+        });
+        model.poles(a).forEach((point) => {
+          const [x, y] = map(point);
+          ctx.strokeStyle = "#dc2626";
+          ctx.lineWidth = 5;
+          ctx.beginPath();
+          ctx.moveTo(x - 12, y - 12);
+          ctx.lineTo(x + 12, y + 12);
+          ctx.moveTo(x + 12, y - 12);
+          ctx.lineTo(x - 12, y + 12);
+          ctx.stroke();
+        });
+        ctx.fillStyle = "#172033";
+        ctx.font = "800 28px Microsoft YaHei, Arial";
+        ctx.fillText(model.label + " 极零图", 56, 52);
+        ctx.font = "18px Microsoft YaHei, Arial";
+        ctx.fillStyle = "#5e687d";
+        ctx.fillText("拖动参数可观察极点沿实轴移动，判断稳定性与响应速度。", 56, 84);
+        if ($("zFormula")) $("zFormula").textContent = model.formula(a);
+        if ($("zExpression")) $("zExpression").textContent = model.expression(a);
+        if ($("zStability")) $("zStability").textContent = model.stability(a);
+        if ($("zParamValue")) $("zParamValue").textContent = preset === "delay" ? String(Math.max(1, Math.round(Math.abs(a) * 6 + 1))) : a.toFixed(2);
+      }
+
+      function bindZTransform() {
+        const preset = $("zPreset");
+        const param = $("zParam");
+        if (!preset || !param) return;
+        const syncButtons = () => {
+          document.querySelectorAll("[data-z-preset]").forEach((button) => {
+            button.classList.toggle("active", button.dataset.zPreset === preset.value);
+          });
+        };
+        preset.addEventListener("change", () => {
+          syncButtons();
+          drawZTransform();
+        });
+        param.addEventListener("input", drawZTransform);
+        document.querySelectorAll("[data-z-preset]").forEach((button) => {
+          button.addEventListener("click", () => {
+            preset.value = button.dataset.zPreset;
+            syncButtons();
+            drawZTransform();
+          });
+        });
+        syncButtons();
+        drawZTransform();
+      }
+
+      updateLessonText();
+      updateSignalText();
+      drawSignal();
+      drawSampling();
+      bindZTransform();
+      requestAnimationFrame(drawHero);
+      requestAnimationFrame(drawGuide);
+      requestAnimationFrame(drawConvolution);
+      requestAnimationFrame(drawFft);
+      requestAnimationFrame(drawSound);
+    </script>
+  </body>
+</html>
