@@ -618,6 +618,488 @@
         font-weight: 800;
       }
 
+      .quick-entry {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 24px;
+        max-width: 760px;
+      }
+
+      .quick-entry a,
+      .tag-pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+        padding: 0 13px;
+        color: #26334d;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(74, 91, 123, 0.16);
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .platform-strip {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 28px;
+      }
+
+      .platform-strip article,
+      .syllabus-card,
+      .matrix-card,
+      .formula-card,
+      .code-card,
+      .resource-card {
+        background: rgba(255, 255, 255, 0.76);
+        border: 1px solid rgba(74, 91, 123, 0.17);
+        border-radius: 18px;
+        box-shadow: 0 16px 45px rgba(33, 54, 88, 0.1);
+        backdrop-filter: blur(14px);
+      }
+
+      .platform-strip article {
+        min-height: 128px;
+        padding: 18px;
+      }
+
+      .platform-strip b {
+        display: block;
+        margin-bottom: 8px;
+        color: #172033;
+        font-size: 22px;
+      }
+
+      .platform-strip span {
+        color: var(--muted);
+        line-height: 1.65;
+        font-weight: 800;
+      }
+
+      .syllabus-grid,
+      .matrix-grid,
+      .resource-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .syllabus-card,
+      .matrix-card,
+      .resource-card {
+        padding: 22px;
+      }
+
+      .resource-card[data-resource] {
+        cursor: pointer;
+        transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+      }
+
+      .resource-card[data-resource]:hover,
+      .resource-card[data-resource]:focus-visible {
+        transform: translateY(-5px);
+        border-color: rgba(37, 99, 235, 0.34);
+        box-shadow: 0 26px 62px rgba(37, 99, 235, 0.14);
+        outline: none;
+      }
+
+      .resource-card[data-resource]::after {
+        content: "查看资料 →";
+        display: inline-flex;
+        margin-top: 16px;
+        color: #2563eb;
+        font-weight: 900;
+      }
+
+      .syllabus-card h3,
+      .matrix-card h3,
+      .formula-card h3,
+      .code-card h3,
+      .resource-card h3 {
+        margin: 0 0 12px;
+        color: #172033;
+        font-size: 23px;
+      }
+
+      .syllabus-card ul,
+      .matrix-card ul,
+      .resource-card ul {
+        display: grid;
+        gap: 9px;
+        margin: 0;
+        padding-left: 18px;
+        color: #536078;
+        line-height: 1.65;
+        font-weight: 800;
+      }
+
+      .compare-table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.78);
+        box-shadow: 0 16px 45px rgba(33, 54, 88, 0.1);
+      }
+
+      .compare-table th,
+      .compare-table td {
+        padding: 15px 16px;
+        border: 1px solid rgba(74, 91, 123, 0.14);
+        text-align: left;
+        vertical-align: top;
+        line-height: 1.65;
+      }
+
+      .compare-table th {
+        color: #172033;
+        background: rgba(109, 93, 252, 0.11);
+        font-weight: 900;
+      }
+
+      .compare-table td {
+        color: #536078;
+        font-weight: 800;
+      }
+
+      .formula-toolbar {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .formula-toolbar input {
+        width: 100%;
+        min-height: 52px;
+        padding: 0 16px;
+        color: #172033;
+        background: rgba(255, 255, 255, 0.86);
+        border: 1px solid rgba(74, 91, 123, 0.18);
+        border-radius: 16px;
+        font-weight: 800;
+      }
+
+      .formula-grid,
+      .code-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .formula-card {
+        min-height: 190px;
+        padding: 20px;
+      }
+
+      .formula-card code,
+      .code-card pre {
+        display: block;
+        overflow-x: auto;
+        color: #4c1d95;
+        background: rgba(109, 93, 252, 0.09);
+        border: 1px solid rgba(109, 93, 252, 0.14);
+        border-radius: 14px;
+        font-family: "Consolas", "Courier New", monospace;
+        font-weight: 800;
+      }
+
+      .formula-card code {
+        margin: 12px 0;
+        padding: 13px;
+        font-size: 15px;
+        white-space: pre-wrap;
+      }
+
+      .textbook-formula {
+        display: grid;
+        gap: 10px;
+        margin: 14px 0;
+        padding: 16px 18px;
+        color: #27145c;
+        background: rgba(109, 93, 252, 0.08);
+        border: 1px solid rgba(109, 93, 252, 0.16);
+        border-radius: 16px;
+        font-family: "Times New Roman", "Cambria Math", "STIX Two Math", serif;
+        font-size: 22px;
+        line-height: 1.55;
+      }
+
+      .textbook-formula .formula-line {
+        display: block;
+        white-space: normal;
+      }
+
+      .textbook-formula sup,
+      .textbook-formula sub {
+        font-size: 68%;
+        line-height: 0;
+      }
+
+      .fraction {
+        display: inline-grid;
+        grid-template-rows: auto auto;
+        align-items: center;
+        justify-items: center;
+        vertical-align: middle;
+        margin: 0 3px;
+        line-height: 1.1;
+      }
+
+      .fraction span:first-child {
+        padding: 0 4px 2px;
+        border-bottom: 1.5px solid currentColor;
+      }
+
+      .fraction span:last-child {
+        padding-top: 2px;
+      }
+
+      .formula-card p,
+      .code-card p,
+      .resource-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+        font-weight: 800;
+      }
+
+      .code-card {
+        padding: 20px;
+      }
+
+      .code-card pre {
+        min-height: 212px;
+        margin: 14px 0 0;
+        padding: 16px;
+        white-space: pre;
+      }
+
+      .copy-code {
+        margin-top: 12px;
+        min-height: 42px;
+        padding: 0 14px;
+        color: #fff;
+        background: linear-gradient(135deg, #2563eb, #0891b2);
+        border: 0;
+        border-radius: 12px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .timeline-list {
+        display: grid;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .timeline-list div {
+        display: grid;
+        grid-template-columns: 96px 1fr;
+        gap: 14px;
+        padding: 14px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(74, 91, 123, 0.16);
+        border-radius: 16px;
+      }
+
+      .timeline-list b {
+        color: #6d5dfc;
+      }
+
+      .timeline-list span {
+        color: #536078;
+        line-height: 1.65;
+        font-weight: 800;
+      }
+
+      .resource-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 1500;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: rgba(8, 12, 24, 0.42);
+        backdrop-filter: blur(12px);
+      }
+
+      .resource-modal.show {
+        display: flex;
+      }
+
+      .resource-dialog {
+        width: min(980px, 100%);
+        max-height: min(820px, calc(100vh - 48px));
+        overflow: auto;
+        padding: 28px;
+        background: rgba(255, 255, 255, 0.96);
+        border: 1px solid rgba(74, 91, 123, 0.18);
+        border-radius: 24px;
+        box-shadow: 0 36px 90px rgba(20, 31, 54, 0.28);
+      }
+
+      .resource-dialog header {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        align-items: start;
+        margin-bottom: 18px;
+      }
+
+      .resource-dialog h3 {
+        margin: 0;
+        color: #172033;
+        font-size: clamp(28px, 4vw, 44px);
+        line-height: 1.1;
+      }
+
+      .modal-close {
+        width: 44px;
+        height: 44px;
+        flex: 0 0 auto;
+        color: #172033;
+        background: rgba(74, 91, 123, 0.08);
+        border: 1px solid rgba(74, 91, 123, 0.16);
+        border-radius: 999px;
+        font-size: 24px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .resource-body {
+        display: grid;
+        gap: 18px;
+      }
+
+      .resource-body h4 {
+        margin: 0 0 8px;
+        color: #172033;
+        font-size: 20px;
+      }
+
+      .resource-body p,
+      .resource-body li {
+        color: #536078;
+        line-height: 1.8;
+        font-weight: 800;
+      }
+
+      .resource-body ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      .resource-links {
+        display: grid;
+        gap: 10px;
+      }
+
+      .resource-links a {
+        padding: 12px 14px;
+        color: #1d4ed8;
+        background: rgba(37, 99, 235, 0.08);
+        border: 1px solid rgba(37, 99, 235, 0.14);
+        border-radius: 14px;
+        font-weight: 900;
+      }
+
+      .community-panel {
+        margin-top: 22px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .community-card {
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid rgba(74, 91, 123, 0.17);
+        border-radius: 18px;
+        box-shadow: 0 16px 45px rgba(33, 54, 88, 0.1);
+      }
+
+      .community-card h3 {
+        margin: 0 0 12px;
+        color: #172033;
+        font-size: 23px;
+      }
+
+      .community-card textarea,
+      .community-card input {
+        width: 100%;
+        min-height: 48px;
+        padding: 12px 14px;
+        color: #172033;
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(74, 91, 123, 0.18);
+        border-radius: 14px;
+        font-weight: 800;
+        resize: vertical;
+      }
+
+      .community-card textarea {
+        min-height: 130px;
+      }
+
+      .community-card button {
+        margin-top: 10px;
+        min-height: 42px;
+        padding: 0 14px;
+        color: #fff;
+        background: linear-gradient(135deg, #2563eb, #0891b2);
+        border: 0;
+        border-radius: 12px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .community-list,
+      .site-search-results {
+        display: grid;
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .community-list article,
+      .site-search-results article {
+        padding: 12px;
+        color: #536078;
+        background: rgba(109, 93, 252, 0.07);
+        border: 1px solid rgba(109, 93, 252, 0.12);
+        border-radius: 14px;
+        line-height: 1.65;
+        font-weight: 800;
+      }
+
+      .video-study-notes {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1px;
+        background: rgba(225, 232, 245, 0.88);
+        border-top: 1px solid rgba(74, 91, 123, 0.12);
+      }
+
+      .video-study-notes article {
+        min-height: 118px;
+        padding: 18px;
+        background: rgba(255, 255, 255, 0.78);
+      }
+
+      .video-study-notes b {
+        display: block;
+        margin-bottom: 8px;
+        color: #172033;
+      }
+
+      .video-study-notes span {
+        color: #536078;
+        line-height: 1.65;
+        font-weight: 800;
+      }
+
       .feature-card,
       .stat-card,
       .course-card,
@@ -1009,6 +1491,14 @@
         background: rgba(3, 7, 18, 0.72);
       }
 
+      #convolutionCanvas,
+      #fftCanvas,
+      #soundCanvas {
+        width: 100%;
+        display: block;
+        background: rgba(3, 7, 18, 0.72);
+      }
+
       .formula-strip {
         display: flex;
         flex-wrap: wrap;
@@ -1022,6 +1512,52 @@
 
       .formula-strip b {
         color: #c4b5fd;
+      }
+
+      .mini-readout {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .mini-readout div {
+        min-height: 74px;
+        display: grid;
+        align-content: center;
+        gap: 4px;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+      }
+
+      .mini-readout b {
+        color: #c4b5fd;
+        font-size: 20px;
+      }
+
+      .mini-readout span {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .theory-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .theory-list span {
+        display: block;
+        padding: 12px 14px;
+        color: #172033;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(74, 91, 123, 0.16);
+        border-radius: 16px;
+        font-weight: 900;
+        line-height: 1.55;
       }
 
       .footer {
@@ -1198,7 +1734,10 @@
       #heroCanvas,
       #guideCanvas,
       #signalCanvas,
-      #samplingCanvas {
+      #samplingCanvas,
+      #convolutionCanvas,
+      #fftCanvas,
+      #soundCanvas {
         background: rgba(255, 255, 255, 0.72);
       }
 
@@ -1215,6 +1754,21 @@
         color: #172033;
         background: rgba(255, 255, 255, 0.76);
         border-color: rgba(74, 91, 123, 0.2);
+      }
+
+      .control select {
+        color: #172033;
+        background: rgba(255, 255, 255, 0.76);
+        border-color: rgba(74, 91, 123, 0.2);
+      }
+
+      .mini-readout div {
+        background: rgba(255, 255, 255, 0.72);
+        border-color: rgba(74, 91, 123, 0.16);
+      }
+
+      .mini-readout b {
+        color: #6d5dfc;
       }
 
       .select-trigger:hover,
@@ -1406,6 +1960,13 @@
         .hero-grid,
         .guide-layout,
         .tools-layout,
+        .platform-strip,
+        .syllabus-grid,
+        .matrix-grid,
+        .resource-grid,
+        .formula-grid,
+        .code-grid,
+        .community-panel,
         .footer-grid {
           grid-template-columns: 1fr;
         }
@@ -1444,7 +2005,8 @@
         .features-grid,
         .facility-grid,
         .stats-grid,
-        .lesson-tabs {
+        .lesson-tabs,
+        .video-study-notes {
           grid-template-columns: 1fr;
         }
 
@@ -1490,8 +2052,8 @@
     <header class="navbar" id="navbar">
       <div class="container nav-inner">
         <a class="brand" href="#home" aria-label="信号与系统首页">
-          <span class="school-seal" aria-label="吉首大学校徽">
-            <img src="assets/jishou-university-seal.svg" alt="吉首大学校徽" />
+          <span class="school-seal" aria-label="大学校徽">
+            <img src="assets/jishou-university-seal.svg" alt="大学校徽" />
           </span>
           <span class="brand-mark"><i class="fa-solid fa-wave-square"></i></span>
           <span class="brand-text">
@@ -1501,14 +2063,16 @@
         </a>
         <nav class="nav-links" id="navLinks" aria-label="主导航">
           <a href="#home">首页</a>
-          <a href="#features">功能</a>
-          <a href="#facilities">设施</a>
+          <a href="#overview">总览</a>
+          <a href="#theory">理论</a>
+          <a href="#formulas">公式</a>
+          <a href="#problems">题库</a>
+          <a href="#code">代码</a>
           <a href="#stats">数据</a>
-          <a href="#guide">导学</a>
           <a href="#lab">实验台</a>
-          <a href="#ztransform">Z变换</a>
-          <a href="#sampling">抽样</a>
-          <a href="#footer">页脚</a>
+          <a href="#convolution">卷积</a>
+          <a href="#fft">FFT</a>
+          <a href="#sound">声音</a>
         </nav>
         <button class="menu-btn" id="menuBtn" type="button" aria-label="打开菜单">
           <i class="fa-solid fa-bars"></i>
@@ -1523,17 +2087,25 @@
             <p class="eyebrow"><i class="fa-solid fa-graduation-cap"></i> 郑君里《信号与系统》学习方向</p>
             <h1><span class="gradient-text">高级交互式</span><br />信号与系统学习官网</h1>
             <p>
-              以现代单页官网的形式重构课程体验：导学视频、函数图像、抽样恢复、卷积响应与频域观察集中在一个流畅的交互平台中。
+              面向本科课程、期末复习、工程实践和科研入门，把理论讲义、公式手册、可视化仿真、题库、代码工具与答疑资料整合到一个高级交互式学习平台中。
             </p>
             <div class="hero-actions">
-              <a class="btn btn-primary" href="#guide"><i class="fa-solid fa-play"></i> 开始导学</a>
-              <a class="btn btn-secondary" href="#lab">进入实验台 <i class="fa-solid fa-arrow-right"></i></a>
+              <a class="btn btn-primary" href="#overview"><i class="fa-solid fa-play"></i> 进入总览</a>
+              <a class="btn btn-secondary" href="#formulas">公式速查 <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="quick-entry" aria-label="核心知识快速入口">
+              <a href="#fft">傅里叶 / FFT</a>
+              <a href="#theory">拉普拉斯</a>
+              <a href="#ztransform">Z 变换</a>
+              <a href="#convolution">卷积</a>
+              <a href="#theory">系统分析</a>
+              <a href="#code">MATLAB / Python</a>
             </div>
             <div class="campus-identity reveal">
-              <img src="assets/jishou-university-seal.svg" alt="吉首大学校徽" />
+              <img src="assets/jishou-university-seal.svg" alt="大学校徽" />
               <div>
-                <b>吉首大学 · 信号与系统学习空间</b>
-                <span>以校园浅色背景承载课程内容，把导学、实验、公式与抽样恢复整合到同一个页面。</span>
+                <b>大学 · 信号与系统学习空间</b>
+                <span>适合课堂展示、个人复习、课程巩固和项目仿真，重点强化卷积、三大变换、系统特性与频域应用。</span>
               </div>
             </div>
           </div>
@@ -1549,6 +2121,33 @@
               <b>∞</b>
               <span>从时域到频域，从连续到离散，用可视化理解系统响应。</span>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="overview">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-layer-group"></i> Platform Overview</p>
+              <h2>首页总览：一站式信号与系统学习平台</h2>
+            </div>
+            <p>定位为“专业讲义 + 在线实验 + 课程训练 + 工程代码”的综合平台，覆盖本科课程、期末复习、工程实践与科研入门四类学习场景。</p>
+          </div>
+          <div class="platform-strip">
+            <article class="reveal"><b>本科课程</b><span>按教材顺序组织连续时间、离散时间、三大变换与系统分析，适合期末复习。</span></article>
+            <article class="reveal"><b>课程强化</b><span>突出卷积、ROC、因果稳定、零状态响应、极零点与频率响应等核心考点。</span></article>
+            <article class="reveal"><b>工程仿真</b><span>面向通信、控制、图像、音频和生物信号中的抽样、滤波、频谱分析与噪声处理任务。</span></article>
+            <article class="reveal"><b>科研入门</b><span>扩展 STFT、小波、OFDM、二维傅里叶、音频频谱和现代信号处理入口。</span></article>
+          </div>
+          <div class="quick-entry" style="margin-top: 22px">
+            <a href="#theory">理论讲义</a>
+            <a href="#formulas">公式手册</a>
+            <a href="#lab">可视化仿真</a>
+            <a href="#problems">分层题库</a>
+            <a href="#code">代码工具</a>
+            <a href="#applications">工程应用与前沿</a>
+            <a href="#resources">资料下载 / 答疑</a>
           </div>
         </div>
       </section>
@@ -1578,15 +2177,15 @@
               <h3>抽样恢复</h3>
               <p>展示奈奎斯特条件、抽样点、零阶保持和 sinc 近似恢复的核心直觉。</p>
             </article>
-            <article class="feature-card reveal" role="button" tabindex="0" data-target="#guide" data-lesson="2" aria-label="查看 LTI 系统导学">
+            <article class="feature-card reveal" role="button" tabindex="0" data-target="#convolution" aria-label="进入卷积动画实验">
               <div class="icon"><i class="fa-solid fa-circle-nodes"></i></div>
-              <h3>LTI 系统</h3>
-              <p>用输入、冲激响应和卷积输出理解线性时不变系统的分析方法。</p>
+              <h3>卷积动画</h3>
+              <p>让 h(τ) 翻转平移，与 x(τ) 的重叠面积同步生成 y(t)。</p>
             </article>
-            <article class="feature-card reveal" role="button" tabindex="0" data-target="#guide" data-lesson="4" aria-label="查看频域观察导学">
+            <article class="feature-card reveal" role="button" tabindex="0" data-target="#fft" aria-label="进入 FFT 频谱实验">
               <div class="icon"><i class="fa-solid fa-bolt"></i></div>
-              <h3>频域观察</h3>
-              <p>通过频谱速览理解傅里叶分析、带宽、主瓣与频率选择性的关系。</p>
+              <h3>FFT 频谱</h3>
+              <p>用频率柱与相量旋转展示时域信号如何变成频域能量。</p>
             </article>
             <article class="feature-card reveal" role="button" tabindex="0" data-target="#ztransform" aria-label="进入 Z 变换实验台">
               <div class="icon"><i class="fa-solid fa-code-branch"></i></div>
@@ -1597,6 +2196,187 @@
               <div class="icon"><i class="fa-solid fa-gauge-high"></i></div>
               <h3>响应式体验</h3>
               <p>适配手机、平板与桌面端，导航、卡片、图表和按钮在不同屏幕下自动重排。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="theory">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-code-branch"></i> Core Theory</p>
+              <h2>核心理论讲义：连续时间 → 离散时间 → 变换域 → 系统特性</h2>
+            </div>
+            <p>按信号与系统标准教材顺序整理，强调严谨定义、高清推导、物理意义、易错点和对比总结。</p>
+          </div>
+          <div class="syllabus-grid">
+            <article class="syllabus-card reveal">
+              <h3>连续时间信号与系统</h3>
+              <ul>
+                <li>信号分类：能量/功率、周期/非周期、确定/随机、奇异信号。</li>
+                <li>卷积积分：图解法、解析法、性质、物理意义和 LTI 输出。</li>
+                <li>傅里叶级数：三角形式、指数形式、收敛条件、帕塞瓦尔定理。</li>
+                <li>傅里叶变换：变换对、性质、频域分析、抽样定理与混叠。</li>
+                <li>拉普拉斯变换：ROC、部分分式、逆变换、系统函数 H(s)。</li>
+                <li>连续系统分析：零输入/零状态、稳态/暂态、因果稳定判断。</li>
+              </ul>
+            </article>
+            <article class="syllabus-card reveal">
+              <h3>离散时间信号与系统</h3>
+              <ul>
+                <li>离散序列、单位样值、单位阶跃、指数序列和周期序列。</li>
+                <li>差分方程：递推解、零输入响应、零状态响应和全响应。</li>
+                <li>离散卷积：翻转平移、列表法、图解法和快速计算。</li>
+                <li>Z 变换：ROC、逆 Z、极点零点、系统函数 H(z)。</li>
+                <li>DFS/DFT/FFT：频域采样、谱泄漏、快速蝶形思想。</li>
+                <li>离散系统分析：因果性、稳定性、频率响应和单位圆判据。</li>
+              </ul>
+            </article>
+            <article class="syllabus-card reveal">
+              <h3>系统特性与滤波专题</h3>
+              <ul>
+                <li>线性、时不变、因果、稳定、可逆的判定模板。</li>
+                <li>极点零点与频率响应：位置决定响应速度、振荡和稳定性。</li>
+                <li>滤波基础：低通、高通、带通、带阻、FIR/IIR 对比。</li>
+                <li>希尔伯特变换、解析信号、调制解调和包络概念。</li>
+                <li>高频易错点：ROC 与因果稳定、频移与调制、抽样与混叠。</li>
+                <li>配套推导：从微分/差分方程到系统函数和频响图。</li>
+              </ul>
+            </article>
+          </div>
+          <table class="compare-table reveal" style="margin-top: 20px" aria-label="三大变换对比表">
+            <thead>
+              <tr><th>项目</th><th>傅里叶变换</th><th>拉普拉斯变换</th><th>Z 变换</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>核心变量</td><td>jω，强调频率成分</td><td>s=σ+jω，强调收敛与系统模态</td><td>z=re^{jω}，强调离散系统极零点</td></tr>
+              <tr><td>典型用途</td><td>频谱、滤波、调制、抽样</td><td>连续 LTI 系统、微分方程、稳定性</td><td>离散 LTI 系统、差分方程、数字滤波</td></tr>
+              <tr><td>高频考点</td><td>性质、变换对、频移、卷积定理</td><td>ROC、部分分式、H(s)、因果稳定</td><td>ROC、逆 Z、H(z)、单位圆稳定</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="formulas">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-wave-square"></i> Formula Manual</p>
+              <h2>可搜索、可复制的公式手册</h2>
+            </div>
+            <p>覆盖三大变换、卷积、奇偶虚实、尺度时移频移、微分/差分方程、系统性质判据、抽样定理和课程高频公式。</p>
+          </div>
+          <div class="formula-toolbar reveal">
+            <input id="formulaSearch" type="search" placeholder="搜索公式：傅里叶、拉普拉斯、Z、卷积、抽样、ROC、稳定..." aria-label="搜索公式" />
+          </div>
+          <div class="formula-grid" id="formulaGrid">
+            <article class="formula-card reveal" data-keywords="fourier 傅里叶 频移 时移 卷积">
+              <h3>傅里叶变换核心性质</h3>
+              <div class="textbook-formula" aria-label="傅里叶变换性质">
+                <span class="formula-line">ℱ{x(t − t<sub>0</sub>)} = e<sup>−jωt<sub>0</sub></sup>X(jω)</span>
+                <span class="formula-line">ℱ{x(at)} = <span class="fraction"><span>1</span><span>|a|</span></span>X(jω/a)</span>
+                <span class="formula-line">ℱ{x(t) ∗ h(t)} = X(jω)H(jω)</span>
+              </div>
+              <p>时移只改相位，尺度压缩会拉宽频谱，卷积在频域变乘法。</p>
+            </article>
+            <article class="formula-card reveal" data-keywords="laplace 拉普拉斯 roc 系统函数">
+              <h3>拉普拉斯与系统函数</h3>
+              <div class="textbook-formula" aria-label="拉普拉斯变换与系统函数">
+                <span class="formula-line">X(s) = ∫<sub>−∞</sub><sup>∞</sup> x(t)e<sup>−st</sup>dt</span>
+                <span class="formula-line">H(s) = <span class="fraction"><span>Y(s)</span><span>X(s)</span></span></span>
+                <span class="formula-line">因果系统的 ROC 在最右极点右侧；稳定系统的 ROC 包含 jω 轴。</span>
+              </div>
+              <p>ROC 是拉普拉斯题目的灵魂，决定信号类型、因果性和稳定性。</p>
+            </article>
+            <article class="formula-card reveal" data-keywords="z transform z变换 roc 极点 零点">
+              <h3>Z 变换与单位圆判据</h3>
+              <div class="textbook-formula" aria-label="Z 变换与单位圆判据">
+                <span class="formula-line">X(z) = ∑<sub>n=−∞</sub><sup>∞</sup> x[n]z<sup>−n</sup></span>
+                <span class="formula-line">H(z) = <span class="fraction"><span>Y(z)</span><span>X(z)</span></span></span>
+                <span class="formula-line">稳定系统的 ROC 包含单位圆 |z| = 1；因果稳定 IIR 的极点在单位圆内。</span>
+              </div>
+              <p>频率响应可由 H(e^{jω}) 得到，也就是在单位圆上观察 H(z)。</p>
+            </article>
+            <article class="formula-card reveal" data-keywords="sampling 抽样 奈奎斯特 混叠">
+              <h3>抽样定理与混叠</h3>
+              <div class="textbook-formula" aria-label="抽样定理">
+                <span class="formula-line">f<sub>s</sub> ≥ 2f<sub>max</sub>, &nbsp; T = <span class="fraction"><span>1</span><span>f<sub>s</sub></span></span></span>
+                <span class="formula-line">x(t) = ∑<sub>n=−∞</sub><sup>∞</sup> x(nT)sinc(<span class="fraction"><span>t − nT</span><span>T</span></span>)</span>
+              </div>
+              <p>欠采样会使频谱副本重叠，离散样值无法唯一恢复原连续信号。</p>
+            </article>
+            <article class="formula-card reveal" data-keywords="linear 线性 齐次性 叠加性 系统性质">
+              <h3>线性判据</h3>
+              <div class="textbook-formula" aria-label="线性系统判据">
+                <span class="formula-line">T{a x<sub>1</sub>(t) + b x<sub>2</sub>(t)} = aT{x<sub>1</sub>(t)} + bT{x<sub>2</sub>(t)}</span>
+                <span class="formula-line">若 x<sub>1</sub>(t) → y<sub>1</sub>(t), x<sub>2</sub>(t) → y<sub>2</sub>(t)</span>
+                <span class="formula-line">则 ax<sub>1</sub>(t)+bx<sub>2</sub>(t) → ay<sub>1</sub>(t)+by<sub>2</sub>(t)</span>
+              </div>
+              <p>线性必须同时满足齐次性与叠加性；有常数项、平方、绝对值通常会破坏线性。</p>
+            </article>
+            <article class="formula-card reveal" data-keywords="time invariant 时不变 时变 系统性质">
+              <h3>时不变 / 时变判据</h3>
+              <div class="textbook-formula" aria-label="时不变系统判据">
+                <span class="formula-line">若 x(t) → y(t)</span>
+                <span class="formula-line">则 x(t − t<sub>0</sub>) → y(t − t<sub>0</sub>)</span>
+                <span class="formula-line">对任意 t<sub>0</sub> 成立时，系统为时不变系统。</span>
+              </div>
+              <p>判断方法：先延时输入再过系统，与先过系统再延时输出比较；显含 t 的系数常导致时变。</p>
+            </article>
+            <article class="formula-card reveal" data-keywords="causal causality 因果 非因果 记忆 系统性质">
+              <h3>因果性与记忆性</h3>
+              <div class="textbook-formula" aria-label="因果系统判据">
+                <span class="formula-line">y(t<sub>0</sub>) 只依赖 x(t), t ≤ t<sub>0</sub> ⇒ 因果</span>
+                <span class="formula-line">y[n<sub>0</sub>] 只依赖 x[n], n ≤ n<sub>0</sub> ⇒ 因果</span>
+                <span class="formula-line">LTI 因果条件：h(t)=0, t&lt;0；h[n]=0, n&lt;0</span>
+              </div>
+              <p>若输出用到未来输入，如 x(t+1) 或 x[n+2]，系统非因果。</p>
+            </article>
+            <article class="formula-card reveal" data-keywords="stable stability 稳定 BIBO 绝对可积 系统性质">
+              <h3>BIBO 稳定判据</h3>
+              <div class="textbook-formula" aria-label="稳定系统判据">
+                <span class="formula-line">|x(t)| ≤ M<sub>x</sub> ⇒ |y(t)| ≤ M<sub>y</sub></span>
+                <span class="formula-line">连续 LTI：∫<sub>−∞</sub><sup>∞</sup>|h(t)|dt &lt; ∞</span>
+                <span class="formula-line">离散 LTI：∑<sub>n=−∞</sub><sup>∞</sup>|h[n]| &lt; ∞</span>
+              </div>
+              <p>BIBO 稳定强调有界输入产生有界输出；对 LTI 系统可转化为冲激响应绝对可积/可和。</p>
+            </article>
+            <article class="formula-card reveal" data-keywords="steady transient 稳态 暂态 零输入 零状态 响应">
+              <h3>稳态、暂态与全响应</h3>
+              <div class="textbook-formula" aria-label="稳态暂态响应">
+                <span class="formula-line">y(t) = y<sub>zi</sub>(t) + y<sub>zs</sub>(t)</span>
+                <span class="formula-line">y(t) = y<sub>tr</sub>(t) + y<sub>ss</sub>(t)</span>
+                <span class="formula-line">稳定系统中：lim<sub>t→∞</sub> y<sub>tr</sub>(t) = 0</span>
+              </div>
+              <p>零输入由初始状态引起，零状态由外加输入引起；暂态随时间衰减，稳态长期保留。</p>
+            </article>
+            <article class="formula-card reveal" data-keywords="frequency response 极点 零点 频率响应 steady sinusoid">
+              <h3>正弦稳态与频率响应</h3>
+              <div class="textbook-formula" aria-label="正弦稳态频率响应">
+                <span class="formula-line">x(t)=Acos(ω<sub>0</sub>t+φ)</span>
+                <span class="formula-line">y<sub>ss</sub>(t)=A|H(jω<sub>0</sub>)|cos(ω<sub>0</sub>t+φ+∠H(jω<sub>0</sub>))</span>
+                <span class="formula-line">离散：H(e<sup>jΩ</sup>) 在单位圆上取值。</span>
+              </div>
+              <p>稳定 LTI 系统对正弦输入的稳态输出仍为同频率正弦，只改变幅度和相位。</p>
+            </article>
+            <article class="formula-card reveal" data-keywords="memoryless 记忆 无记忆 动态 即时 系统性质">
+              <h3>无记忆与动态系统</h3>
+              <div class="textbook-formula" aria-label="无记忆系统判据">
+                <span class="formula-line">连续：y(t<sub>0</sub>) 只由 x(t<sub>0</sub>) 决定 ⇒ 无记忆</span>
+                <span class="formula-line">离散：y[n<sub>0</sub>] 只由 x[n<sub>0</sub>] 决定 ⇒ 无记忆</span>
+                <span class="formula-line">若用到 x(t−1), x(t+1), x[n−2] 等，则为有记忆系统。</span>
+              </div>
+              <p>无记忆不等于因果；因果允许依赖过去输入，无记忆只允许依赖当前输入。</p>
+            </article>
+            <article class="formula-card reveal" data-keywords="invertible inverse 可逆 逆系统 系统性质">
+              <h3>可逆性与逆系统</h3>
+              <div class="textbook-formula" aria-label="可逆系统判据">
+                <span class="formula-line">若不同输入必产生不同输出，则系统可逆。</span>
+                <span class="formula-line">存在 T<sup>−1</sup>{·}，使 T<sup>−1</sup>{T{x}} = x</span>
+                <span class="formula-line">LTI 频域：若 H(jω) ≠ 0，则可构造 H<sub>inv</sub>(jω)=<span class="fraction"><span>1</span><span>H(jω)</span></span></span>
+              </div>
+              <p>平方、绝对值、限幅等操作常把多个输入映射到同一输出，因此通常不可逆。</p>
             </article>
           </div>
         </div>
@@ -1651,12 +2431,125 @@
             <article class="facility-card reveal" role="button" tabindex="0" data-action="record" aria-label="打开实验记录">
               <div class="icon"><i class="fa-solid fa-chart-line"></i></div>
               <h3>实验记录感</h3>
-              <p>卡片、数据和公式区域统一为浅色玻璃质感，更适合吉首大学校园背景下的展示。</p>
+              <p>卡片、数据和公式区域统一为浅色玻璃质感，更适合大学课程展示和自主学习。</p>
             </article>
             <article class="facility-card reveal" role="button" tabindex="0" data-action="mobile" aria-label="查看移动端适配">
               <div class="icon"><i class="fa-solid fa-circle-nodes"></i></div>
               <h3>移动端适配</h3>
               <p>导航、卡片、实验面板和按钮会在手机端自动重排，方便把链接发给同学直接查看。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="problems">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-gauge-high"></i> Problem Bank</p>
+              <h2>分层题库系统：基础、进阶、课程综合、工程应用</h2>
+            </div>
+            <p>按知识点标签组织练习，前端先搭建题库矩阵；后续可接入错题本、在线判题和用户登录。</p>
+          </div>
+          <div class="matrix-grid">
+            <article class="matrix-card reveal">
+              <h3>基础题</h3>
+              <ul>
+                <li>信号分类、奇偶分解、能量功率判断。</li>
+                <li>卷积基础图解、常用变换对直接套用。</li>
+                <li>课后习题、概念辨析和简单计算。</li>
+              </ul>
+              <div class="chip-row"><span>概念题</span><span>课后题</span><span>期末</span></div>
+            </article>
+            <article class="matrix-card reveal">
+              <h3>进阶综合题</h3>
+              <ul>
+                <li>综合卷积、系统响应、零输入/零状态分解。</li>
+                <li>傅里叶、拉普拉斯、Z 变换混合应用。</li>
+                <li>极零点、ROC、稳定性和频率响应联动判断。</li>
+              </ul>
+              <div class="chip-row"><span>推导</span><span>综合</span><span>易错点</span></div>
+            </article>
+            <article class="matrix-card reveal">
+              <h3>课程综合题</h3>
+              <ul>
+                <li>期末与课程综合题按章节分类训练。</li>
+                <li>题型总结、答题模板、步骤推导和易错点。</li>
+                <li>ROC、因果稳定、系统函数等高频板块专项训练。</li>
+              </ul>
+              <div class="chip-row"><span>综合题</span><span>期末</span><span>专项</span></div>
+            </article>
+            <article class="matrix-card reveal">
+              <h3>工程应用题</h3>
+              <ul>
+                <li>音频处理：滤波、FFT、采样率、噪声抑制。</li>
+                <li>通信系统：频域建模、信号检测、系统辨识。</li>
+                <li>生物信号：时间序列、频谱特征和异常检测。</li>
+              </ul>
+              <div class="chip-row"><span>音频</span><span>通信</span><span>生物信号</span></div>
+            </article>
+            <article class="matrix-card reveal">
+              <h3>题目功能规划</h3>
+              <ul>
+                <li>在线刷题、答案详解、步骤推导。</li>
+                <li>错题本、知识点标签检索和复习计划。</li>
+                <li>公式关联、视频导学关联和实验一键打开。</li>
+              </ul>
+              <div class="chip-row"><span>错题本</span><span>标签检索</span><span>解析</span></div>
+            </article>
+            <article class="matrix-card reveal">
+              <h3>易错点专题</h3>
+              <ul>
+                <li>频移和时移相位符号混淆。</li>
+                <li>ROC 与极点位置、因果性和稳定性关系。</li>
+                <li>DFT 频率索引、谱泄漏和采样混叠区别。</li>
+              </ul>
+              <div class="chip-row"><span>对比表</span><span>陷阱题</span><span>速记</span></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="code">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-code-branch"></i> Code Tools</p>
+              <h2>MATLAB / Python 代码工具板块</h2>
+            </div>
+            <p>提供可直接运行的工程代码模板，覆盖卷积、FFT、零极点图、系统响应、滤波、抽样与频谱分析。</p>
+          </div>
+          <div class="code-grid">
+            <article class="code-card reveal">
+              <h3>Python：FFT 频谱分析</h3>
+              <p>NumPy/Matplotlib 版本，适合科研入门和工程仿真快速验证。</p>
+              <pre><code>import numpy as np
+import matplotlib.pyplot as plt
+
+fs = 200
+t = np.arange(0, 1, 1/fs)
+x = np.sin(2*np.pi*12*t) + 0.4*np.sin(2*np.pi*36*t)
+X = np.fft.rfft(x)
+f = np.fft.rfftfreq(len(x), 1/fs)
+
+plt.subplot(2,1,1); plt.plot(t, x); plt.title("time domain")
+plt.subplot(2,1,2); plt.stem(f, np.abs(X)); plt.title("FFT spectrum")
+plt.tight_layout(); plt.show()</code></pre>
+              <button class="copy-code" type="button">复制代码</button>
+            </article>
+            <article class="code-card reveal">
+              <h3>MATLAB：卷积与系统响应</h3>
+              <p>用于验证 LTI 系统输出 y(t)=x(t)*h(t)，也可替换成离散 conv。</p>
+              <pre><code>t = -2:0.001:6;
+dt = t(2)-t(1);
+x = double(t>=0 & t<=1);
+h = exp(-t).*(t>=0);
+y = conv(x, h, 'same') * dt;
+
+plot(t,x,'b',t,h,'--',t,y,'r','LineWidth',1.5);
+legend('x(t)','h(t)','y(t)');
+grid on; title('Convolution response');</code></pre>
+              <button class="copy-code" type="button">复制代码</button>
             </article>
           </div>
         </div>
@@ -1674,7 +2567,7 @@
           <div class="stats-grid">
             <article class="stat-card reveal"><b data-count="8">0</b><span>基础信号类型</span></article>
             <article class="stat-card reveal"><b data-count="6">0</b><span>导学微课片段</span></article>
-            <article class="stat-card reveal"><b data-count="4">0</b><span>核心交互实验</span></article>
+            <article class="stat-card reveal"><b data-count="7">0</b><span>核心交互实验</span></article>
             <article class="stat-card reveal"><b data-count="100">0</b><span>响应式适配百分比</span></article>
           </div>
         </div>
@@ -1718,6 +2611,11 @@
                 <button type="button" data-lesson="3"><b>04</b><span>理解卷积</span></button>
                 <button type="button" data-lesson="4"><b>05</b><span>切到频域</span></button>
                 <button type="button" data-lesson="5"><b>06</b><span>完成抽样</span></button>
+              </div>
+              <div class="video-study-notes">
+                <article><b>本讲目标</b><span id="lessonGoal">建立“信号是函数、系统是映射”的基础视角。</span></article>
+                <article><b>配套公式</b><span id="lessonFormula">x(t), x[n], δ(t), u(t)</span></article>
+                <article><b>建议实验</b><span id="lessonPractice">切到函数图像实验台，拖动幅度和频率观察波形。</span></article>
               </div>
             </div>
           </div>
@@ -1783,6 +2681,137 @@
               <div class="formula-strip">
                 <b id="formula">x(t)=A sin[ωa(t-t0)]</b>
                 <span>紫线为当前信号，坐标轴为归一化时间。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="convolution">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-circle-nodes"></i> Convolution Lab</p>
+              <h2>卷积演示动画</h2>
+            </div>
+            <p>把冲激响应 h(τ) 翻转为 h(t-τ)，让它滑过输入 x(τ)，实时观察重叠面积如何形成输出 y(t)。</p>
+          </div>
+          <div class="tools-layout">
+            <aside class="tool-card reveal">
+              <h3>卷积控制</h3>
+              <p>动画展示“翻转、平移、相乘、积分”四个步骤，适合课堂讲解 LTI 系统输出。</p>
+              <label class="control">
+                输入 x(t)
+                <select id="convInput">
+                  <option value="rect">矩形脉冲</option>
+                  <option value="tri">三角脉冲</option>
+                  <option value="exp">指数衰减</option>
+                </select>
+              </label>
+              <label class="control">
+                冲激响应 h(t)
+                <select id="convKernel">
+                  <option value="exp">一阶指数响应</option>
+                  <option value="rect">滑动平均窗口</option>
+                  <option value="sinc">近似低通 sinc</option>
+                </select>
+              </label>
+              <label class="control">动画速度 <input id="convSpeed" type="range" min="0.4" max="2.4" step="0.1" value="1" /><output id="convSpeedValue">1.0x</output></label>
+              <div class="mini-readout">
+                <div><b id="convTimeValue">t=0.00</b><span>当前平移位置</span></div>
+                <div><b id="convAreaValue">0.00</b><span>重叠积分面积</span></div>
+              </div>
+              <div class="theory-list">
+                <span>y(t)=∫x(τ)h(t-τ)dτ</span>
+                <span>重叠越多，当前输出幅值越大。</span>
+              </div>
+            </aside>
+            <div class="canvas-card reveal">
+              <div class="canvas-head">
+                <h3>翻转平移与输出生成</h3>
+                <span id="convHint">蓝线是 x(τ)，橙线是 h(t-τ)，紫色阴影为相乘后的积分区域。</span>
+              </div>
+              <canvas id="convolutionCanvas" width="980" height="560" aria-label="卷积动画演示"></canvas>
+              <div class="formula-strip">
+                <b>卷积 = 系统记忆的加权叠加</b>
+                <span>下方紫线同步绘制 y(t)，帮助把滑动面积和系统输出联系起来。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="fft">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-bolt"></i> FFT Lab</p>
+              <h2>FFT 与频域分解实验</h2>
+            </div>
+            <p>组合不同谐波，观察时域波形、离散频谱柱和旋转相量；理解 FFT 如何快速计算 DFT。</p>
+          </div>
+          <div class="tools-layout">
+            <aside class="tool-card reveal">
+              <h3>频谱控制</h3>
+              <p>FFT 把 N 点序列投影到一组复指数基底上，频谱峰值表示对应频率的能量强弱。</p>
+              <label class="control">基频 f0 <input id="fftBase" type="range" min="1" max="5" step="1" value="2" /><output id="fftBaseValue">2 Hz</output></label>
+              <label class="control">三次谐波 <input id="fftHarmonic" type="range" min="0" max="1" step="0.05" value="0.45" /><output id="fftHarmonicValue">0.45</output></label>
+              <label class="control">噪声强度 <input id="fftNoise" type="range" min="0" max="0.35" step="0.01" value="0.08" /><output id="fftNoiseValue">0.08</output></label>
+              <div class="theory-list">
+                <span>DFT: X[k]=Σx[n]e^-j2πkn/N</span>
+                <span>FFT 将 O(N²) 计算降为 O(N log N)。</span>
+              </div>
+            </aside>
+            <div class="canvas-card reveal">
+              <div class="canvas-head">
+                <h3>时域波形与频谱峰值</h3>
+                <span id="fftHint">上方显示合成信号，下方显示 FFT 幅度谱；亮色柱为主频和谐波。</span>
+              </div>
+              <canvas id="fftCanvas" width="980" height="560" aria-label="FFT 频谱动画演示"></canvas>
+              <div class="formula-strip">
+                <b id="fftFormula">x(t)=sin(2πf0t)+0.45sin(2π·3f0t)</b>
+                <span>拖动谐波和噪声，可观察频谱峰值和噪声底的变化。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="sound">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-wave-square"></i> Sound Lab</p>
+              <h2>声音频率试听实验</h2>
+            </div>
+            <p>使用浏览器 Web Audio 输出不同频率的正弦声，并同步显示声波周期和频谱位置。</p>
+          </div>
+          <div class="tools-layout">
+            <aside class="tool-card reveal">
+              <h3>声音控制</h3>
+              <p>频率越高，单位时间内振动次数越多，听感音调越高。点击播放后可边拖动边听变化。</p>
+              <label class="control">输出频率 <input id="soundFreq" type="range" min="110" max="1760" step="1" value="440" /><output id="soundFreqValue">440 Hz</output></label>
+              <label class="control">音量 <input id="soundGain" type="range" min="0" max="0.18" step="0.01" value="0.06" /><output id="soundGainValue">0.06</output></label>
+              <div class="lab-actions">
+                <button class="btn btn-primary" id="soundToggleBtn" type="button">播放声音</button>
+                <button class="btn btn-secondary" type="button" data-tone="220">220 Hz</button>
+                <button class="btn btn-secondary" type="button" data-tone="440">440 Hz</button>
+                <button class="btn btn-secondary" type="button" data-tone="880">880 Hz</button>
+              </div>
+              <div class="mini-readout">
+                <div><b id="soundPeriodValue">2.27 ms</b><span>周期 T=1/f</span></div>
+                <div><b id="soundPitchValue">A4</b><span>参考音名</span></div>
+              </div>
+            </aside>
+            <div class="canvas-card reveal">
+              <div class="canvas-head">
+                <h3>声波与频率指示</h3>
+                <span id="soundHint">青色波形越密，频率越高；下方亮点显示当前频率所在位置。</span>
+              </div>
+              <canvas id="soundCanvas" width="980" height="520" aria-label="声音频率波形演示"></canvas>
+              <div class="formula-strip">
+                <b>s(t)=A sin(2πft)</b>
+                <span>浏览器需要用户点击后才允许发声，因此声音不会自动播放。</span>
               </div>
             </div>
           </div>
@@ -1873,7 +2902,146 @@
           </div>
         </div>
       </section>
+
+      <section id="applications">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-bolt"></i> Applications</p>
+              <h2>拓展应用与前沿：从课程走向工程</h2>
+            </div>
+            <p>把信号与系统连接到通信、控制、图像、雷达、音频和现代信号处理，提升网站专业度和后续扩展空间。</p>
+          </div>
+          <div class="resource-grid">
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="communication">
+              <h3>通信方向</h3>
+              <p>调制解调、AM/FM、OFDM、基带信号、信道频响和带宽效率。</p>
+              <div class="chip-row"><span>调制</span><span>OFDM</span><span>基带</span></div>
+            </article>
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="control">
+              <h3>控制方向</h3>
+              <p>传递函数、频域校正、Bode 图、稳定裕度和系统辨识。</p>
+              <div class="chip-row"><span>H(s)</span><span>Bode</span><span>稳定</span></div>
+            </article>
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="image">
+              <h3>图像处理</h3>
+              <p>二维傅里叶变换、频域滤波、边缘增强、低通去噪和高通锐化。</p>
+              <div class="chip-row"><span>2D FFT</span><span>滤波</span><span>图像</span></div>
+            </article>
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="audio">
+              <h3>雷达与音频</h3>
+              <p>频谱分析、噪声处理、匹配滤波、短时谱和声音特征提取。</p>
+              <div class="chip-row"><span>STFT</span><span>降噪</span><span>匹配滤波</span></div>
+            </article>
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="modern">
+              <h3>现代信号处理</h3>
+              <p>短时傅里叶、小波变换、时频分析、稀疏表示和特征工程。</p>
+              <div class="chip-row"><span>小波</span><span>时频</span><span>特征</span></div>
+            </article>
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="biosignal">
+              <h3>医学与生物信号</h3>
+              <p>ECG、EEG、肌电与可穿戴信号中的滤波、频谱、伪迹去除和特征提取。</p>
+              <div class="chip-row"><span>ECG</span><span>EEG</span><span>可穿戴</span></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="resources">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-layer-group"></i> Resources & Forum</p>
+              <h2>资料下载、博客笔记、答疑论坛与全站搜索规划</h2>
+            </div>
+            <p>静态页面先提供资源入口和功能框架；后续可接入数据库、评论系统、全文检索和用户体系。</p>
+          </div>
+          <div class="resource-grid">
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="downloads">
+              <h3>资料下载</h3>
+              <ul>
+                <li>PDF 讲义、公式表、代码包、真题集。</li>
+                <li>可按章节、知识点、考试类型分类下载。</li>
+              </ul>
+            </article>
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="notes">
+              <h3>博客 / 笔记区</h3>
+              <ul>
+                <li>个人推导笔记、疑难总结、错题复盘。</li>
+                <li>支持按“卷积、ROC、FFT、滤波”归档。</li>
+              </ul>
+            </article>
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="forum">
+              <h3>答疑论坛</h3>
+              <ul>
+                <li>题目讨论、代码调试、课程学习互助。</li>
+                <li>可扩展点赞、采纳、评论和标签系统。</li>
+              </ul>
+            </article>
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="search">
+              <h3>搜索功能</h3>
+              <ul>
+                <li>按知识点、公式、题目、代码关键词检索。</li>
+                <li>当前公式手册已实现前端关键词筛选。</li>
+              </ul>
+            </article>
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="latex">
+              <h3>Latex 渲染</h3>
+              <ul>
+                <li>公式内容按 Latex 语义组织，便于接入 MathJax/KaTeX。</li>
+                <li>保留复制友好的纯文本公式表示。</li>
+              </ul>
+            </article>
+            <article class="resource-card reveal" role="button" tabindex="0" data-resource="mobile">
+              <h3>移动端适配</h3>
+              <ul>
+                <li>导航、表格、代码块、公式卡片自适应重排。</li>
+                <li>适合手机端刷公式和查看仿真实验。</li>
+              </ul>
+            </article>
+          </div>
+          <div class="community-panel reveal">
+            <article class="community-card">
+              <h3>笔记区</h3>
+              <textarea id="noteInput" placeholder="写下你的推导笔记、易错点或学习总结..."></textarea>
+              <button id="saveNoteBtn" type="button">发布笔记</button>
+              <div class="community-list" id="noteList">
+                <article>示例：卷积分段时先画两个信号的支撑区间，再求重叠范围。</article>
+              </div>
+            </article>
+            <article class="community-card">
+              <h3>答疑论坛 · 大师解惑</h3>
+              <textarea id="questionInput" placeholder="输入你的疑惑：题目条件、已尝试步骤、卡住的位置..."></textarea>
+              <button id="askQuestionBtn" type="button">提交疑惑</button>
+              <div class="community-list" id="questionList">
+                <article>示例：为什么因果稳定离散系统要求 ROC 包含单位圆？</article>
+              </div>
+            </article>
+            <article class="community-card">
+              <h3>全站搜索</h3>
+              <input id="siteSearchInput" type="search" placeholder="搜索：线性、因果、ROC、卷积、FFT、稳态..." />
+              <button id="siteSearchBtn" type="button">搜索</button>
+              <div class="site-search-results" id="siteSearchResults">
+                <article>输入关键词后，将在理论、公式、题库、代码和资源内容中检索。</article>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
     </main>
+
+    <div class="resource-modal" id="resourceModal" role="dialog" aria-modal="true" aria-labelledby="resourceTitle">
+      <div class="resource-dialog">
+        <header>
+          <div>
+            <p class="eyebrow" id="resourceKicker">Application Notes</p>
+            <h3 id="resourceTitle">应用资料</h3>
+          </div>
+          <button class="modal-close" id="resourceCloseBtn" type="button" aria-label="关闭资料弹窗">×</button>
+        </header>
+        <div class="resource-body" id="resourceBody"></div>
+      </div>
+    </div>
 
     <div class="facility-toast" id="facilityToast" role="status" aria-live="polite"></div>
 
@@ -1889,21 +3057,24 @@
           </div>
           <div>
             <h4>页面</h4>
-            <a href="#features">功能模块</a>
-            <a href="#stats">数据统计</a>
-            <a href="#guide">视频导学</a>
+            <a href="#overview">平台总览</a>
+            <a href="#theory">理论讲义</a>
+            <a href="#formulas">公式手册</a>
+            <a href="#problems">题库系统</a>
           </div>
           <div>
             <h4>实验</h4>
             <a href="#lab">函数图像</a>
-            <a href="#guide">卷积直觉</a>
-            <a href="#guide">抽样恢复</a>
+            <a href="#convolution">卷积动画</a>
+            <a href="#fft">FFT 频谱</a>
+            <a href="#sound">声音频率</a>
           </div>
           <div>
             <h4>链接</h4>
-            <a href="#home">返回顶部</a>
-            <a href="#footer">版权信息</a>
-            <a href="javascript:void(0)">本地部署版</a>
+            <a href="#code">代码工具</a>
+            <a href="#resources">学习社区</a>
+            <a href="#applications">拓展应用</a>
+            <a href="#resources">资料答疑</a>
           </div>
         </div>
         <div class="copyright">© 2026 Signal & Systems Interactive Studio. Built with HTML5, Tailwind-style utilities, Font Awesome-style icons and vanilla JavaScript.</div>
@@ -1920,7 +3091,193 @@
         freq: 1,
         shift: 0,
         scale: 1,
-        sampleRate: 10
+        sampleRate: 10,
+        convInput: "rect",
+        convKernel: "exp",
+        convSpeed: 1,
+        fftBase: 2,
+        fftHarmonic: 0.45,
+        fftNoise: 0.08,
+        soundFreq: 440,
+        soundGain: 0.06,
+        soundOn: false
+      };
+
+      const audioState = {
+        ctx: null,
+        oscillator: null,
+        gain: null
+      };
+
+      const resourceData = {
+        communication: {
+          title: "通信方向：调制、OFDM 与基带信号",
+          summary: "通信系统把信号与系统中的频移、卷积、滤波、抽样和频谱搬移全部串起来。OFDM 可理解为把高速数据拆到一组相互正交的子载波上，核心工具就是 IFFT/FFT、循环前缀和频域均衡。",
+          points: [
+            "复指数 e^{jωt} 是调制与频移的自然语言，乘以载波会在频域产生平移。",
+            "信道可建模为 LTI 系统，接收信号常写成 y(t)=x(t)*h(t)+n(t)。",
+            "OFDM 发射端用 IFFT 合成多子载波，接收端用 FFT 分离子载波，循环前缀用于对抗多径卷积。"
+          ],
+          links: [
+            ["MathWorks FFT 文档：DFT/FFT、单边谱、频率轴", "https://www.mathworks.com/help/matlab/ref/fft.html"],
+            ["SciPy signal 官方文档：滤波、频谱、窗函数工具", "https://docs.scipy.org/doc/scipy/reference/signal.html"],
+            ["PySDR OFDM 教程：子载波、循环前缀、频域均衡", "https://pysdr.org/content/ofdm.html"]
+          ]
+        },
+        control: {
+          title: "控制方向：传递函数、Bode 图与稳定性",
+          summary: "控制系统中的传递函数 G(s) 与信号系统的系统函数 H(s) 是同一套语言。极点决定自然响应和稳定性，频率响应决定增益、相位、带宽和裕度。",
+          points: [
+            "连续 LTI 系统稳定常要求极点位于左半平面；频域校正常看幅频和相频曲线。",
+            "Bode 图把 H(jω) 的幅值和相位随频率变化分开展示，适合分析带宽、谐振和相位滞后。",
+            "离散系统需要注意单位圆：极点在单位圆内通常对应因果稳定 IIR。"
+          ],
+          links: [
+            ["MathWorks Bode 文档：动态系统频率响应", "https://www.mathworks.com/help/control/ref/dynamicsystem.bode.html"],
+            ["SciPy signal.butter：Butterworth 滤波器设计", "https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.butter.html"],
+            ["SciPy signal 官方文档：LTI、滤波器、频率响应工具", "https://docs.scipy.org/doc/scipy/reference/signal.html"]
+          ]
+        },
+        image: {
+          title: "图像处理：二维傅里叶与频域滤波",
+          summary: "二维图像可看成二维离散信号。二维 FFT 把空间纹理、边缘和周期噪声映射到频域，低通用于平滑去噪，高通用于边缘增强。",
+          points: [
+            "图像频谱中心附近通常表示低频亮度与平滑结构，远离中心表示边缘、纹理和噪声。",
+            "低通滤波保留平滑区域但会模糊边缘；高通滤波突出边缘但可能放大噪声。",
+            "二维频域滤波本质仍是卷积定理：空间卷积对应频域乘法。"
+          ],
+          links: [
+            ["OpenCV Fourier Transform 教程：图像 FFT 与频域滤波", "https://docs.opencv.org/4.x/de/dbc/tutorial_py_fourier_transform.html"],
+            ["SciPy signal 官方文档：二维卷积和滤波函数入口", "https://docs.scipy.org/doc/scipy/reference/signal.html"],
+            ["DSP Guide：数字信号处理基础与图像处理章节", "https://www.dspguide.com/"]
+          ]
+        },
+        audio: {
+          title: "雷达与音频：STFT、匹配滤波与谱峰检测",
+          summary: "雷达和音频都常面对非平稳信号：频率会随时间变化。短时傅里叶变换把信号分帧加窗，得到时频图；匹配滤波则用已知模板提高检测信噪比。",
+          points: [
+            "STFT 的核心是窗口 w[n]：窗口越短时间分辨率越高，频率分辨率越低。",
+            "音频谱图常用于语音、音乐、噪声检测；雷达常结合脉冲压缩和匹配滤波。",
+            "谱峰检测可用于估计主频、谐波、转速、故障频率和目标回波。"
+          ],
+          links: [
+            ["SciPy STFT 文档：短时傅里叶变换参数与重构条件", "https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.stft.html"],
+            ["SciPy find_peaks：谱峰检测工具", "https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html"],
+            ["MathWorks FFT 文档：噪声信号频谱分析示例", "https://www.mathworks.com/help/matlab/ref/fft.html"]
+          ]
+        },
+        modern: {
+          title: "现代信号处理：小波、时频分析与特征工程",
+          summary: "傅里叶变换擅长分析全局频率，小波变换更适合突变、瞬态和多尺度结构。现代信号处理常把 STFT、小波、滤波器组和统计特征结合起来。",
+          points: [
+            "STFT 使用固定窗口，小波使用可伸缩基函数，更适合多尺度分析。",
+            "特征工程常提取能量、谱质心、带宽、峰值、包络、时频纹理等指标。",
+            "工程上常先去趋势、滤波、分帧，再做 FFT/STFT/小波和分类检测。"
+          ],
+          links: [
+            ["PyWavelets DWT 文档：离散小波变换接口", "https://pywavelets.readthedocs.io/en/latest/ref/dwt-discrete-wavelet-transform.html"],
+            ["SciPy STFT 文档：非平稳信号的时频量化", "https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.stft.html"],
+            ["SciPy signal 官方文档：窗函数、谱估计、滤波工具", "https://docs.scipy.org/doc/scipy/reference/signal.html"]
+          ]
+        },
+        biosignal: {
+          title: "医学与生物信号：ECG、EEG、EMG 与可穿戴数据",
+          summary: "生物信号处理强调低幅值、强噪声和伪迹去除。ECG 常关注 R 峰、心率和 HRV；EEG 常关注频带能量、眼电/肌电伪迹和事件相关响应。",
+          points: [
+            "ECG 常用带通滤波去除基线漂移和高频噪声，再用峰值检测定位 QRS/R 峰。",
+            "EEG 常按 δ、θ、α、β、γ 频带分析能量变化，必须注意工频干扰和运动伪迹。",
+            "可穿戴信号通常需要重采样、滤波、异常值处理和滑动窗口特征提取。"
+          ],
+          links: [
+            ["SciPy find_peaks：ECG/R 峰等峰值定位基础工具", "https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html"],
+            ["SciPy signal.butter：生物信号常用带通/低通滤波器", "https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.butter.html"],
+            ["NeuroTechX EEG Notebooks：EEG 学习与实验资料", "https://neurotechx.github.io/eeg-notebooks/"]
+          ]
+        },
+        downloads: {
+          title: "资料下载：讲义、公式表、代码包与真题资料",
+          summary: "资料区适合整理成按章节下载的资源库：连续时间、离散时间、傅里叶、拉普拉斯、Z 变换、滤波和系统响应。静态站点可先提供外部权威讲义与代码文档入口，后续再接入文件下载。",
+          points: [
+            "建议目录：课程讲义 PDF、公式速查表、MATLAB/Python 代码包、章节题型总结。",
+            "讲义资料优先选大学公开课、官方软件文档和教材配套资源，避免低质量二手整理。",
+            "代码包应按“卷积、FFT、滤波、抽样、零极点、系统响应”组织，便于直接运行。"
+          ],
+          links: [
+            ["MIT OCW Signals and Systems 课程资料", "https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/"],
+            ["MathWorks Signal Processing 示例与文档", "https://www.mathworks.com/help/signal/"],
+            ["SciPy signal 官方文档", "https://docs.scipy.org/doc/scipy/reference/signal.html"]
+          ]
+        },
+        notes: {
+          title: "博客 / 笔记区：推导、错题与疑难总结",
+          summary: "笔记区应围绕“为什么这样做”展开：卷积分段边界怎么找、ROC 为什么决定因果稳定、频移为什么只改频谱位置、DFT 频率索引如何对应真实 Hz。",
+          points: [
+            "每篇笔记建议包含：知识点、常见误区、标准例题、解题模板和一段可运行代码。",
+            "高频专题：卷积图解法、傅里叶性质、拉普拉斯部分分式、Z 变换 ROC、FFT 频率轴。",
+            "错题复盘应记录错误原因，而不是只记录正确答案。"
+          ],
+          links: [
+            ["MIT OCW Signals and Systems 视频与讲义", "https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/"],
+            ["DSP Guide 在线教材", "https://www.dspguide.com/"],
+            ["OpenStax 微积分参考：积分与级数基础", "https://openstax.org/details/books/calculus-volume-2"]
+          ]
+        },
+        forum: {
+          title: "答疑论坛：题目讨论、代码调试与经验互助",
+          summary: "论坛功能可以按知识点标签组织：卷积、傅里叶、拉普拉斯、Z 变换、抽样、滤波、MATLAB、Python。每个问题应要求附上题目、已尝试步骤和卡住的位置。",
+          points: [
+            "建议功能：提问、回答、采纳、标签、搜索、代码高亮、公式渲染。",
+            "答疑模板：先判断知识点，再给思路，再给关键步骤，最后指出易错点。",
+            "代码调试要保留最小可复现示例，包括采样率、信号长度、频率轴和图像输出。"
+          ],
+          links: [
+            ["Stack Exchange Signal Processing 社区", "https://dsp.stackexchange.com/"],
+            ["SciPy signal 文档：提问时常用 API 参考", "https://docs.scipy.org/doc/scipy/reference/signal.html"],
+            ["MathWorks Answers Signal Processing 标签", "https://www.mathworks.com/matlabcentral/answers/?term=signal+processing"]
+          ]
+        },
+        search: {
+          title: "全站搜索：知识点、公式、题目与代码检索",
+          summary: "全站搜索应把理论讲义、公式卡、题库标签、代码注释和资源链接统一索引。当前静态站可先做前端关键词筛选，后续可升级为 Lunr/FlexSearch 或后端全文检索。",
+          points: [
+            "关键词同义词要合并：傅里叶/FT/FFT/频谱，拉普拉斯/Laplace/ROC，Z 变换/单位圆/极点。",
+            "搜索结果应分组显示：理论、公式、题目、代码、资料。",
+            "公式搜索需要支持符号输入，如 fs、ω、Ω、H(s)、H(z)、δ(t)。"
+          ],
+          links: [
+            ["Lunr.js：静态站全文搜索方案", "https://lunrjs.com/"],
+            ["FlexSearch：浏览器端高速全文检索", "https://github.com/nextapps-de/flexsearch"],
+            ["MathJax 文档：公式内容渲染与检索配合", "https://docs.mathjax.org/"]
+          ]
+        },
+        latex: {
+          title: "公式排版：从 LaTeX 源码到课本式公式",
+          summary: "公式区不应该直接展示源码。适合使用 MathJax/KaTeX 渲染，或者用 HTML 上下标、分式、积分符号做静态公式排版，保证移动端也清楚。",
+          points: [
+            "连续时间频率用 ω，离散时间频率用 Ω，采样频率用 fs，避免符号混用。",
+            "冲激函数写 δ(t)，单位阶跃写 u(t)，离散单位样值写 δ[n]。",
+            "ROC 解释要和极点、因果性、稳定性一起出现，不能只写一个不等式。"
+          ],
+          links: [
+            ["MathJax 官方文档", "https://docs.mathjax.org/"],
+            ["KaTeX 官方文档", "https://katex.org/docs/api"],
+            ["MIT OCW Signals and Systems 讲义公式参考", "https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/"]
+          ]
+        },
+        mobile: {
+          title: "移动端适配：公式、表格、代码和实验布局",
+          summary: "信号与系统网站移动端最容易出问题的是公式溢出、代码块过宽、表格错位、Canvas 太高。解决方式是公式换行、代码横向滚动、卡片单列、实验区固定宽高比例。",
+          points: [
+            "公式卡片用可换行文本或横向滚动区域，避免在手机端撑破页面。",
+            "实验 Canvas 使用 width:100% 和固定 aspect-ratio，减少大面积空白。",
+            "导航在小屏幕改成折叠菜单，卡片和表格改成单列阅读。"
+          ],
+          links: [
+            ["MDN Responsive Design 基础", "https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design"],
+            ["MDN Canvas API 文档", "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API"],
+            ["web.dev 响应式设计指南", "https://web.dev/learn/design/"]
+          ]
+        }
       };
 
       const lessons = [
@@ -1930,6 +3287,15 @@
         ["第 4 讲", "卷积直觉", "卷积可以理解为一个波形滑过另一个波形，重叠面积决定当前输出。", "convolution"],
         ["第 5 讲", "频域思想", "傅里叶分析把复杂信号拆成不同频率，滤波和带宽因此更容易理解。", "frequency"],
         ["第 6 讲", "抽样恢复", "抽样率不足会产生混叠；满足奈奎斯特条件时才有恢复的理论基础。", "sampling"]
+      ];
+
+      const lessonNotes = [
+        ["建立“信号是函数、系统是映射”的基础视角。", "x(t), x[n], δ(t), u(t)", "切到函数图像实验台，拖动幅度和频率观察波形。"],
+        ["理解时移、尺度变换、反褶对自变量的作用。", "x(t-t0), x(at), x(-t)", "对比同一信号在不同 t0 与 a 下的位置和疏密。"],
+        ["把 LTI 系统看成由冲激响应完全刻画的对象。", "y(t)=x(t)*h(t), H(s)=Y(s)/X(s)", "观察系统框图和零输入/零状态响应。"],
+        ["掌握翻转、平移、相乘、积分四步图解法。", "y(t)=∫x(τ)h(t-τ)dτ", "进入卷积动画实验，观察重叠面积如何变成 y(t)。"],
+        ["理解时域复杂波形可分解成频率成分。", "X(jω)=∫x(t)e^{-jωt}dt", "进入 FFT 频谱实验，观察主频、谐波和噪声底。"],
+        ["理解 fs、fmax、混叠与 sinc 恢复之间的关系。", "fs≥2fmax, x[n]=x(nT)", "进入抽样实验，把 fs 调低制造混叠。"]
       ];
 
       const signalInfo = {
@@ -2063,11 +3429,14 @@
           go("#stats");
           showFacilityToast("已打开课程学习数据面板，进度数字会自动滚动显示。");
         } else if (action === "formulas") {
-          const preset = $("zPreset");
-          if (preset) preset.value = "iir";
-          drawZTransform();
-          go("#ztransform");
-          showFacilityToast("已切换到 Z 变换实验台，可拖动参数观察极点稳定性。");
+          go("#formulas");
+          const search = $("formulaSearch");
+          if (search) {
+            search.focus({ preventScroll: true });
+            search.value = "Z 变换 ROC";
+            filterFormulas();
+          }
+          showFacilityToast("已打开公式手册，可搜索傅里叶、拉普拉斯、Z 变换、卷积和抽样公式。");
         } else if (action === "path") {
           activateLesson(1);
           go("#guide");
@@ -2102,6 +3471,184 @@
         });
       });
 
+      function filterFormulas() {
+        const input = $("formulaSearch");
+        if (!input) return;
+        const keyword = input.value.trim().toLowerCase();
+        document.querySelectorAll(".formula-card").forEach((card) => {
+          const haystack = (card.textContent + " " + (card.dataset.keywords || "")).toLowerCase();
+          card.style.display = !keyword || haystack.includes(keyword) ? "" : "none";
+        });
+      }
+
+      if ($("formulaSearch")) {
+        $("formulaSearch").addEventListener("input", filterFormulas);
+      }
+
+      function openResourceModal(key) {
+        const data = resourceData[key];
+        const modal = $("resourceModal");
+        const body = $("resourceBody");
+        if (!data || !modal || !body) return;
+        $("resourceTitle").textContent = data.title;
+        body.innerHTML = `
+          <section>
+            <h4>站内整理</h4>
+            <p>${data.summary}</p>
+          </section>
+          <section>
+            <h4>关键知识点</h4>
+            <ul>${data.points.map((point) => `<li>${point}</li>`).join("")}</ul>
+          </section>
+          <section>
+            <h4>检索资料来源</h4>
+            <div class="resource-links">
+              ${data.links.map(([label, href]) => `<a href="${href}" target="_blank" rel="noopener noreferrer">${label}</a>`).join("")}
+            </div>
+          </section>
+        `;
+        modal.classList.add("show");
+        document.body.style.overflow = "hidden";
+        $("resourceCloseBtn").focus();
+      }
+
+      function closeResourceModal() {
+        const modal = $("resourceModal");
+        if (!modal) return;
+        modal.classList.remove("show");
+        document.body.style.overflow = "";
+      }
+
+      document.querySelectorAll("[data-resource]").forEach((card) => {
+        const open = () => openResourceModal(card.dataset.resource);
+        card.addEventListener("click", open);
+        card.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            open();
+          }
+        });
+      });
+
+      if ($("resourceCloseBtn")) $("resourceCloseBtn").addEventListener("click", closeResourceModal);
+      if ($("resourceModal")) {
+        $("resourceModal").addEventListener("click", (event) => {
+          if (event.target === $("resourceModal")) closeResourceModal();
+        });
+      }
+
+      function addCommunityItem(listId, text, answer = "") {
+        const list = $(listId);
+        if (!list || !text.trim()) return;
+        const item = document.createElement("article");
+        item.innerHTML = answer
+          ? `<b>提问：</b>${escapeHtml(text)}<br><b>大师解惑：</b>${escapeHtml(answer)}`
+          : escapeHtml(text);
+        list.prepend(item);
+      }
+
+      function escapeHtml(value) {
+        return value.replace(/[&<>"']/g, (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        })[char]);
+      }
+
+      function makeAnswer(question) {
+        const text = question.toLowerCase();
+        if (text.includes("线性")) return "先检验齐次性，再检验叠加性。只要出现常数项、平方、绝对值或输入相乘，通常就不是线性系统。";
+        if (text.includes("因果")) return "看当前输出是否用到未来输入。连续系统若 y(t0) 依赖 t>t0 的 x(t)，离散系统若 y[n0] 依赖 n>n0 的 x[n]，就是非因果。";
+        if (text.includes("roc") || text.includes("收敛")) return "ROC 要和极点、因果性、稳定性一起判断。连续稳定要求 ROC 包含 jω 轴；离散稳定要求 ROC 包含单位圆。";
+        if (text.includes("卷积")) return "卷积图解按四步走：翻转 h，平移到 t，相乘得到重叠区域，对重叠区域积分或求和。先画支撑区间最稳。";
+        if (text.includes("fft") || text.includes("频谱")) return "先确定采样率 fs 和点数 N，再用 f=kfs/N 建立频率轴。主峰位置对应主要频率，窗函数会影响谱泄漏。";
+        if (text.includes("稳态") || text.includes("暂态")) return "暂态由系统自然模态决定，稳定系统中会衰减；稳态是长期保留的响应，正弦稳态只改变幅度和相位。";
+        return "建议先定位知识点，再写出系统表达式或变换式，最后按性质判据逐条检查。可以补充题目条件，我再按步骤拆解。";
+      }
+
+      if ($("saveNoteBtn")) {
+        $("saveNoteBtn").addEventListener("click", () => {
+          const input = $("noteInput");
+          if (!input || !input.value.trim()) return;
+          addCommunityItem("noteList", input.value.trim());
+          input.value = "";
+          showFacilityToast("笔记已发布到页面内。");
+        });
+      }
+
+      if ($("askQuestionBtn")) {
+        $("askQuestionBtn").addEventListener("click", () => {
+          const input = $("questionInput");
+          if (!input || !input.value.trim()) return;
+          addCommunityItem("questionList", input.value.trim(), makeAnswer(input.value));
+          input.value = "";
+          showFacilityToast("疑惑已提交，大师解惑已生成。");
+        });
+      }
+
+      function runSiteSearch() {
+        const input = $("siteSearchInput");
+        const result = $("siteSearchResults");
+        if (!input || !result) return;
+        const keyword = input.value.trim().toLowerCase();
+        if (!keyword) {
+          result.innerHTML = "<article>输入关键词后，将在理论、公式、题库、代码和资源内容中检索。</article>";
+          return;
+        }
+        const sources = Array.from(document.querySelectorAll(
+          "#theory article, #formulas article, #problems article, #code article, #applications article, #resources article, #lab .canvas-card, #convolution .canvas-card, #fft .canvas-card, #sampling .canvas-card, #ztransform .canvas-card"
+        ));
+        const matches = sources
+          .map((node) => {
+            const title = node.querySelector("h3")?.textContent || node.querySelector("b")?.textContent || "相关内容";
+            const text = node.textContent.replace(/\s+/g, " ").trim();
+            return { title, text, node };
+          })
+          .filter((item) => item.text.toLowerCase().includes(keyword))
+          .slice(0, 8);
+        if (!matches.length) {
+          result.innerHTML = `<article>没有找到“${escapeHtml(input.value)}”。可以试试：线性、因果、ROC、卷积、FFT、稳态、抽样。</article>`;
+          return;
+        }
+        result.innerHTML = matches.map((item) => {
+          const index = item.text.toLowerCase().indexOf(keyword);
+          const start = Math.max(0, index - 28);
+          const snippet = item.text.slice(start, start + 96);
+          return `<article><b>${escapeHtml(item.title)}</b><br>${escapeHtml(snippet)}...</article>`;
+        }).join("");
+      }
+
+      if ($("siteSearchBtn")) $("siteSearchBtn").addEventListener("click", runSiteSearch);
+      if ($("siteSearchInput")) {
+        $("siteSearchInput").addEventListener("keydown", (event) => {
+          if (event.key === "Enter") runSiteSearch();
+        });
+        $("siteSearchInput").addEventListener("input", runSiteSearch);
+      }
+
+      document.querySelectorAll(".copy-code").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const code = button.closest(".code-card")?.querySelector("code")?.textContent || "";
+          if (!code) return;
+          try {
+            await navigator.clipboard.writeText(code);
+          } catch {
+            const area = document.createElement("textarea");
+            area.value = code;
+            document.body.appendChild(area);
+            area.select();
+            document.execCommand("copy");
+            area.remove();
+          }
+          button.textContent = "已复制";
+          setTimeout(() => {
+            button.textContent = "复制代码";
+          }, 1400);
+        });
+      });
+
       function activateLesson(index) {
         state.lesson = index;
         document.querySelectorAll(".lesson-tabs button").forEach((item) => {
@@ -2118,6 +3665,10 @@
         $("lessonTag").textContent = lesson[0];
         $("lessonTitle").textContent = lesson[1];
         $("lessonCaption").textContent = lesson[2];
+        const notes = lessonNotes[state.lesson];
+        if ($("lessonGoal")) $("lessonGoal").textContent = notes[0];
+        if ($("lessonFormula")) $("lessonFormula").textContent = notes[1];
+        if ($("lessonPractice")) $("lessonPractice").textContent = notes[2];
       }
 
       function sinc(x) {
@@ -2182,7 +3733,10 @@
       });
 
       document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") closeSignalDropdown();
+        if (event.key === "Escape") {
+          closeSignalDropdown();
+          closeResourceModal();
+        }
       });
 
       function closeSignalDropdown() {
@@ -2228,6 +3782,44 @@
         $("sampleRate").value = 10;
         $("sampleRateValue").textContent = "10 Hz";
         drawSampling();
+      });
+
+      $("convInput").addEventListener("change", (event) => {
+        state.convInput = event.target.value;
+      });
+
+      $("convKernel").addEventListener("change", (event) => {
+        state.convKernel = event.target.value;
+      });
+
+      $("convSpeed").addEventListener("input", (event) => {
+        state.convSpeed = Number(event.target.value);
+        $("convSpeedValue").textContent = state.convSpeed.toFixed(1) + "x";
+      });
+
+      ["fftBase", "fftHarmonic", "fftNoise"].forEach((id) => {
+        $(id).addEventListener("input", (event) => {
+          state[id] = Number(event.target.value);
+          const suffix = id === "fftBase" ? " Hz" : "";
+          $(id + "Value").textContent = state[id].toFixed(id === "fftBase" ? 0 : 2) + suffix;
+          $("fftFormula").textContent = `x(t)=sin(2π·${state.fftBase}t)+${state.fftHarmonic.toFixed(2)}sin(2π·${state.fftBase * 3}t)+noise`;
+        });
+      });
+
+      $("soundFreq").addEventListener("input", (event) => {
+        setSoundFrequency(Number(event.target.value));
+      });
+
+      $("soundGain").addEventListener("input", (event) => {
+        state.soundGain = Number(event.target.value);
+        $("soundGainValue").textContent = state.soundGain.toFixed(2);
+        if (audioState.gain) audioState.gain.gain.setTargetAtTime(state.soundGain, audioState.ctx.currentTime, 0.02);
+      });
+
+      $("soundToggleBtn").addEventListener("click", toggleSound);
+
+      document.querySelectorAll("[data-tone]").forEach((button) => {
+        button.addEventListener("click", () => setSoundFrequency(Number(button.dataset.tone)));
       });
 
       function updateSignalText() {
@@ -2378,6 +3970,320 @@
         }
       }
 
+      function convInputValue(t) {
+        if (state.convInput === "rect") return Math.abs(t) <= 1.05 ? 1 : 0;
+        if (state.convInput === "tri") return Math.max(0, 1 - Math.abs(t) / 1.45);
+        if (state.convInput === "exp") return t >= 0 ? Math.exp(-1.15 * t) : 0;
+        return 0;
+      }
+
+      function convKernelValue(t) {
+        if (state.convKernel === "exp") return t >= 0 ? Math.exp(-1.25 * t) : 0;
+        if (state.convKernel === "rect") return Math.abs(t) <= 0.9 ? 0.75 : 0;
+        if (state.convKernel === "sinc") return 0.75 * sinc(1.25 * t);
+        return 0;
+      }
+
+      function convolutionArea(t) {
+        let sum = 0;
+        const step = 0.025;
+        for (let tau = -4; tau <= 4; tau += step) {
+          sum += convInputValue(tau) * convKernelValue(t - tau) * step;
+        }
+        return sum;
+      }
+
+      function drawConvolution(time = 0) {
+        const canvas = $("convolutionCanvas");
+        if (!canvas) return requestAnimationFrame(drawConvolution);
+        const ctx = canvas.getContext("2d");
+        const W = canvas.width;
+        const H = canvas.height;
+        const top = { x: 56, y: 46, w: W - 112, h: 260 };
+        const bottom = { x: 56, y: 356, w: W - 112, h: 150 };
+        const t = -3.6 + ((time / 1000 * state.convSpeed) % 7.2);
+        const xToPx = (x, box) => box.x + ((x + 4) / 8) * box.w;
+        const yToPy = (y, box) => box.y + box.h * 0.78 - y * box.h * 0.48;
+
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = "rgba(255,255,255,0.82)";
+        ctx.fillRect(0, 0, W, H);
+        drawPanelGrid(ctx, top, -4, 4, "τ");
+        drawPanelGrid(ctx, bottom, -4, 4, "t");
+
+        ctx.fillStyle = "rgba(139,92,246,0.18)";
+        ctx.beginPath();
+        let started = false;
+        for (let i = 0; i <= 520; i++) {
+          const tau = -4 + (i / 520) * 8;
+          const product = convInputValue(tau) * convKernelValue(t - tau);
+          const px = xToPx(tau, top);
+          const py = yToPy(product, top);
+          if (!started) {
+            ctx.moveTo(px, yToPy(0, top));
+            ctx.lineTo(px, py);
+            started = true;
+          } else {
+            ctx.lineTo(px, py);
+          }
+        }
+        ctx.lineTo(xToPx(4, top), yToPy(0, top));
+        ctx.closePath();
+        ctx.fill();
+
+        drawCurve(ctx, top, (x) => convInputValue(x), "#0891b2", 4);
+        drawCurve(ctx, top, (x) => convKernelValue(t - x), "#f59e0b", 4);
+        drawCurve(ctx, top, (x) => convInputValue(x) * convKernelValue(t - x), "#8b5cf6", 3, [8, 6]);
+        drawCurve(ctx, bottom, (x) => convolutionArea(x), "#8b5cf6", 4);
+
+        const area = convolutionArea(t);
+        ctx.strokeStyle = "#f59e0b";
+        ctx.lineWidth = 2.5;
+        ctx.setLineDash([7, 7]);
+        ctx.beginPath();
+        ctx.moveTo(xToPx(t, bottom), bottom.y + 18);
+        ctx.lineTo(xToPx(t, bottom), bottom.y + bottom.h - 12);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = "#172033";
+        ctx.font = "800 20px Microsoft YaHei, Arial";
+        ctx.fillText("x(τ)", top.x + 10, top.y + 26);
+        ctx.fillStyle = "#f59e0b";
+        ctx.fillText("h(t-τ)", top.x + 86, top.y + 26);
+        ctx.fillStyle = "#8b5cf6";
+        ctx.fillText("x(τ)h(t-τ)", top.x + 190, top.y + 26);
+        ctx.fillStyle = "#172033";
+        ctx.fillText("输出 y(t)", bottom.x + 10, bottom.y + 26);
+        $("convTimeValue").textContent = "t=" + t.toFixed(2);
+        $("convAreaValue").textContent = area.toFixed(2);
+        requestAnimationFrame(drawConvolution);
+      }
+
+      function drawPanelGrid(ctx, box, xMin, xMax, label) {
+        ctx.save();
+        ctx.fillStyle = "rgba(255,255,255,0.56)";
+        ctx.fillRect(box.x, box.y, box.w, box.h);
+        ctx.strokeStyle = "rgba(40,58,90,0.12)";
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= 8; i++) {
+          const x = box.x + (i / 8) * box.w;
+          ctx.beginPath();
+          ctx.moveTo(x, box.y);
+          ctx.lineTo(x, box.y + box.h);
+          ctx.stroke();
+        }
+        for (let i = 0; i <= 4; i++) {
+          const y = box.y + (i / 4) * box.h;
+          ctx.beginPath();
+          ctx.moveTo(box.x, y);
+          ctx.lineTo(box.x + box.w, y);
+          ctx.stroke();
+        }
+        ctx.strokeStyle = "rgba(40,58,90,0.28)";
+        ctx.lineWidth = 2;
+        const zeroY = box.y + box.h * 0.78;
+        ctx.beginPath();
+        ctx.moveTo(box.x, zeroY);
+        ctx.lineTo(box.x + box.w, zeroY);
+        ctx.stroke();
+        ctx.fillStyle = "#5e687d";
+        ctx.font = "700 16px Microsoft YaHei, Arial";
+        ctx.fillText(label, box.x + box.w - 18, zeroY - 8);
+        ctx.restore();
+      }
+
+      function drawCurve(ctx, box, fn, color, width, dash = []) {
+        const xToPx = (x) => box.x + ((x + 4) / 8) * box.w;
+        const yToPy = (y) => box.y + box.h * 0.78 - y * box.h * 0.48;
+        ctx.save();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        ctx.setLineDash(dash);
+        ctx.beginPath();
+        for (let i = 0; i <= 620; i++) {
+          const x = -4 + (i / 620) * 8;
+          const y = fn(x);
+          if (i === 0) ctx.moveTo(xToPx(x), yToPy(y));
+          else ctx.lineTo(xToPx(x), yToPy(y));
+        }
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      function fftSignal(n, N) {
+        const t = n / N;
+        const f0 = state.fftBase;
+        const harmonic = state.fftHarmonic * Math.sin(2 * Math.PI * f0 * 3 * t);
+        const low = Math.sin(2 * Math.PI * f0 * t);
+        const noise = state.fftNoise * (Math.sin(2 * Math.PI * 17 * t + 1.1) + Math.sin(2 * Math.PI * 29 * t + 0.3));
+        return low + harmonic + noise;
+      }
+
+      function computeDft(values) {
+        const N = values.length;
+        const mags = [];
+        for (let k = 0; k < N / 2; k++) {
+          let re = 0;
+          let im = 0;
+          for (let n = 0; n < N; n++) {
+            const angle = (-2 * Math.PI * k * n) / N;
+            re += values[n] * Math.cos(angle);
+            im += values[n] * Math.sin(angle);
+          }
+          mags.push((2 * Math.hypot(re, im)) / N);
+        }
+        return mags;
+      }
+
+      function drawFft(time = 0) {
+        const canvas = $("fftCanvas");
+        if (!canvas) return requestAnimationFrame(drawFft);
+        const ctx = canvas.getContext("2d");
+        const W = canvas.width;
+        const H = canvas.height;
+        const N = 64;
+        const values = Array.from({ length: N }, (_, n) => fftSignal(n, N));
+        const mags = computeDft(values);
+        const waveBox = { x: 56, y: 46, w: W - 112, h: 190 };
+        const specBox = { x: 56, y: 300, w: W - 112, h: 190 };
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = "rgba(255,255,255,0.82)";
+        ctx.fillRect(0, 0, W, H);
+        drawPanelGrid(ctx, waveBox, 0, N, "n");
+        drawPanelGrid(ctx, specBox, 0, N / 2, "k");
+
+        ctx.strokeStyle = "#0891b2";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        values.forEach((v, n) => {
+          const x = waveBox.x + (n / (N - 1)) * waveBox.w;
+          const y = waveBox.y + waveBox.h / 2 - v * 48;
+          if (n === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+
+        const maxMag = Math.max(1, ...mags);
+        const barW = specBox.w / 24;
+        for (let k = 0; k < 24; k++) {
+          const h = (mags[k] / maxMag) * (specBox.h * 0.74);
+          const x = specBox.x + k * barW + 5;
+          const y = specBox.y + specBox.h * 0.85 - h;
+          const isPeak = k === state.fftBase || k === state.fftBase * 3;
+          ctx.fillStyle = isPeak ? "#f59e0b" : "rgba(139,92,246,0.72)";
+          ctx.fillRect(x, y, Math.max(6, barW - 10), h);
+        }
+
+        const centerX = W - 145;
+        const centerY = 152;
+        const spin = time / 1000 * state.fftBase * 1.7;
+        ctx.strokeStyle = "rgba(40,58,90,0.2)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 48, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.strokeStyle = "#f59e0b";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.lineTo(centerX + Math.cos(spin) * 48, centerY + Math.sin(spin) * 48);
+        ctx.stroke();
+        ctx.fillStyle = "#172033";
+        ctx.font = "800 20px Microsoft YaHei, Arial";
+        ctx.fillText("时域 x[n]", waveBox.x + 10, waveBox.y + 26);
+        ctx.fillText("FFT 幅度 |X[k]|", specBox.x + 10, specBox.y + 26);
+        requestAnimationFrame(drawFft);
+      }
+
+      function setSoundFrequency(freq) {
+        state.soundFreq = freq;
+        $("soundFreq").value = freq;
+        $("soundFreqValue").textContent = Math.round(freq) + " Hz";
+        $("soundPeriodValue").textContent = (1000 / freq).toFixed(2) + " ms";
+        $("soundPitchValue").textContent = frequencyToNote(freq);
+        if (audioState.oscillator && audioState.ctx) {
+          audioState.oscillator.frequency.setTargetAtTime(freq, audioState.ctx.currentTime, 0.02);
+        }
+      }
+
+      function frequencyToNote(freq) {
+        const names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+        const midi = Math.round(69 + 12 * Math.log2(freq / 440));
+        return names[((midi % 12) + 12) % 12] + (Math.floor(midi / 12) - 1);
+      }
+
+      function ensureAudio() {
+        if (audioState.ctx) return;
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioState.ctx = new AudioContext();
+        audioState.gain = audioState.ctx.createGain();
+        audioState.gain.gain.value = 0;
+        audioState.gain.connect(audioState.ctx.destination);
+        audioState.oscillator = audioState.ctx.createOscillator();
+        audioState.oscillator.type = "sine";
+        audioState.oscillator.frequency.value = state.soundFreq;
+        audioState.oscillator.connect(audioState.gain);
+        audioState.oscillator.start();
+      }
+
+      async function toggleSound() {
+        ensureAudio();
+        if (audioState.ctx.state === "suspended") await audioState.ctx.resume();
+        state.soundOn = !state.soundOn;
+        const target = state.soundOn ? state.soundGain : 0;
+        audioState.gain.gain.setTargetAtTime(target, audioState.ctx.currentTime, 0.025);
+        $("soundToggleBtn").textContent = state.soundOn ? "停止声音" : "播放声音";
+      }
+
+      function drawSound(time = 0) {
+        const canvas = $("soundCanvas");
+        if (!canvas) return requestAnimationFrame(drawSound);
+        const ctx = canvas.getContext("2d");
+        const W = canvas.width;
+        const H = canvas.height;
+        const t = time / 1000;
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = "rgba(255,255,255,0.82)";
+        ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = "rgba(40,58,90,0.10)";
+        for (let x = 56; x < W - 56; x += 48) {
+          ctx.beginPath();
+          ctx.moveTo(x, 46);
+          ctx.lineTo(x, H - 92);
+          ctx.stroke();
+        }
+        const cycles = state.soundFreq / 110;
+        ctx.strokeStyle = "#0891b2";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        for (let i = 0; i <= W - 112; i++) {
+          const x = 56 + i;
+          const y = 185 + Math.sin((i / (W - 112)) * Math.PI * 2 * cycles - t * 6) * 82;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        const scaleX = 56 + ((state.soundFreq - 110) / (1760 - 110)) * (W - 112);
+        ctx.strokeStyle = "rgba(40,58,90,0.2)";
+        ctx.lineWidth = 8;
+        ctx.beginPath();
+        ctx.moveTo(56, H - 88);
+        ctx.lineTo(W - 56, H - 88);
+        ctx.stroke();
+        ctx.fillStyle = "#f59e0b";
+        ctx.beginPath();
+        ctx.arc(scaleX, H - 88, state.soundOn ? 14 + Math.sin(t * 8) * 3 : 12, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#172033";
+        ctx.font = "800 22px Microsoft YaHei, Arial";
+        ctx.fillText(`${Math.round(state.soundFreq)} Hz · ${frequencyToNote(state.soundFreq)}`, 56, 48);
+        ctx.fillStyle = "#5e687d";
+        ctx.font = "700 16px Microsoft YaHei, Arial";
+        ctx.fillText("110 Hz", 56, H - 52);
+        ctx.fillText("1760 Hz", W - 132, H - 52);
+        requestAnimationFrame(drawSound);
+      }
+
       function drawHero(time = 0) {
         const canvas = $("heroCanvas");
         const ctx = canvas.getContext("2d");
@@ -2469,28 +4375,65 @@
           arrow(ctx, 626, 235, 712, 235);
         }
         if (mode === "convolution") {
+          const baseY = 300;
+          const slide = 150 + ((t * 120) % 660);
+          ctx.strokeStyle = "rgba(255,255,255,0.3)";
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(120, baseY);
+          ctx.lineTo(870, baseY);
+          ctx.stroke();
           ctx.strokeStyle = "#67e8f9";
           ctx.lineWidth = 5;
           ctx.beginPath();
           for (let i = 0; i <= 640; i++) {
             const x = 170 + i;
-            const y = 265 - Math.max(0, 95 - Math.abs(i - 280) * 1.2);
+            const y = baseY - Math.max(0, 95 - Math.abs(i - 260) * 1.2);
             if (i === 0) ctx.moveTo(x, y);
             else ctx.lineTo(x, y);
           }
           ctx.stroke();
-          const slide = 165 + ((t * 125) % 650);
-          ctx.fillStyle = "rgba(245,158,11,0.26)";
-          ctx.fillRect(slide, 165, 150, 100);
+          ctx.fillStyle = "rgba(245,158,11,0.22)";
+          ctx.fillRect(slide, baseY - 112, 155, 112);
           ctx.strokeStyle = "#fbbf24";
-          ctx.strokeRect(slide, 165, 150, 100);
+          ctx.lineWidth = 4;
+          ctx.strokeRect(slide, baseY - 112, 155, 112);
+          ctx.fillStyle = "rgba(139,92,246,0.26)";
+          ctx.beginPath();
+          ctx.moveTo(slide, baseY);
+          ctx.lineTo(slide, baseY - 54);
+          ctx.lineTo(slide + 155, baseY - 54);
+          ctx.lineTo(slide + 155, baseY);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = "#fff";
+          ctx.font = "800 24px Microsoft YaHei, Arial";
+          ctx.fillText("翻转 h(t-τ) → 平移 → 重叠面积 = y(t)", 180, 410);
         }
         if (mode === "frequency") {
-          for (let i = 0; i < 15; i++) {
-            const h = 42 + 150 * Math.exp(-Math.abs(i - 7) / 3) * (0.78 + 0.22 * Math.sin(t * 2 + i));
-            ctx.fillStyle = i === 7 ? "#fbbf24" : "#67e8f9";
-            ctx.fillRect(145 + i * 50, 320 - h, 26, h);
+          ctx.strokeStyle = "#67e8f9";
+          ctx.lineWidth = 4;
+          ctx.beginPath();
+          for (let i = 0; i <= 650; i++) {
+            const x = 160 + i;
+            const y = 165 + Math.sin(i / 34 - t * 2.2) * 38 + Math.sin(i / 13 - t * 3.5) * 17;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
           }
+          ctx.stroke();
+          ctx.strokeStyle = "rgba(255,255,255,0.36)";
+          ctx.beginPath();
+          ctx.moveTo(130, 360);
+          ctx.lineTo(850, 360);
+          ctx.stroke();
+          for (let i = 0; i < 17; i++) {
+            const h = 28 + 145 * Math.exp(-Math.abs(i - 6) / 2.6) * (0.78 + 0.22 * Math.sin(t * 2 + i));
+            ctx.fillStyle = i === 6 || i === 12 ? "#fbbf24" : "#67e8f9";
+            ctx.fillRect(145 + i * 42, 360 - h, 22, h);
+          }
+          ctx.fillStyle = "#fff";
+          ctx.font = "800 24px Microsoft YaHei, Arial";
+          ctx.fillText("时域波形  →  FFT 频谱峰值", 250, 430);
         }
         if (mode === "sampling") {
           ctx.strokeStyle = "#67e8f9";
@@ -2700,6 +4643,9 @@
       bindZTransform();
       requestAnimationFrame(drawHero);
       requestAnimationFrame(drawGuide);
+      requestAnimationFrame(drawConvolution);
+      requestAnimationFrame(drawFft);
+      requestAnimationFrame(drawSound);
     </script>
   </body>
 </html>
