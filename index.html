@@ -2039,6 +2039,200 @@
           display: none;
         }
       }
+      .dynamic-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+        gap: 18px;
+        align-items: stretch;
+      }
+
+      .dynamic-panel {
+        position: relative;
+        overflow: hidden;
+        padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+      }
+
+      .dynamic-panel h3 {
+        margin: 0 0 10px;
+        font-size: 22px;
+      }
+
+      .dynamic-panel p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .dynamic-kpi {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .dynamic-kpi article,
+      .task-item,
+      .dynamic-list article {
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.07);
+      }
+
+      .dynamic-kpi article {
+        padding: 14px;
+      }
+
+      .dynamic-kpi b {
+        display: block;
+        font-size: 28px;
+        line-height: 1;
+      }
+
+      .dynamic-kpi span,
+      .task-item small,
+      .dynamic-list span {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .progress-track {
+        height: 12px;
+        margin: 18px 0 10px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .progress-fill {
+        width: 0%;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--primary2), var(--primary), var(--accent));
+        transition: width 0.45s ease;
+      }
+
+      .task-board,
+      .dynamic-list,
+      .live-search-box {
+        display: grid;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .task-item {
+        display: grid;
+        grid-template-columns: 28px minmax(0, 1fr) auto;
+        gap: 10px;
+        align-items: center;
+        padding: 11px;
+      }
+
+      .task-item input {
+        width: 20px;
+        height: 20px;
+        accent-color: var(--primary2);
+      }
+
+      .task-item.done {
+        border-color: rgba(52, 211, 153, 0.42);
+        background: rgba(52, 211, 153, 0.11);
+      }
+
+      .chapter-pills,
+      .dynamic-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      .chapter-pills button,
+      .dynamic-actions button {
+        cursor: pointer;
+        color: var(--text);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        transition: transform 0.2s ease, background 0.2s ease;
+      }
+
+      .chapter-pills button {
+        padding: 9px 12px;
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .dynamic-actions button {
+        padding: 10px 14px;
+        font-weight: 900;
+      }
+
+      .chapter-pills button.active {
+        color: #06111f;
+        border-color: transparent;
+        background: linear-gradient(135deg, var(--primary2), #a7f3d0);
+      }
+
+      .chapter-pills button:hover,
+      .dynamic-actions button:hover {
+        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.14);
+      }
+
+      .dynamic-list article {
+        padding: 12px;
+      }
+
+      .dynamic-list b {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .live-search-box input {
+        width: 100%;
+        color: var(--text);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 12px 14px;
+        background: rgba(255, 255, 255, 0.08);
+        outline: none;
+      }
+
+      .dynamic-toast {
+        position: fixed;
+        right: 22px;
+        bottom: 22px;
+        z-index: 999;
+        max-width: min(360px, calc(100vw - 44px));
+        padding: 13px 16px;
+        color: #06111f;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #a7f3d0, #67e8f9);
+        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+        opacity: 0;
+        transform: translateY(12px);
+        pointer-events: none;
+        transition: opacity 0.25s ease, transform 0.25s ease;
+        font-weight: 900;
+      }
+
+      .dynamic-toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (max-width: 920px) {
+        .dynamic-grid,
+        .dynamic-kpi {
+          grid-template-columns: 1fr;
+        }
+      }
     </style>
   </head>
   <body class="loading">
@@ -2064,6 +2258,7 @@
         <nav class="nav-links" id="navLinks" aria-label="主导航">
           <a href="#home">首页</a>
           <a href="#overview">总览</a>
+          <a href="#dynamic">动态学习</a>
           <a href="#theory">理论</a>
           <a href="#formulas">公式</a>
           <a href="#problems">题库</a>
@@ -2121,6 +2316,60 @@
               <b>∞</b>
               <span>从时域到频域，从连续到离散，用可视化理解系统响应。</span>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="dynamic">
+        <div class="container">
+          <div class="section-head reveal">
+            <div>
+              <p class="eyebrow"><i class="fa-solid fa-chart-line"></i> Dynamic Learning</p>
+              <h2>动态学习仪表盘：进度、任务、收藏与实验记录</h2>
+            </div>
+            <p>页面会根据你的点击、打卡、搜索和实验参数实时更新，并把学习记录保存在本机浏览器中。GitHub Pages 无需后端也能拥有动态应用体验。</p>
+          </div>
+          <div class="dynamic-grid">
+            <article class="dynamic-panel reveal">
+              <h3 id="dynamicGreeting">今天从哪一讲开始？</h3>
+              <p id="dynamicTip">完成章节打卡后，系统会自动刷新进度与今日建议。</p>
+              <div class="progress-track" aria-label="学习进度">
+                <div class="progress-fill" id="dynamicProgressBar"></div>
+              </div>
+              <div class="dynamic-kpi">
+                <article><b id="dynamicProgressValue">0%</b><span>课程进度</span></article>
+                <article><b id="dynamicStreakValue">0</b><span>连续学习天数</span></article>
+                <article><b id="dynamicNoteValue">0</b><span>保存记录</span></article>
+              </div>
+              <div class="chapter-pills" id="chapterPills" aria-label="章节打卡"></div>
+              <div class="dynamic-actions">
+                <button id="dynamicStartBtn" type="button">开始今日学习</button>
+                <button id="dynamicSaveFormulaBtn" type="button">收藏当前公式</button>
+                <button id="dynamicSnapshotBtn" type="button">保存实验参数</button>
+                <button id="dynamicResetBtn" type="button">清空动态数据</button>
+              </div>
+            </article>
+            <article class="dynamic-panel reveal">
+              <h3>今日任务</h3>
+              <p>勾选后会自动保存，刷新页面也不会丢失。</p>
+              <div class="task-board" id="dynamicTaskBoard"></div>
+              <div class="live-search-box">
+                <input id="dynamicSmartSearch" type="search" placeholder="动态检索：卷积、FFT、ROC、抽样、稳定..." />
+                <div class="dynamic-list" id="dynamicSearchResults">
+                  <article><b>搜索建议</b><span>输入关键词后，系统会从页面内容中实时推荐相关模块。</span></article>
+                </div>
+              </div>
+            </article>
+            <article class="dynamic-panel reveal">
+              <h3>公式收藏</h3>
+              <p>在公式区搜索到的重点公式，可以一键保存到这里。</p>
+              <div class="dynamic-list" id="dynamicFormulaList"></div>
+            </article>
+            <article class="dynamic-panel reveal">
+              <h3>实验参数记录</h3>
+              <p>保存函数图像、抽样和 FFT 实验的当前参数，方便写实验报告。</p>
+              <div class="dynamic-list" id="dynamicSnapshotList"></div>
+            </article>
           </div>
         </div>
       </section>
@@ -4636,6 +4885,199 @@ grid on; title('Convolution response');</code></pre>
         drawZTransform();
       }
 
+      const dynamicStoreKey = "signalsSystemsDynamicStateV1";
+      const dynamicChapters = ["信号基础", "LTI 系统", "卷积", "傅里叶", "拉普拉斯", "Z 变换", "抽样", "FFT"];
+      const dynamicTasks = [
+        ["task_formula", "复习 5 个公式", "公式手册"],
+        ["task_lab", "完成 1 次实验参数记录", "实验台"],
+        ["task_problem", "完成 1 组题库自测", "题库"],
+        ["task_note", "写 1 条学习笔记", "笔记区"]
+      ];
+
+      function loadDynamicState() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(dynamicStoreKey) || "{}");
+          return {
+            chapters: Array.isArray(saved.chapters) ? saved.chapters : [],
+            tasks: saved.tasks || {},
+            formulas: Array.isArray(saved.formulas) ? saved.formulas : [],
+            snapshots: Array.isArray(saved.snapshots) ? saved.snapshots : [],
+            lastDate: saved.lastDate || "",
+            streak: Number(saved.streak || 0)
+          };
+        } catch {
+          return { chapters: [], tasks: {}, formulas: [], snapshots: [], lastDate: "", streak: 0 };
+        }
+      }
+
+      let dynamicState = loadDynamicState();
+
+      function saveDynamicState() {
+        localStorage.setItem(dynamicStoreKey, JSON.stringify(dynamicState));
+      }
+
+      function todayKey() {
+        return new Date().toISOString().slice(0, 10);
+      }
+
+      function showDynamicToast(message) {
+        let toast = $("dynamicToast");
+        if (!toast) {
+          toast = document.createElement("div");
+          toast.id = "dynamicToast";
+          toast.className = "dynamic-toast";
+          document.body.appendChild(toast);
+        }
+        toast.textContent = message;
+        toast.classList.add("show");
+        clearTimeout(showDynamicToast.timer);
+        showDynamicToast.timer = setTimeout(() => toast.classList.remove("show"), 2200);
+      }
+
+      function ensureDailyStreak() {
+        const today = todayKey();
+        if (dynamicState.lastDate === today) return;
+        const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+        dynamicState.streak = dynamicState.lastDate === yesterday ? dynamicState.streak + 1 : 1;
+        dynamicState.lastDate = today;
+        dynamicState.tasks = {};
+        saveDynamicState();
+      }
+
+      function renderDynamicDashboard() {
+        const chapterWrap = $("chapterPills");
+        if (!chapterWrap) return;
+        ensureDailyStreak();
+        const completed = dynamicState.chapters.length;
+        const progress = Math.round((completed / dynamicChapters.length) * 100);
+        const hour = new Date().getHours();
+        const greeting = hour < 12 ? "上午适合攻克公式与例题" : hour < 18 ? "下午适合做实验和题库" : "晚上适合复盘错题与笔记";
+        if ($("dynamicGreeting")) $("dynamicGreeting").textContent = greeting;
+        if ($("dynamicTip")) {
+          const next = dynamicChapters.find((item) => !dynamicState.chapters.includes(item)) || "全部章节";
+          $("dynamicTip").textContent = `当前建议：继续学习「${next}」。你的记录会自动保存在本机浏览器。`;
+        }
+        if ($("dynamicProgressBar")) $("dynamicProgressBar").style.width = `${progress}%`;
+        if ($("dynamicProgressValue")) $("dynamicProgressValue").textContent = `${progress}%`;
+        if ($("dynamicStreakValue")) $("dynamicStreakValue").textContent = dynamicState.streak;
+        if ($("dynamicNoteValue")) $("dynamicNoteValue").textContent = dynamicState.formulas.length + dynamicState.snapshots.length;
+
+        chapterWrap.innerHTML = dynamicChapters.map((name) => (
+          `<button type="button" data-dynamic-chapter="${escapeHtml(name)}" class="${dynamicState.chapters.includes(name) ? "active" : ""}">${escapeHtml(name)}</button>`
+        )).join("");
+
+        const taskBoard = $("dynamicTaskBoard");
+        if (taskBoard) {
+          taskBoard.innerHTML = dynamicTasks.map(([id, title, tag]) => `
+            <label class="task-item ${dynamicState.tasks[id] ? "done" : ""}">
+              <input type="checkbox" data-dynamic-task="${id}" ${dynamicState.tasks[id] ? "checked" : ""} />
+              <span>${escapeHtml(title)}</span>
+              <small>${escapeHtml(tag)}</small>
+            </label>
+          `).join("");
+        }
+        renderDynamicLists();
+      }
+
+      function renderDynamicLists() {
+        const formulaList = $("dynamicFormulaList");
+        if (formulaList) {
+          formulaList.innerHTML = dynamicState.formulas.length ? dynamicState.formulas.slice(-5).reverse().map((item) => `
+            <article><b>${escapeHtml(item.title)}</b><span>${escapeHtml(item.text)}</span></article>
+          `).join("") : "<article><b>还没有收藏公式</b><span>先去公式手册搜索，例如“卷积”或“傅里叶”，再点击收藏当前公式。</span></article>";
+        }
+        const snapshotList = $("dynamicSnapshotList");
+        if (snapshotList) {
+          snapshotList.innerHTML = dynamicState.snapshots.length ? dynamicState.snapshots.slice(-5).reverse().map((item) => `
+            <article><b>${escapeHtml(item.time)}</b><span>${escapeHtml(item.text)}</span></article>
+          `).join("") : "<article><b>还没有实验记录</b><span>拖动函数图像、抽样或 FFT 参数后，点击保存实验参数。</span></article>";
+        }
+      }
+
+      function bindDynamicDashboard() {
+        const root = $("dynamic");
+        if (!root) return;
+        renderDynamicDashboard();
+        root.addEventListener("click", (event) => {
+          const chapterBtn = event.target.closest("[data-dynamic-chapter]");
+          if (chapterBtn) {
+            const chapter = chapterBtn.dataset.dynamicChapter;
+            dynamicState.chapters = dynamicState.chapters.includes(chapter)
+              ? dynamicState.chapters.filter((item) => item !== chapter)
+              : [...dynamicState.chapters, chapter];
+            saveDynamicState();
+            renderDynamicDashboard();
+            showDynamicToast(`已更新「${chapter}」学习进度`);
+          }
+        });
+        root.addEventListener("change", (event) => {
+          const task = event.target.closest("[data-dynamic-task]");
+          if (!task) return;
+          dynamicState.tasks[task.dataset.dynamicTask] = task.checked;
+          saveDynamicState();
+          renderDynamicDashboard();
+        });
+        $("dynamicStartBtn")?.addEventListener("click", () => {
+          const next = dynamicChapters.find((item) => !dynamicState.chapters.includes(item)) || dynamicChapters[0];
+          const target = next === "卷积" ? "#convolution" : next === "FFT" ? "#fft" : next === "抽样" ? "#sampling" : "#guide";
+          document.querySelector(target)?.scrollIntoView({ behavior: "smooth", block: "start" });
+          showDynamicToast(`已为你跳转到 ${next} 相关模块`);
+        });
+        $("dynamicSaveFormulaBtn")?.addEventListener("click", () => {
+          const visible = Array.from(document.querySelectorAll(".formula-card")).find((card) => card.style.display !== "none");
+          const title = visible?.querySelector("h3")?.textContent?.trim() || "公式收藏";
+          const text = visible?.querySelector("b")?.textContent?.trim() || visible?.textContent?.replace(/\s+/g, " ").trim().slice(0, 120) || "当前公式";
+          dynamicState.formulas.push({ title, text, time: new Date().toLocaleString("zh-CN") });
+          dynamicState.tasks.task_formula = true;
+          saveDynamicState();
+          renderDynamicDashboard();
+          showDynamicToast("公式已收藏到动态仪表盘");
+        });
+        $("dynamicSnapshotBtn")?.addEventListener("click", () => {
+          const signal = $("selectedSignalText")?.textContent || $("signalType")?.value || "信号";
+          const text = `${signal}：A=${state.amp.toFixed(1)}, f/宽度=${state.freq.toFixed(1)}, t0=${state.shift.toFixed(1)}, a=${state.scale.toFixed(1)}；抽样 fs=${state.sampleRate}Hz；FFT f0=${state.fftBase}Hz, 三次谐波=${state.fftHarmonic.toFixed(2)}, 噪声=${state.fftNoise.toFixed(2)}`;
+          dynamicState.snapshots.push({ text, time: new Date().toLocaleString("zh-CN") });
+          dynamicState.tasks.task_lab = true;
+          saveDynamicState();
+          renderDynamicDashboard();
+          showDynamicToast("实验参数已保存");
+        });
+        $("dynamicResetBtn")?.addEventListener("click", () => {
+          dynamicState = { chapters: [], tasks: {}, formulas: [], snapshots: [], lastDate: todayKey(), streak: 1 };
+          saveDynamicState();
+          renderDynamicDashboard();
+          showDynamicToast("动态学习数据已清空");
+        });
+        $("dynamicSmartSearch")?.addEventListener("input", runDynamicSmartSearch);
+      }
+
+      function runDynamicSmartSearch() {
+        const input = $("dynamicSmartSearch");
+        const box = $("dynamicSearchResults");
+        if (!input || !box) return;
+        const keyword = input.value.trim().toLowerCase();
+        if (!keyword) {
+          box.innerHTML = "<article><b>搜索建议</b><span>输入关键词后，系统会从页面内容中实时推荐相关模块。</span></article>";
+          return;
+        }
+        const sources = Array.from(document.querySelectorAll("#theory article, #formulas article, #problems article, #code article, #lab, #convolution, #fft, #sampling, #ztransform"));
+        const matches = sources.map((node) => {
+          const title = node.querySelector("h3")?.textContent || node.querySelector("h2")?.textContent || node.querySelector("b")?.textContent || "相关模块";
+          const text = node.textContent.replace(/\s+/g, " ").trim();
+          return { node, title, text };
+        }).filter((item) => item.text.toLowerCase().includes(keyword)).slice(0, 4);
+        box.innerHTML = matches.length ? matches.map((item, index) => `
+          <article role="button" tabindex="0" data-dynamic-result="${index}">
+            <b>${escapeHtml(item.title)}</b>
+            <span>${escapeHtml(item.text.slice(0, 92))}...</span>
+          </article>
+        `).join("") : `<article><b>没有找到「${escapeHtml(input.value)}」</b><span>可以试试：卷积、FFT、抽样、ROC、稳定。</span></article>`;
+        box.querySelectorAll("[data-dynamic-result]").forEach((card) => {
+          card.addEventListener("click", () => matches[Number(card.dataset.dynamicResult)].node.scrollIntoView({ behavior: "smooth", block: "start" }));
+        });
+      }
+
+      bindDynamicDashboard();
       updateLessonText();
       updateSignalText();
       drawSignal();
